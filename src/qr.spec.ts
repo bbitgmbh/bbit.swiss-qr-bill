@@ -181,7 +181,7 @@ describe('QR test', () => {
     expect(data).toMatchSnapshot();
   });
 
-  it('generate should work', () => {
-    const code = qr.generate(defaultData);
-  });
+  // it('generate should work', () => {
+  //   const code = qr.generate(defaultData);
+  // });
 });
