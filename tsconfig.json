@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "experimentalDecorators": true
+  },
+  "files": [
+    "src/index.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ]
+}

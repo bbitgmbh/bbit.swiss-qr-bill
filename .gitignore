@@ -1,0 +1,6 @@
+node_modules
+dist
+coverage
+junit.xml
+run.ts
+test.png
