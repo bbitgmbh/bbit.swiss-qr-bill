@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QR test generateQRCodeContent should work 1`] = `
+"SPC
+0200
+1
+CH9300762011623852957
+K
+bbit gmbh
+Rainweg 10
+3612 Steffisburg
+
+
+CH
+
+
+
+
+
+
+
+100.00
+CHF
+K
+Test AG
+Musterstrasse 1
+3600 Thun
+
+
+CH
+SCOR
+1234
+Test message
+EPD
+
+"
+`;
