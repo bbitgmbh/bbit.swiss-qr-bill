@@ -6,7 +6,8 @@
   "author": "<ache@bbit.io>",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint \"src/**/*.ts\""
   },
   "devDependencies": {
     "@angular-builders/jest": "^8.3.1",
