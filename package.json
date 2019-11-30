@@ -1,16 +1,15 @@
 {
   "name": "@bbit/swiss-qr-bill",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:bbit-cloud/swiss-qr-bill.git",
-  "author": "<ache@bbit.io>",
+  "author": "Yannik Eicher <ache@bbit.io>",
   "license": "MIT",
   "scripts": {
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\""
   },
   "devDependencies": {
-    "@angular-builders/jest": "^8.3.2",
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.14",
