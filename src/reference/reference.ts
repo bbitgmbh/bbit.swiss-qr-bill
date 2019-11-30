@@ -1,6 +1,6 @@
 import { Mod10 } from './mod10';
 export class ReferenceValidator {
-  isReferenceValid(reference: string): boolean {
+  public isReferenceValid(reference: string): boolean {
     if (!reference || reference.length > 25) {
       return false;
     }
@@ -12,7 +12,7 @@ export class ReferenceValidator {
     return check === calculated.toString();
   }
 
-  isQRReferenceValid(reference: string): boolean {
+  public isQRReferenceValid(reference: string): boolean {
     if (!reference || reference.length !== 27) {
       return false;
     }
@@ -21,7 +21,7 @@ export class ReferenceValidator {
     return check === calculated.toString();
   }
 
-  isQRReference(reference: string): boolean {
+  public isQRReference(reference: string): boolean {
     return reference && !reference.startsWith('RF');
   }
 }

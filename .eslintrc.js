@@ -10,9 +10,9 @@ module.exports = {
     sourceType: "module" // Allows for the use of imports
   },
   rules: {
-    "@typescript-eslint/no-parameter-properties": 0,
     "@typescript-eslint/interface-name-prefix": [1, "always"],
-    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-member-accessibility": 1,
+    "@typescript-eslint/explicit-function-return-type": ["error"],
     quotes: [2, "single", "avoid-escape"]
   }
 };

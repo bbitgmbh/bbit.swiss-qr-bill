@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 export class IBANSpecification {
-  countryCode: string;
-  length: number;
-  structure: string;
-  example: string;
-  _cachedRegex: RegExp;
+  public countryCode: string;
+  public length: number;
+  public structure: string;
+  public example: string;
+  private _cachedRegex: RegExp;
 
-  constructor(countryCode: string, length: number, structure: string, example: string) {
+  public constructor(countryCode: string, length: number, structure: string, example: string) {
     this.countryCode = countryCode;
     this.length = length;
     this.structure = structure;
@@ -20,7 +20,7 @@ export class IBANSpecification {
    * @param iban the IBAN
    * @returns the prepared IBAN
    */
-  static iso13616Prepare(iban: string): string {
+  public static iso13616Prepare(iban: string): string {
     const A = 'A'.charCodeAt(0);
     const Z = 'Z'.charCodeAt(0);
 
@@ -44,7 +44,7 @@ export class IBANSpecification {
   /**
    * Calculates the MOD 97 10 of the passed IBAN as specified in ISO7064.
    */
-  static iso7064Mod97_10(iban: string): number {
+  public static iso7064Mod97_10(iban: string): number {
     let remainder = iban,
       block;
 
@@ -62,7 +62,7 @@ export class IBANSpecification {
    * a logical group in the typical representation of the BBAN. For each group, the letter indicates which characters
    * are allowed in this group and the following 2-digits number tells the length of the group.
    */
-  static parseStructure(structure: string): any {
+  public static parseStructure(structure: string): RegExp {
     // split in blocks of 3 chars
     const regex = structure.match(/(.{3})/g).map(function(block) {
       // parse each structure block (1-char + 2-digits)
@@ -103,7 +103,7 @@ export class IBANSpecification {
   /**
    * Lazy-loaded regex (parse the structure and construct the regular expression the first time we need it for validation)
    */
-  private _regex(): any {
+  private _regex(): RegExp {
     return this._cachedRegex || (this._cachedRegex = IBANSpecification.parseStructure(this.structure));
   }
 
@@ -113,7 +113,7 @@ export class IBANSpecification {
    * @param iban the iban to validate
    * @returns true if valid, false otherwise
    */
-  isValid(iban: string): boolean {
+  public isValid(iban: string): boolean {
     return (
       this.length === iban.length &&
       this.countryCode === iban.slice(0, 2) &&
@@ -128,7 +128,7 @@ export class IBANSpecification {
    * @param iban the iban to check
    * @returns true if it is a qr iban, false otherwise
    */
-  isQRIBAN(iban: string): boolean {
+  public isQRIBAN(iban: string): boolean {
     const iid = Number(iban.slice(4, 9));
     return iid >= 30000 && iid <= 31999;
   }
@@ -140,7 +140,7 @@ export class IBANSpecification {
    * @param separator the separator to use between BBAN blocks
    * @returns the BBAN
    */
-  toBBAN(iban: string, separator: string): string {
+  public toBBAN(iban: string, separator: string): string {
     return this._regex()
       .exec(iban.slice(4))
       .slice(1)
@@ -155,7 +155,7 @@ export class IBANSpecification {
    * @param bban the BBAN to convert to IBAN
    * @returns the IBAN
    */
-  fromBBAN(bban: string): string {
+  public fromBBAN(bban: string): string {
     if (!this.isValidBBAN(bban)) {
       throw new Error('Invalid BBAN');
     }
@@ -174,7 +174,7 @@ export class IBANSpecification {
    * @param bban the BBAN to validate
    * @returns true if the passed bban is a valid BBAN according to this specification, false otherwise
    */
-  isValidBBAN(bban: string): boolean {
+  public isValidBBAN(bban: string): boolean {
     return this.length - 4 === bban.length && this._regex().test(bban);
   }
 }

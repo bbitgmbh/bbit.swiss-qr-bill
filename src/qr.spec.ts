@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { QRBillValidationError } from './errors/validation-error';
 import { IQRBill } from './interfaces';
 import { QRCodeGenerator } from './qr';

@@ -105,7 +105,7 @@ describe('IBAN', () => {
     expect(iban.printFormat('CH9300762011623852957')).toBe('CH93 0076 2011 6238 5295 7');
   });
 
-  it('toBBAN should work', () => {
+  it('toBBAN should work', (): void => {
     expect(iban.toBBAN('CH9300762011623852957')).toBe('00762 011623852957');
   });
 

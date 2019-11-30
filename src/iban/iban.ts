@@ -2,7 +2,7 @@ import { IBANSpecification } from './specification';
 export class IBAN {
   private _countries: { [key: string]: IBANSpecification } = {};
 
-  constructor() {
+  public constructor() {
     this._addSpecification(new IBANSpecification('AD', 24, 'F04F04A12', 'AD1200012030200359100100'));
     this._addSpecification(new IBANSpecification('AE', 23, 'F03F16', 'AE070331234567890123456'));
     this._addSpecification(new IBANSpecification('AL', 28, 'F08A16', 'AL47212110090000000235698741'));
@@ -89,14 +89,14 @@ export class IBAN {
     this._addSpecification(new IBANSpecification('UA', 29, 'F25', 'UA511234567890123456789012345'));
   }
 
-  private _addSpecification(iban: IBANSpecification): any {
+  private _addSpecification(iban: IBANSpecification): void {
     this._countries[iban.countryCode] = iban;
   }
 
   /**
    * Outpus the IBAN in electronic format
    */
-  electronicFormat(iban): string {
+  public electronicFormat(iban: string): string {
     const NON_ALPHANUM = /[^a-zA-Z0-9]/g;
     return iban.replace(NON_ALPHANUM, '').toUpperCase();
   }
@@ -104,7 +104,7 @@ export class IBAN {
   /**
    * Convert an IBAN to a BBAN.
    */
-  toBBAN(iban: string, separator = ' '): string {
+  public toBBAN(iban: string, separator = ' '): string {
     iban = this.electronicFormat(iban);
     const countryStructure = this._countries[iban.slice(0, 2)];
     if (!countryStructure) {
@@ -118,7 +118,7 @@ export class IBAN {
    * Please note that <i>"generation of the IBAN shall be the exclusive responsibility of the bank/branch servicing the account"</i>.
    * This method implements the preferred algorithm described in http://en.wikipedia.org/wiki/International_Bank_Account_Number#Generating_IBAN_check_digits
    */
-  fromBBAN(countryCode: string, bban: string): any {
+  public fromBBAN(countryCode: string, bban: string): string {
     const countryStructure = this._countries[countryCode];
     if (!countryStructure) {
       throw new Error('No country with code ' + countryCode);
@@ -129,7 +129,7 @@ export class IBAN {
   /**
    * Check the validity of the passed BBAN.
    */
-  isValidBBAN(countryCode: string, bban: string): any {
+  public isValidBBAN(countryCode: string, bban: string): boolean {
     if (!bban || bban.length === 0) return false;
     const countryStructure = this._countries[countryCode];
     if (!countryStructure) {
@@ -141,7 +141,7 @@ export class IBAN {
   /**
    * Outpus the IBAN in print format
    */
-  printFormat(iban: string, separator = ' '): string {
+  public printFormat(iban: string, separator = ' '): string {
     const EVERY_FOUR_CHARS = /(.{4})(?!$)/g;
     return this.electronicFormat(iban).replace(EVERY_FOUR_CHARS, '$1' + separator);
   }
@@ -152,7 +152,7 @@ export class IBAN {
    * @param iban the IBAN to validate.
    * @returns true if the passed IBAN is valid, false otherwise
    */
-  isValid(iban: string): boolean {
+  public isValid(iban: string): boolean {
     if (!iban || iban.length === 0) return false;
     iban = this.electronicFormat(iban);
     const countryStructure = this._countries[iban.slice(0, 2)];
@@ -165,7 +165,7 @@ export class IBAN {
    * @param iban the iban to check
    * @returns true if it is a qr iban, false otherwise
    */
-  isQRIBAN(iban: string): boolean {
+  public isQRIBAN(iban: string): boolean {
     if (!iban || iban.length === 0) return false;
     iban = this.electronicFormat(iban);
     const countryStructure = this._countries[iban.slice(0, 2)];
