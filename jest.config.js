@@ -16,5 +16,4 @@ module.exports = {
   // },
   reporters: ['default', 'jest-junit'],
   collectCoverage: true,
-  coverageReporters: ['html', 'cobertura'],
 };

@@ -22,5 +22,6 @@ jobs:
         yarn install
         yarn lint
         yarn test
+        yarn codecov
       env:
         CI: true
