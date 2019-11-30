@@ -32,9 +32,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: yarn install and test
-        run: |
-          yarn install
-          yarn test
+      run: |
+        yarn install
+        yarn test
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
