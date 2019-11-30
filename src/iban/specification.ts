@@ -29,7 +29,7 @@ export class IBANSpecification {
 
     return iban
       .split('')
-      .map((n: string) => {
+      .map((n: string): number | string => {
         const code = n.charCodeAt(0);
         if (code >= A && code <= Z) {
           // A = 10, B = 11, ... Z = 35
@@ -64,7 +64,7 @@ export class IBANSpecification {
    */
   public static parseStructure(structure: string): RegExp {
     // split in blocks of 3 chars
-    const regex = structure.match(/(.{3})/g).map(function(block) {
+    const regex = structure.match(/(.{3})/g).map((block): RegExp | string => {
       // parse each structure block (1-char + 2-digits)
       let format;
       const pattern = block.slice(0, 1);

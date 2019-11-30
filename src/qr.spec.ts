@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IQRBillAddress } from './../dist/types/interfaces.d';
 import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill } from './interfaces';
+import { IQRBill, QRBillVersion } from './interfaces';
 import { QRCodeGenerator } from './qr';
 import * as _ from 'lodash';
 
@@ -29,11 +29,11 @@ const defaultData: IQRBill = {
   billInformation: 'Test billing information',
 };
 
-describe('QR test', () => {
-  it('Usnupported version should fail', () => {
+describe('QR test', (): void => {
+  it('Usnupported version should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    (cloned as any).version = 'unsupported';
+    cloned.version = 'unsupported' as QRBillVersion;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -42,7 +42,7 @@ describe('QR test', () => {
     expect(error).toEqual(new Error(`QR bill version ${cloned.version} is not supported`));
   });
 
-  it('Missing account (IBAN) should fail', () => {
+  it('Missing account (IBAN) should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.account;
@@ -56,7 +56,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'account' has to be defined");
   });
 
-  it('Invalid account (IBAN) should fail', () => {
+  it('Invalid account (IBAN) should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.account = 'CH2830000011623852951';
@@ -70,7 +70,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe(`Property 'account' (IBAN) ${cloned.account} is not valid`);
   });
 
-  it('Missing creditor should fail', () => {
+  it('Missing creditor should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.creditor;
@@ -84,10 +84,10 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'creditor' has to be defined");
   });
 
-  it('Missing creditor properties should fail', () => {
+  it('Missing creditor properties should fail', (): void => {
     let error: QRBillValidationError;
-    const cloned: any = _.cloneDeep(defaultData);
-    cloned.creditor = {};
+    const cloned = _.cloneDeep(defaultData);
+    cloned.creditor = {} as IQRBillAddress;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -102,7 +102,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'creditor' has to be defined");
   });
 
-  it('Missing debtor should fail', () => {
+  it('Missing debtor should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.debtor;
@@ -116,10 +116,10 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'debtor' has to be defined");
   });
 
-  it('Missing debtor properties should fail', () => {
+  it('Missing debtor properties should fail', (): void => {
     let error: QRBillValidationError;
-    const cloned: any = _.cloneDeep(defaultData);
-    cloned.debtor = {};
+    const cloned = _.cloneDeep(defaultData);
+    cloned.debtor = {} as IQRBillAddress;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -134,7 +134,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
   });
 
-  it('Missing reference should fail', () => {
+  it('Missing reference should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.reference;
@@ -148,7 +148,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'reference' has to be defined");
   });
 
-  it('Wrong reference should fail', () => {
+  it('Wrong reference should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.reference = '1234';
@@ -162,7 +162,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'reference' is not valid");
   });
 
-  it('Missing currency should fail', () => {
+  it('Missing currency should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.currency;
@@ -176,7 +176,7 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'currency' has to be defined");
   });
 
-  it('Missing amount should fail', () => {
+  it('Missing amount should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     delete cloned.amount;
@@ -190,19 +190,15 @@ describe('QR test', () => {
     expect(error.getValidationErrors()[0]).toBe("Property 'amount' has to be defined");
   });
 
-  it('generateQRCodeContent should work', () => {
+  it('generateQRCodeContent should work', (): void => {
     const data = qr.generateQRCodeContent(defaultData);
     expect(data).toBeDefined();
     expect(data).toMatchSnapshot();
   });
 
-  it('generate should work', async () => {
+  it('generate should work', async (): Promise<void> => {
     const data = await qr.generate(defaultData);
     expect(data).toBeDefined();
     expect(data).toMatchSnapshot();
   });
-
-  // it('generate should work', () => {
-  //   const code = qr.generate(defaultData);
-  // });
 });

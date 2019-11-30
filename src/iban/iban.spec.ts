@@ -90,18 +90,18 @@ const data = {
 
 const iban = new IBAN();
 
-describe('IBAN', () => {
-  it('isValid should work', () => {
-    _.mapValues(data, o => {
+describe('IBAN', (): void => {
+  it('isValid should work', (): void => {
+    _.mapValues(data, (o): void => {
       expect(iban.isValid(o)).toBeTruthy();
     });
   });
 
-  it('electronicFormat should work', () => {
+  it('electronicFormat should work', (): void => {
     expect(iban.electronicFormat('CH93 0076 2011 6238 5295 7')).toBe('CH9300762011623852957');
   });
 
-  it('printFormat should work', () => {
+  it('printFormat should work', (): void => {
     expect(iban.printFormat('CH9300762011623852957')).toBe('CH93 0076 2011 6238 5295 7');
   });
 
@@ -109,20 +109,20 @@ describe('IBAN', () => {
     expect(iban.toBBAN('CH9300762011623852957')).toBe('00762 011623852957');
   });
 
-  it('fromBBAN should work', () => {
+  it('fromBBAN should work', (): void => {
     expect(iban.fromBBAN('CH', '00762011623852957')).toBe('CH9300762011623852957');
   });
 
-  it('isValidBBAN should work', () => {
+  it('isValidBBAN should work', (): void => {
     expect(iban.isValidBBAN('CH', '00762011623852957')).toBeTruthy();
   });
 
-  it('isQRIBAN should work', () => {
+  it('isQRIBAN should work', (): void => {
     expect(iban.isQRIBAN('CH9300762011623852957')).toBeFalsy();
     expect(iban.isQRIBAN('CH2830000011623852950')).toBeTruthy();
   });
 
-  it('invalid country should fail should work', () => {
+  it('invalid country should fail should work', (): void => {
     const isValidBBAN = (): void => {
       iban.isValidBBAN('XY', '00762011623852957');
     };

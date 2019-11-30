@@ -3,39 +3,39 @@
 
 # WORK IN PROGRESS - NOT READY TO USE
 
-# Swiss QR bill for Node.js and browsers
+## Swiss QR bill for Node.js and browsers
 
-## Installation
+### Installation
 
-``` bash
+```bash
 yarn add @bbit/swiss-qr-bill
 ```
 
 or
 
-``` bash
+```bash
 npm install @bbit/swiss-qr-bill --save
 ```
 
-## Usage
+### Usage
 
-``` ts
+```ts
 import { QRBill } from '@bbit/swiss-qr-bill';
 const qr = new QRBill();
 
-const params = {}
+const params = {};
 
 // create pdf
 await qr.generate(params);
 ```
 
-## Specification
+### Specification
 
 [Swiss Payment Standards 2019](https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf)
 
 [Validation](https://www.swiss-qr-invoice.org/validator/?lang=de)
 
-# TODOS
+## TODOS
 
 - IBAN tests
 - Test builded version

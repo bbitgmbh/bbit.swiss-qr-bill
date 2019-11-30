@@ -1,18 +1,40 @@
 module.exports = {
-  parser: "@typescript-eslint/parser", // Specifies the ESLint parser
+  parser: '@typescript-eslint/parser',
   extends: [
-    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-    "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
-    "plugin:prettier/recommended" // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    'plugin:@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
+    'plugin:jest/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module" // Allows for the use of imports
+    ecmaVersion: 2018,
+    sourceType: 'module',
   },
+  env: {
+    es6: true,
+  },
+  overrides: [
+    {
+      files: ['**/*.spec.ts'],
+      env: {
+        jest: true,
+      },
+      plugins: ['jest'],
+      rules: {
+        'jest/no-disabled-tests': 'warn',
+        'jest/no-focused-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/prefer-to-have-length': 'warn',
+        'jest/valid-expect': 'error',
+      },
+    },
+  ],
   rules: {
-    "@typescript-eslint/interface-name-prefix": [1, "always"],
-    "@typescript-eslint/explicit-member-accessibility": 1,
-    "@typescript-eslint/explicit-function-return-type": ["error"],
-    quotes: [2, "single", "avoid-escape"]
-  }
+    '@typescript-eslint/interface-name-prefix': [1, 'always'],
+    '@typescript-eslint/explicit-member-accessibility': ['error'],
+    '@typescript-eslint/explicit-function-return-type': ['error', {
+      "allowTypedFunctionExpressions": false
+    }],
+    quotes: [2, 'single', 'avoid-escape'],
+  },
 };

@@ -21,8 +21,8 @@ jobs:
           yarn install
           yarn lint
           yarn test
-          yarn codecov
+          yarn publish-coverage
           yarn build
         env:
           CI: true
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODACY_ACCOUNT_TOKEN: ${{ secrets.CODACY_ACCOUNT_TOKEN }}
