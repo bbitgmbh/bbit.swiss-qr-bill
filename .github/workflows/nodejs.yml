@@ -16,12 +16,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, lint and test
+      - name: yarn install, lint, test and build
         run: |
           yarn install
           yarn lint
           yarn test
           yarn codecov
+          yarn build
         env:
           CI: true
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

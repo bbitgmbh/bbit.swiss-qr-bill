@@ -181,6 +181,12 @@ describe('QR test', () => {
     expect(data).toMatchSnapshot();
   });
 
+  it('generate should work', async () => {
+    const data = await qr.generate(defaultData);
+    expect(data).toBeDefined();
+    expect(data).toMatchSnapshot();
+  });
+
   // it('generate should work', () => {
   //   const code = qr.generate(defaultData);
   // });

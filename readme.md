@@ -37,16 +37,12 @@ await qr.generate(params);
 
 # TODOS
 
-- Browser ehnacements (Canvas, Images and all that stuff)
-- Packaging for release
+- IBAN tests
+- Test builded version
 - QR-IBAN & QR reference
   - Implement validation
 - Reference
   - Implement validation
 - PDF generation of payment slip
-- Tests
-- GitHub Acion
-  - lint
-  - test
-  - build
-  - release
+- QR Tests
+- GitHub Acion for release

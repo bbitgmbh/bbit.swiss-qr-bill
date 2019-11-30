@@ -132,6 +132,9 @@ export class IBAN {
   isValidBBAN(countryCode: string, bban: string): any {
     if (!bban || bban.length === 0) return false;
     const countryStructure = this._countries[countryCode];
+    if (!countryStructure) {
+      throw new Error('No country with code ' + countryCode);
+    }
     return countryStructure && countryStructure.isValidBBAN(this.electronicFormat(bban));
   }
 

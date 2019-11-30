@@ -1,3 +1,4 @@
+import { isNodeJs } from './utils';
 import { swissCorssImage } from './swiss-cross';
 import { QRData } from './qr-data';
 import { QRBillValidationError } from './errors/validation-error';
@@ -9,19 +10,24 @@ import { Image, Canvas } from 'canvas';
 export class QRCodeGenerator {
   private _iban = new IBAN();
 
-  public async generate(params: IQRBill): Promise<Buffer> {
+  public async generate(params: IQRBill): Promise<Blob | Buffer> {
     const data = this.generateQRCodeContent(params);
 
-    const canvas: Canvas = await qrcode.toCanvas(this._getCanvas(), data, { margin: 0 });
+    const canvas = await qrcode.toCanvas(this._createCanvas(), data, { margin: 0 });
 
-    // adding a log at center
+    // adding logo at center
     const imgDim = { width: 30, height: 30 }; //logo dimention
     const context = canvas.getContext('2d');
-    const imageObj = new Image();
+    const imageObj = this._createImage();
     imageObj.src = swissCorssImage;
     context.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
 
-    return canvas.toBuffer();
+    if (isNodeJs) {
+      return canvas.toBuffer();
+    } else {
+      /* istanbul ignore next: not tesed with jest */
+      return canvas.toBlob();
+    }
   }
 
   public generateQRCodeContent(params: IQRBill): string {
@@ -140,11 +146,25 @@ export class QRCodeGenerator {
     return Number(amount).toFixed(2);
   }
 
-  private _getCanvas(): Canvas {
-    if (typeof window === 'undefined') {
+  private _createCanvas(): Canvas | HTMLCanvasElement {
+    if (isNodeJs) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const Canvas = require('canvas');
       return Canvas.createCanvas(500, 500);
+    } else {
+      /* istanbul ignore next: not tesed with jest */
+      return document.createElement('canvas');
+    }
+  }
+
+  private _createImage(): Image | HTMLImageElement {
+    if (isNodeJs) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const Canvas = require('canvas');
+      return new Canvas.Image();
+    } else {
+      /* istanbul ignore next: not tesed with jest */
+      return document.createElement('img');
     }
   }
 }
