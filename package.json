@@ -9,7 +9,7 @@
     "clean": "rimraf coverage dist junit.xml",
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\"",
-    "publish-coverage": "cat ./coverage/lcov.info | codacy-coverage",
+    "publish-coverage": "cat ./coverage/lcov.info | codacy-coverage --username thegnuu",
     "types": "tsc --emitDeclarationOnly",
     "build": "yarn clean && rollup -c && yarn types"
   },
