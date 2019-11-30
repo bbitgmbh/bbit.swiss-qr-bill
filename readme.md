@@ -6,8 +6,6 @@
 
 # TODOS
 
-https://github.com/bbit-cloud/swiss-qr-bill/workflows/nodejs/badge.svg
-
 - Browser ehnacements (Canvas, Images and all that stuff)
 - Packaging for release
 - QR-IBAN & QR reference
