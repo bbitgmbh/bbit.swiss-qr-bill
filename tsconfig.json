@@ -10,7 +10,8 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "outDir": "dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "esModuleInterop": true
   },
   "files": ["src/index.ts"],
   "exclude": ["**/*.spec.ts"]
