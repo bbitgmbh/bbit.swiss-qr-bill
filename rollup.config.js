@@ -8,11 +8,11 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      file: 'dist/cjs/swiss-qr-bill.js',
+      file: 'dist/cjs/index.js',
       format: 'cjs',
     },
     {
-      file: 'dist/es/swiss-qr-bill.js',
+      file: 'dist/es/index.js',
       format: 'es',
     },
   ],
