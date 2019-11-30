@@ -8,6 +8,7 @@ export interface IQRBill {
   debtor: IQRBillAddress;
   unstructeredMessage?: string;
   billInformation?: string;
+  language: QRBillLanguage;
 }
 
 export interface IQRBillAddress {
@@ -22,6 +23,13 @@ export enum QRBillCurrency {
   CHF = 'CHF',
   EUR = 'EUR',
   USD = 'USD',
+}
+
+export enum QRBillLanguage {
+  DE = 'de-CH',
+  FR = 'fr-CH',
+  IT = 'it-CH',
+  EN = 'en-US',
 }
 
 export enum QRBillVersion {

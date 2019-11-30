@@ -1,6 +1,6 @@
 import { IQRBillAddress } from './../dist/types/interfaces.d';
 import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill, QRBillVersion } from './interfaces';
+import { IQRBill, QRBillVersion, QRBillLanguage } from './interfaces';
 import { QRCodeGenerator } from './qr';
 import * as _ from 'lodash';
 
@@ -27,6 +27,7 @@ const defaultData: IQRBill = {
   },
   unstructeredMessage: 'Test message',
   billInformation: 'Test billing information',
+  language: QRBillLanguage.DE,
 };
 
 describe('QR test', (): void => {
