@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 const qr = new QRCodeGenerator();
 
 const defaultData: IQRBill = {
-  account: 'CH93 0076 2011 6238 5295 7',
+  account: 'CH2830000011623852950',
   amount: 100.0,
   currency: 'CHF',
   creditor: {
@@ -16,7 +16,7 @@ const defaultData: IQRBill = {
     locality: 'Steffisburg',
     country: 'CH',
   },
-  reference: '1234',
+  reference: '000000000000000012312312316',
   debtor: {
     name: 'Test AG',
     address: 'Musterstrasse 1',
@@ -51,14 +51,14 @@ describe('QR test', () => {
       error = err;
     }
     expect(error).toBeDefined();
-    expect(error.getValidationErrors()).toHaveLength(1);
+    expect(error.getValidationErrors()).toHaveLength(2);
     expect(error.getValidationErrors()[0]).toBe("Property 'account' has to be defined");
   });
 
   it('Invalid account (IBAN) should fail', () => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    cloned.account = 'CH93 0076 2011 6238 5295 8';
+    cloned.account = 'CH2830000011623852951';
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -145,6 +145,20 @@ describe('QR test', () => {
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
     expect(error.getValidationErrors()[0]).toBe("Property 'reference' has to be defined");
+  });
+
+  it('Wrong reference should fail', () => {
+    let error: QRBillValidationError;
+    const cloned = _.cloneDeep(defaultData);
+    cloned.reference = '1234';
+    try {
+      qr.generateQRCodeContent(cloned);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).toBeDefined();
+    expect(error.getValidationErrors()).toHaveLength(1);
+    expect(error.getValidationErrors()[0]).toBe("Property 'reference' is not valid");
   });
 
   it('Missing currency should fail', () => {

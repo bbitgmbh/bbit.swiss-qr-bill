@@ -117,6 +117,11 @@ describe('IBAN', () => {
     expect(iban.isValidBBAN('CH', '00762011623852957')).toBeTruthy();
   });
 
+  it('isQRIBAN should work', () => {
+    expect(iban.isQRIBAN('CH9300762011623852957')).toBeFalsy();
+    expect(iban.isQRIBAN('CH2830000011623852950')).toBeTruthy();
+  });
+
   it('invalid country should fail should work', () => {
     const isValidBBAN = (): void => {
       iban.isValidBBAN('XY', '00762011623852957');

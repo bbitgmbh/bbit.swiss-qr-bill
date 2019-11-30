@@ -123,6 +123,17 @@ export class IBANSpecification {
   }
 
   /**
+   * Check if the passed iban is a qr iban
+   *
+   * @param iban the iban to check
+   * @returns true if it is a qr iban, false otherwise
+   */
+  isQRIBAN(iban: string): boolean {
+    const iid = Number(iban.slice(4, 9));
+    return iid >= 30000 && iid <= 31999;
+  }
+
+  /**
    * Convert the passed IBAN to a country-specific BBAN.
    *
    * @param iban the IBAN to convert

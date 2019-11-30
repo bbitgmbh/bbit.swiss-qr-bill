@@ -159,9 +159,16 @@ export class IBAN {
     return !!countryStructure && countryStructure.isValid(iban);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  /**
+   * Check if the passed iban is a qr iban
+   *
+   * @param iban the iban to check
+   * @returns true if it is a qr iban, false otherwise
+   */
   isQRIBAN(iban: string): boolean {
-    // TODO implement this check
-    return false;
+    if (!iban || iban.length === 0) return false;
+    iban = this.electronicFormat(iban);
+    const countryStructure = this._countries[iban.slice(0, 2)];
+    return !!countryStructure && countryStructure.isQRIBAN(iban);
   }
 }

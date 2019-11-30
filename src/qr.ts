@@ -1,3 +1,4 @@
+import { ReferenceValidator } from './reference/reference';
 import { isNodeJs } from './utils';
 import { swissCorssImage } from './swiss-cross';
 import { QRData } from './qr-data';
@@ -9,6 +10,7 @@ import { Image, Canvas } from 'canvas';
 
 export class QRCodeGenerator {
   private _iban = new IBAN();
+  private _reference = new ReferenceValidator();
 
   public async generate(params: IQRBill): Promise<Blob | Buffer> {
     const data = this.generateQRCodeContent(params);
@@ -87,6 +89,16 @@ export class QRCodeGenerator {
 
     if (!params.reference) {
       errors.push("Property 'reference' has to be defined");
+    } else {
+      if (this._iban.isQRIBAN(params.account)) {
+        if (!this._reference.isQRReference(params.reference) || !this._reference.isQRReferenceValid(params.reference)) {
+          errors.push("Property 'reference' is not valid");
+        }
+      } else {
+        if (this._reference.isQRReference(params.reference) || !this._reference.isReferenceValid(params.reference)) {
+          errors.push("Property 'reference' is not valid");
+        }
+      }
     }
 
     if (!params.currency) {
