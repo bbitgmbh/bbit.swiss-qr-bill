@@ -28,6 +28,7 @@
     "babel-jest": "24.9.0",
     "babel-loader": "8.0.6",
     "babel-plugin-ts-nameof": "4.2.0",
+    "codacy-coverage": "^3.4.0",
     "codecov": "^3.6.1",
     "cz-conventional-changelog": "3.0.2",
     "eslint": "^6.7.2",
