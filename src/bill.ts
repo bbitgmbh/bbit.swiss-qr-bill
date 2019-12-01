@@ -260,8 +260,4 @@ export class QRBillGenerator {
   private _parseAmount(amount: number): string {
     return amount.toFixed(2).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
   }
-
-  // private _mmToPt(mm: number): number {
-  //   return mm * 2.83465;
-  // }
 }
