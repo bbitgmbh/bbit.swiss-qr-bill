@@ -60,13 +60,11 @@ const buffer = await qr.generate(params);
 
 ## TODOS
 
-- Implement structured address (only unstructered is supported at the moment)
 - IBAN tests
 - Test builded version
 - QR-IBAN & QR reference
   - Implement validation
 - Reference
   - Implement validation
-- PDF generation of payment slip
 - QR Tests
 - GitHub Acion for release

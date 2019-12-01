@@ -3,7 +3,7 @@ import { isNodeJs } from './utils';
 import { swissCorssImage } from './swiss-cross';
 import { QRData } from './qr-data';
 import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill, QRBillVersion, IQRBillAddress } from './interfaces';
+import { IQRBill, QRBillVersion, IQRBillAddress, QRBillAddressType } from './interfaces';
 import { IBAN } from './iban/iban';
 import * as qrcode from 'qrcode';
 import { Image, Canvas } from 'canvas';
@@ -44,12 +44,16 @@ export class QRCodeGenerator {
         data.add('0200');
         data.add('1');
         data.add(this._iban.electronicFormat(params.account));
-        data.add('K');
+        data.add(params.creditor.type);
         data.add(params.creditor.name);
-        data.add(params.creditor.address);
-        data.add(params.creditor.postalCode + ' ' + params.creditor.locality);
-        data.add();
-        data.add();
+        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address);
+        data.add(
+          params.creditor.type === QRBillAddressType.STRUCTURED
+            ? params.creditor.buildingNumber
+            : params.creditor.postalCode + ' ' + params.creditor.locality,
+        );
+        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.postalCode : '');
+        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.locality : '');
         data.add(params.creditor.country);
         data.add();
         data.add();
@@ -60,13 +64,17 @@ export class QRCodeGenerator {
         data.add();
         data.add(this._parseAmount(params.amount));
         data.add(params.currency);
-        data.add('K');
+        data.add(params.debtor.type);
         data.add(params.debtor.name);
-        data.add(params.debtor.address);
-        data.add(params.debtor.postalCode + ' ' + params.debtor.locality);
-        data.add();
-        data.add();
-        data.add(params.creditor.country);
+        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address);
+        data.add(
+          params.debtor.type === QRBillAddressType.STRUCTURED
+            ? params.debtor.buildingNumber
+            : params.debtor.postalCode + ' ' + params.debtor.locality,
+        );
+        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.postalCode : '');
+        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.locality : '');
+        data.add(params.debtor.country);
         data.add(this._iban.isQRIBAN(params.account) ? 'QRR' : 'SCOR');
         data.add(params.reference);
         data.add(params.unstructeredMessage);
@@ -127,12 +135,27 @@ export class QRCodeGenerator {
       return errors;
     }
 
+    if (!address.type) {
+      errors.push(`Property 'type' on '${type}' has to be defined`);
+    }
+
     if (!address.name) {
       errors.push(`Property 'name' on '${type}' has to be defined`);
     }
 
-    if (!address.address) {
-      errors.push(`Property 'address' on '${type}' has to be defined`);
+    if (address.type === QRBillAddressType.UNSTRUCTURED) {
+      if (!address.address) {
+        errors.push(`Property 'address' on '${type}' has to be defined`);
+      }
+    }
+
+    if (address.type === QRBillAddressType.STRUCTURED) {
+      if (!address.street) {
+        errors.push(`Property 'street' on '${type}' has to be defined`);
+      }
+      if (!address.buildingNumber) {
+        errors.push(`Property 'buildingNumber' on '${type}' has to be defined`);
+      }
     }
 
     if (!address.postalCode) {

@@ -31,9 +31,11 @@ export class CustomWritableStream extends stream.Writable {
     return Buffer.concat(this._chunks);
   }
 
-  public toBlob(): Blob {
-    return new Blob(this._chunks, {
-      type: 'application/pdf',
-    });
+  public async toArrayBuffer(): Promise<ArrayBuffer> {
+    return await new Response(
+      new Blob(this._chunks, {
+        type: 'application/pdf',
+      }),
+    ).arrayBuffer();
   }
 }

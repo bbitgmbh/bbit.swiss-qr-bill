@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IQRBillAddress } from './../dist/types/interfaces.d';
 import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill, QRBillVersion, QRBillLanguage } from './interfaces';
+import { IQRBill, QRBillVersion, QRBillLanguage, QRBillCurrency, QRBillAddressType } from './interfaces';
 import { QRCodeGenerator } from './qr';
 import * as _ from 'lodash';
 
@@ -9,8 +10,9 @@ const qr = new QRCodeGenerator();
 const defaultData: IQRBill = {
   account: 'CH2830000011623852950',
   amount: 100.0,
-  currency: 'CHF',
+  currency: QRBillCurrency.CHF,
   creditor: {
+    type: QRBillAddressType.UNSTRUCTURED,
     name: 'bbit gmbh',
     address: 'Rainweg 10',
     postalCode: '3612',
@@ -19,6 +21,7 @@ const defaultData: IQRBill = {
   },
   reference: '000000000000000012312312316',
   debtor: {
+    type: QRBillAddressType.UNSTRUCTURED,
     name: 'Test AG',
     address: 'Musterstrasse 1',
     postalCode: '3600',
@@ -88,7 +91,7 @@ describe('QR test', (): void => {
   it('Missing creditor properties should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    cloned.creditor = {} as IQRBillAddress;
+    cloned.creditor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -120,7 +123,7 @@ describe('QR test', (): void => {
   it('Missing debtor properties should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    cloned.debtor = {} as IQRBillAddress;
+    cloned.debtor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {

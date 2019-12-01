@@ -1,7 +1,7 @@
 export interface IQRBill {
   version?: QRBillVersion;
   amount: number;
-  currency: string;
+  currency: QRBillCurrency;
   account: string;
   creditor: IQRBillAddress;
   reference: string;
@@ -12,8 +12,11 @@ export interface IQRBill {
 }
 
 export interface IQRBillAddress {
+  type: QRBillAddressType;
   name: string;
-  address: string;
+  address?: string;
+  street?: string;
+  buildingNumber?: string;
   postalCode: string;
   locality: string;
   country: string;
@@ -34,4 +37,9 @@ export enum QRBillLanguage {
 
 export enum QRBillVersion {
   V2_0 = '0200',
+}
+
+export enum QRBillAddressType {
+  UNSTRUCTURED = 'K',
+  STRUCTURED = 'S',
 }

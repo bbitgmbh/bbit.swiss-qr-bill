@@ -2,7 +2,7 @@ import { ReferenceValidator } from './reference/reference';
 import { QRCodeGenerator } from './qr';
 import { CustomWritableStream } from './stream';
 import { isNodeJs } from './utils';
-import { IQRBill } from './interfaces';
+import { IQRBill, QRBillAddressType } from './interfaces';
 import PDFDocument from 'pdfkit';
 import { translations } from './translations';
 import { IBAN } from './iban/iban';
@@ -11,7 +11,7 @@ export class QRBillGenerator {
   private _qr = new QRCodeGenerator();
   private _iban = new IBAN();
   private _reference = new ReferenceValidator();
-  public async generate(params: IQRBill): Promise<Buffer | Blob> {
+  public async generate(params: IQRBill): Promise<Buffer | ArrayBuffer> {
     // create document and pipe stream
     // const doc = new PDFDocument();
     const doc = new PDFDocument({
@@ -67,7 +67,13 @@ export class QRBillGenerator {
     doc
       .fontSize(receiptFontSize)
       .font('Helvetica')
-      .text(params.debtor.address, receiptPos, newPos);
+      .text(
+        params.debtor.type === QRBillAddressType.STRUCTURED
+          ? params.debtor.street + ' ' + params.debtor.buildingNumber
+          : params.debtor.address,
+        receiptPos,
+        newPos,
+      );
     newPos = newPos + receiptFontSize + 1;
     doc
       .fontSize(receiptFontSize)
@@ -99,7 +105,13 @@ export class QRBillGenerator {
     doc
       .fontSize(receiptFontSize)
       .font('Helvetica')
-      .text(params.creditor.address, receiptPos, newPos);
+      .text(
+        params.creditor.type === QRBillAddressType.STRUCTURED
+          ? params.creditor.street + ' ' + params.creditor.buildingNumber
+          : params.creditor.address,
+        receiptPos,
+        newPos,
+      );
     newPos = newPos + receiptFontSize + 1;
     doc
       .fontSize(receiptFontSize)
@@ -188,7 +200,13 @@ export class QRBillGenerator {
     doc
       .fontSize(paymentFontSize)
       .font('Helvetica')
-      .text(params.debtor.address, paymentPartRightPos, newPos);
+      .text(
+        params.debtor.type === QRBillAddressType.STRUCTURED
+          ? params.debtor.street + ' ' + params.debtor.buildingNumber
+          : params.debtor.address,
+        paymentPartRightPos,
+        newPos,
+      );
     newPos = newPos + paymentFontSize + 1;
     doc
       .fontSize(paymentFontSize)
@@ -237,7 +255,13 @@ export class QRBillGenerator {
     doc
       .fontSize(paymentFontSize)
       .font('Helvetica')
-      .text(params.creditor.address, paymentPartRightPos, newPos);
+      .text(
+        params.creditor.type === QRBillAddressType.STRUCTURED
+          ? params.creditor.street + ' ' + params.creditor.buildingNumber
+          : params.creditor.address,
+        paymentPartRightPos,
+        newPos,
+      );
     newPos = newPos + paymentFontSize + 1;
     doc
       .fontSize(paymentFontSize)
@@ -247,13 +271,16 @@ export class QRBillGenerator {
     doc.end();
 
     return new Promise((resolve): void => {
-      stream.on('finish', (): void => {
-        if (isNodeJs) {
-          resolve(stream.toBuffer());
-        } else {
-          resolve(stream.toBlob());
-        }
-      });
+      stream.on(
+        'finish',
+        async (): Promise<void> => {
+          if (isNodeJs) {
+            resolve(stream.toBuffer());
+          } else {
+            resolve(await stream.toArrayBuffer());
+          }
+        },
+      );
     });
   }
 
