@@ -12,23 +12,25 @@ export class QRCodeGenerator {
   private _iban = new IBAN();
   private _reference = new ReferenceValidator();
 
-  public async generate(params: IQRBill): Promise<Blob | Buffer> {
+  public async generate(params: IQRBill): Promise<ArrayBuffer | Buffer> {
     const data = this.generateQRCodeContent(params);
 
     const canvas = await qrcode.toCanvas(this._createCanvas(), data, { margin: 0 });
 
-    // adding logo at center
-    const imgDim = { width: 30, height: 30 }; //logo dimention
+    // adding swiss cross at center
+    const imgDim = { width: 40, height: 40 };
     const context = canvas.getContext('2d');
     const imageObj = this._createImage();
     imageObj.src = swissCorssImage;
+    imageObj.width = imgDim.width;
+    imageObj.height = imgDim.height;
     context.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
 
     if (isNodeJs) {
       return canvas.toBuffer();
     } else {
       /* istanbul ignore next: not tesed with jest */
-      return canvas.toBlob();
+      return await canvas.toBlob().arrayBuffer();
     }
   }
 

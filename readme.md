@@ -20,13 +20,36 @@ npm install @bbit/swiss-qr-bill --save
 ### Usage
 
 ```ts
-import { QRBill } from '@bbit/swiss-qr-bill';
-const qr = new QRBill();
+import { QRBillGenerator, IQRBill, QRBillLanguage } from '@bbit/swiss-qr-bill';
 
-const params = {};
+const defaultData: IQRBill = {
+  account: 'CH2830000011623852950',
+  amount: 1234.55,
+  currency: 'CHF',
+  creditor: {
+    name: 'bbit gmbh',
+    address: 'Rainweg 10',
+    postalCode: '3612',
+    locality: 'Steffisburg',
+    country: 'CH',
+  },
+  reference: '000000000000000012312312316',
+  debtor: {
+    name: 'Test AG',
+    address: 'Musterstrasse 1',
+    postalCode: '3600',
+    locality: 'Thun',
+    country: 'CH',
+  },
+  unstructeredMessage: 'Test message',
+  billInformation: 'Test billing information',
+  language: QRBillLanguage.DE,
+};
 
 // create pdf
-await qr.generate(params);
+// returns a Buffer in Node.js or an ArrayBuffer in browsers
+const qr = new QRBill();
+const buffer = await qr.generate(params);
 ```
 
 ### Specification
@@ -37,6 +60,7 @@ await qr.generate(params);
 
 ## TODOS
 
+- Implement structured address (only unstructered is supported at the moment)
 - IBAN tests
 - Test builded version
 - QR-IBAN & QR reference
