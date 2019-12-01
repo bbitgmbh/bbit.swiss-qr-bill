@@ -13,7 +13,12 @@ export class QRBillGenerator {
   private _reference = new ReferenceValidator();
   public async generate(params: IQRBill): Promise<Buffer | Blob> {
     // create document and pipe stream
-    const doc = new PDFDocument();
+    // const doc = new PDFDocument();
+    const doc = new PDFDocument({
+      layout: 'landscape',
+      size: [300, 595.28],
+      margin: 0,
+    });
     const stream = new CustomWritableStream();
     doc.pipe(stream);
 
@@ -31,11 +36,11 @@ export class QRBillGenerator {
     const paymentFontSize = 10;
 
     // define default positions
-    const topPos = 100;
-    const receiptPos = 20;
+    const topPos = 15;
+    const receiptPos = 15;
     const paymentPartLeftPos = 200;
     const paymentPartRightPos = 360;
-    const amountPos = topPos + 220;
+    const amountPos = topPos + 190;
     let newPos;
 
     // render receipt
@@ -123,17 +128,23 @@ export class QRBillGenerator {
       .font('Helvetica')
       .text(this._parseAmount(params.amount), receiptPos + 40, newPos);
 
+    newPos = amountPos + 30;
+    doc
+      .fontSize(receiptTitleFontSize)
+      .font('Helvetica-Bold')
+      .text(t.acceptancePoint, receiptPos + 40, newPos, { width: 110, align: 'right' });
+
     // render payment part
     newPos = topPos;
     doc
       .moveTo(paymentPartLeftPos - 20, newPos - 20) // set the current point
-      .lineTo(paymentPartLeftPos - 20, newPos + 400)
+      .lineTo(paymentPartLeftPos - 20, newPos + 300)
       .stroke();
     doc
       .fontSize(titleFontSie)
       .font('Helvetica-Bold')
       .text(t.paymentPart, paymentPartLeftPos, newPos);
-    newPos = topPos + titleFontSie * 2;
+    newPos = topPos + 30;
     doc.image(code, paymentPartLeftPos, newPos, { width: 140 });
 
     newPos = amountPos;
@@ -194,6 +205,22 @@ export class QRBillGenerator {
         .fontSize(paymentFontSize)
         .font('Helvetica')
         .text(this._reference.format(params.reference), paymentPartRightPos, newPos, { lineBreak: false });
+    }
+
+    if (params.unstructeredMessage && params.billInformation) {
+      newPos = newPos + (paymentFontSize + 1) * 2;
+      doc
+        .fontSize(paymentTitleFontSize)
+        .font('Helvetica-Bold')
+        .text(t.additionalInfo, paymentPartRightPos, newPos);
+      const message = params.billInformation || params.unstructeredMessage;
+      for (const line of message.split('\n')) {
+        newPos = newPos + paymentFontSize + 1;
+        doc
+          .fontSize(paymentFontSize)
+          .font('Helvetica')
+          .text(line, paymentPartRightPos, newPos);
+      }
     }
 
     newPos = newPos + (paymentFontSize + 1) * 2;
