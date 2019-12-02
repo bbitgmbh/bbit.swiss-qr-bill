@@ -99,8 +99,8 @@ describe('QR test', (): void => {
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(5);
-    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[0]).toBe("Property 'type' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'name' on 'creditor' has to be defined");
     expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'creditor' has to be defined");
     expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'creditor' has to be defined");
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'creditor' has to be defined");
@@ -131,8 +131,8 @@ describe('QR test', (): void => {
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(5);
-    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[0]).toBe("Property 'type' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'name' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
