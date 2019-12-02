@@ -11,7 +11,7 @@ declare global {
   namespace jest {
     // eslint-disable-next-line @typescript-eslint/interface-name-prefix
     interface Matchers<R, T> {
-      toMatchImageSnapshot(): R;
+      toMatchImageSnapshot(options?: { failureThreshold?: number; failureThresholdType?: string }): R;
     }
   }
 }
@@ -21,7 +21,10 @@ describe('QRBill', (): void => {
     const data = await bill.generate(defaultData);
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
-    // TODO test output with https://www.npmjs.com/package/jest-image-snapshot
-    expect(image).toMatchImageSnapshot();
+    // set higher threshold because inline fonts are not loaded and might be slightly different
+    expect(image).toMatchImageSnapshot({
+      failureThreshold: 0.02,
+      failureThresholdType: 'percent',
+    });
   });
 });
