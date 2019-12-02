@@ -1,8 +1,8 @@
-import { ReferenceValidator } from './reference';
+import { Reference } from '../../src/reference/reference';
 
-const validator = new ReferenceValidator();
+const validator = new Reference();
 
-describe('ReferenceValidator', (): void => {
+describe('Reference', (): void => {
   it('isQRRerence should work', (): void => {
     expect(validator.isQRReference('RF000000000000012312312316')).toBeFalsy();
     expect(validator.isQRReference('000000000000000012312312315')).toBeTruthy();
@@ -32,5 +32,9 @@ describe('ReferenceValidator', (): void => {
 
   it('validateReference should fail without to long input', (): void => {
     expect(validator.isReferenceValid('0000000000000000000012312312316')).toBeFalsy();
+  });
+
+  it('format should fail without to long input', (): void => {
+    expect(validator.format('000000000000000012312312316')).toBe('00 00000 00000 00001 23123 12316');
   });
 });

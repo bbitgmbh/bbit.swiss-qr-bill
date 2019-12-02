@@ -1,4 +1,4 @@
-import { IBAN } from './iban';
+import { IBAN } from '../../src/iban/iban';
 import * as _ from 'lodash';
 
 const data = {
@@ -95,6 +95,7 @@ describe('IBAN', (): void => {
     _.mapValues(data, (o): void => {
       expect(iban.isValid(o)).toBeTruthy();
     });
+    expect(iban.isValid(null)).toBeFalsy();
   });
 
   it('electronicFormat should work', (): void => {
@@ -115,6 +116,7 @@ describe('IBAN', (): void => {
 
   it('isValidBBAN should work', (): void => {
     expect(iban.isValidBBAN('CH', '00762011623852957')).toBeTruthy();
+    expect(iban.isValidBBAN(null, null)).toBeFalsy();
   });
 
   it('isQRIBAN should work', (): void => {

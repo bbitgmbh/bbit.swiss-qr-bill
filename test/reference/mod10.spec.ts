@@ -1,4 +1,4 @@
-import { Mod10 } from './mod10';
+import { Mod10 } from '../../src/reference/mod10';
 
 describe('mod10', (): void => {
   it('should return 0', (): void => {

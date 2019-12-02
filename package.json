@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rimraf coverage dist junit.xml",
     "test": "jest",
-    "lint": "eslint \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
     "types": "tsc --emitDeclarationOnly",
     "publish-coverage": "codecov",
     "build": "yarn clean && rollup -c && yarn types"

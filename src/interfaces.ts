@@ -43,3 +43,16 @@ export enum QRBillAddressType {
   UNSTRUCTURED = 'K',
   STRUCTURED = 'S',
 }
+
+export interface ITranslations {
+  paymentPart: string;
+  accountPayableTo: string;
+  reference: string;
+  additionalInfo: string;
+  currency: string;
+  amount: string;
+  receipt: string;
+  acceptancePoint: string;
+  payableBy: string;
+  payableByNameAddr: string;
+}

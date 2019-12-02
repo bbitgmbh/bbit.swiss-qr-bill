@@ -1,7 +1,5 @@
-import { ReferenceValidator } from './reference/reference';
-import { isNodeJs } from './utils';
-import { swissCorssImage } from './swiss-cross';
-import { QRData } from './qr-data';
+import { Reference } from './reference/reference';
+import { isNodeJs, swissCorssImage, QRData } from './utils';
 import { QRBillValidationError } from './errors/validation-error';
 import { IQRBill, QRBillVersion, IQRBillAddress, QRBillAddressType } from './interfaces';
 import { IBAN } from './iban/iban';
@@ -10,7 +8,7 @@ import { Image, Canvas } from 'canvas';
 
 export class QRCodeGenerator {
   private _iban = new IBAN();
-  private _reference = new ReferenceValidator();
+  private _reference = new Reference();
 
   public async generate(params: IQRBill): Promise<ArrayBuffer | Buffer> {
     const data = this.generateQRCodeContent(params);

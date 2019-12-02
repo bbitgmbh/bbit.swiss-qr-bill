@@ -1,37 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IQRBillAddress } from './../dist/types/interfaces.d';
-import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill, QRBillVersion, QRBillLanguage, QRBillCurrency, QRBillAddressType } from './interfaces';
-import { QRCodeGenerator } from './qr';
+import { QRBillValidationError } from '../src/errors/validation-error';
+import { QRBillVersion, QRBillAddressType } from '../src/interfaces';
+import { QRCodeGenerator } from '../src/qr';
 import * as _ from 'lodash';
+import { defaultData } from './data';
 
 const qr = new QRCodeGenerator();
-
-const defaultData: IQRBill = {
-  account: 'CH2830000011623852950',
-  amount: 100.0,
-  currency: QRBillCurrency.CHF,
-  creditor: {
-    type: QRBillAddressType.UNSTRUCTURED,
-    name: 'bbit gmbh',
-    address: 'Rainweg 10',
-    postalCode: '3612',
-    locality: 'Steffisburg',
-    country: 'CH',
-  },
-  reference: '000000000000000012312312316',
-  debtor: {
-    type: QRBillAddressType.UNSTRUCTURED,
-    name: 'Test AG',
-    address: 'Musterstrasse 1',
-    postalCode: '3600',
-    locality: 'Thun',
-    country: 'CH',
-  },
-  unstructeredMessage: 'Test message',
-  billInformation: 'Test billing information',
-  language: QRBillLanguage.DE,
-};
 
 describe('QR test', (): void => {
   it('Usnupported version should fail', (): void => {
@@ -106,6 +80,47 @@ describe('QR test', (): void => {
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'creditor' has to be defined");
   });
 
+  it('Missing structured creditor properties should fail', (): void => {
+    let error: QRBillValidationError;
+    const cloned = _.cloneDeep(defaultData);
+    cloned.creditor = {
+      type: QRBillAddressType.STRUCTURED,
+    } as any;
+    try {
+      qr.generateQRCodeContent(cloned);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).toBeDefined();
+    expect(error.getValidationErrors()).toHaveLength(6);
+    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'postalCode' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[4]).toBe("Property 'locality' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[5]).toBe("Property 'country' on 'creditor' has to be defined");
+  });
+
+  it('Missing unstructured creditor properties should fail', (): void => {
+    let error: QRBillValidationError;
+    const cloned = _.cloneDeep(defaultData);
+    cloned.creditor = {
+      type: QRBillAddressType.UNSTRUCTURED,
+    } as any;
+    try {
+      qr.generateQRCodeContent(cloned);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).toBeDefined();
+    expect(error.getValidationErrors()).toHaveLength(5);
+    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'creditor' has to be defined");
+  });
+
   it('Missing debtor should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
@@ -133,6 +148,47 @@ describe('QR test', (): void => {
     expect(error.getValidationErrors()).toHaveLength(5);
     expect(error.getValidationErrors()[0]).toBe("Property 'type' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[1]).toBe("Property 'name' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
+  });
+
+  it('Missing structred debtor properties should fail', (): void => {
+    let error: QRBillValidationError;
+    const cloned = _.cloneDeep(defaultData);
+    cloned.debtor = {
+      type: QRBillAddressType.STRUCTURED,
+    } as any;
+    try {
+      qr.generateQRCodeContent(cloned);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).toBeDefined();
+    expect(error.getValidationErrors()).toHaveLength(6);
+    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'postalCode' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[4]).toBe("Property 'locality' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[5]).toBe("Property 'country' on 'debtor' has to be defined");
+  });
+
+  it('Missing unstructred debtor properties should fail', (): void => {
+    let error: QRBillValidationError;
+    const cloned = _.cloneDeep(defaultData);
+    cloned.debtor = {
+      type: QRBillAddressType.UNSTRUCTURED,
+    } as any;
+    try {
+      qr.generateQRCodeContent(cloned);
+    } catch (err) {
+      error = err;
+    }
+    expect(error).toBeDefined();
+    expect(error.getValidationErrors()).toHaveLength(5);
+    expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'debtor' has to be defined");
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
@@ -198,6 +254,21 @@ describe('QR test', (): void => {
     const data = qr.generateQRCodeContent(defaultData);
     expect(data).toBeDefined();
     expect(data).toMatchSnapshot();
+
+    const switchedAddresses = _.cloneDeep(defaultData);
+    const save = switchedAddresses.debtor;
+    switchedAddresses.debtor = defaultData.creditor;
+    switchedAddresses.creditor = save;
+    const data2 = qr.generateQRCodeContent(switchedAddresses);
+    expect(data2).toBeDefined();
+    expect(data2).toMatchSnapshot();
+
+    const withoutMessage = _.cloneDeep(defaultData);
+    delete withoutMessage.unstructeredMessage;
+    delete withoutMessage.billInformation;
+    const data3 = qr.generateQRCodeContent(withoutMessage);
+    expect(data3).toBeDefined();
+    expect(data3).toMatchSnapshot();
   });
 
   it('generate should work', async (): Promise<void> => {

@@ -1,5 +1,5 @@
 import { Mod10 } from './mod10';
-export class ReferenceValidator {
+export class Reference {
   public isReferenceValid(reference: string): boolean {
     if (!reference || reference.length > 25) {
       return false;
