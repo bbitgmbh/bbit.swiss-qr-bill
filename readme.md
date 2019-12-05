@@ -66,7 +66,7 @@ The library has currently a size of ~1.2mb since everything needed is bundled wi
 
 ### `fs`
 
-In node as well as in the browser a virtual file system is used to allow compatibilty, this is why there are no `saveToFile` functions are implemented - but since you are here we are sure that you should totally be able to do that on your own in node and do whatever you want with the output in a browser! :)
+In node as well as in the browser a virtual file system is used to allow compatibilty, this is why there are no `saveToFile` functions and stuff like this implemented - but since you are here we are sure that you should totally be able to do that on your own in node and do whatever you want with the output in a browser! :)
 
 ### Fonts
 
