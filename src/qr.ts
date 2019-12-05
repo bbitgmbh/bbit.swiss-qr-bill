@@ -28,7 +28,14 @@ export class QRCodeGenerator {
       return canvas.toBuffer();
     } else {
       /* istanbul ignore next: not tesed with jest */
-      return await canvas.toBlob().arrayBuffer();
+      return new Promise((resolve): void => {
+        canvas.toBlob(
+          async (blob): Promise<void> => {
+            const buffer = await blob.arrayBuffer();
+            resolve(buffer);
+          },
+        );
+      });
     }
   }
 

@@ -1,3 +1,4 @@
+import { isJest } from './utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Reference } from './reference/reference';
 import { QRCodeGenerator } from './qr';
@@ -5,6 +6,9 @@ import { isNodeJs, CustomWritableStream, translations } from './utils';
 import { IQRBill, QRBillAddressType, ITranslations } from './interfaces';
 import PDFDocument from 'pdfkit';
 import { IBAN } from './iban/iban';
+import * as fs from 'fs';
+import Helvetica from 'pdfkit/js/data/Helvetica.afm';
+import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm';
 
 interface IPDFOptions {
   titleFontSize: number;
@@ -24,7 +28,18 @@ export class QRBillGenerator {
   private _iban = new IBAN();
   private _reference = new Reference();
   private _t: ITranslations;
-  public async generate(params: IQRBill): Promise<Buffer | ArrayBuffer> {
+  public constructor() {
+    if (!isJest) {
+      fs.writeFileSync('data/Helvetica.afm', Helvetica);
+      fs.writeFileSync('data/Helvetica-Bold.afm', HelveticaBold);
+    }
+
+    // const font = fs.readFileSync('data/Helvetica.afm');
+    // console.log('arsch', 'load font');
+    // console.log('arsch', font);
+  }
+
+  public async generate(params: IQRBill): Promise<Buffer | Blob> {
     // create document and pipe stream
     const doc = new PDFDocument({
       layout: 'landscape',
@@ -70,7 +85,7 @@ export class QRBillGenerator {
           if (isNodeJs) {
             resolve(stream.toBuffer());
           } else {
-            resolve(await stream.toArrayBuffer());
+            resolve(stream.toBlob());
           }
         },
       );

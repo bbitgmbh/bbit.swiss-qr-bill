@@ -1,8 +1,8 @@
 import * as PDFJS from 'pdfjs-dist';
 import { createCanvas } from 'canvas';
-import * as fs from 'fs';
 
 class NodeCanvasFactory {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public create(width, height): any {
     // assert(width > 0 && height > 0, 'Invalid canvas size');
     const canvas = createCanvas(width, height);

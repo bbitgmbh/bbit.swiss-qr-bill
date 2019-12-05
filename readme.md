@@ -47,7 +47,7 @@ const defaultData: IQRBill = {
 };
 
 // create pdf
-// returns a Buffer in Node.js or an ArrayBuffer in browsers
+// returns a Buffer in Node.js or a Blob in browsers
 const qr = new QRBill();
 const buffer = await qr.generate(params);
 ```
@@ -58,13 +58,23 @@ const buffer = await qr.generate(params);
 
 [Validation](https://www.swiss-qr-invoice.org/validator/?lang=de)
 
+## Informations
+
+### Size
+
+The library has currently a size of ~1.2mb since everything needed is bundled with webpack for the browser usage (including the `node-canvas` stuff which is not used in the browser). It would be possible to split the generation to a node and esm build, but for us this is not an issue and we don't plan to make any changes at the moment ;)
+
+### `fs`
+
+In node as well as in the browser a virtual file system is used to allow compatibilty, this is why there are no `saveToFile` functions are implemented - but since you are here we are sure that you should totally be able to do that on your own in node and do whatever you want with the output in a browser! :)
+
+### Fonts
+
+At the moment everything is generated with `Helvetica`. You don't have a lot of options because of the specification and we hate `Arial` - so...
+
 ## TODOS
 
-- IBAN tests
-- Test builded version
-- QR-IBAN & QR reference
+- Optimize IBAN tests
+- Reference (ISO whateverItIsICanTRememberATM)
   - Implement validation
-- Reference
-  - Implement validation
-- QR Tests
 - GitHub Acion for release

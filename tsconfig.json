@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "declaration": true,
     "declarationDir": "./dist/types",
     "target": "es6",
@@ -11,8 +12,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "experimentalDecorators": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
   },
-  "files": ["src/index.ts"],
+  "include": ["src/**/*"],
   "exclude": ["**/*.spec.ts"]
 }

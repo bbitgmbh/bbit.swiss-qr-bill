@@ -13,4 +13,8 @@ module.exports = {
   // },
   reporters: ['default', 'jest-junit'],
   collectCoverage: true,
+  moduleNameMapper: {
+    'pdfkit/js/data/Helvetica.afm': '<rootDir>/test/__mocks__/helvetica.ts',
+    'pdfkit/js/data/Helvetica-Bold.afm': '<rootDir>/test/__mocks__/helvetica-bold.ts',
+  },
 };
