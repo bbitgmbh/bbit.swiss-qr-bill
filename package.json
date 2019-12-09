@@ -20,11 +20,11 @@
     "readme.md"
   ],
   "devDependencies": {
-    "@babel/core": "7.7.4",
+    "@babel/core": "7.7.5",
     "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/plugin-proposal-object-rest-spread": "7.7.4",
     "@babel/plugin-proposal-optional-catch-binding": "7.7.4",
-    "@babel/plugin-transform-modules-commonjs": "7.7.4",
+    "@babel/plugin-transform-modules-commonjs": "7.7.5",
     "@babel/preset-typescript": "7.7.4",
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.149",
@@ -53,7 +53,7 @@
     "raw-loader": "^4.0.0",
     "rimraf": "^3.0.0",
     "transform-loader": "^0.2.4",
-    "typescript": "^3.7.2",
+    "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2"
