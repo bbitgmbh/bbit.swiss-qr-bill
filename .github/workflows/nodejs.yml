@@ -23,6 +23,10 @@ jobs:
           yarn test
           yarn publish-coverage
           yarn build
+      - name: yarn release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" >> .npmrc
+          yarn release
         env:
-          CI: true
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

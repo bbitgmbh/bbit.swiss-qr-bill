@@ -1,6 +1,6 @@
 {
   "name": "@bbit/swiss-qr-bill",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "dist/swiss-qr-bill.js",
   "types": "dist/types/index.d.ts",
   "repository": "git@github.com:bbit-cloud/swiss-qr-bill.git",
