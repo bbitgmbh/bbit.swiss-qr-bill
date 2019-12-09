@@ -17,7 +17,8 @@
     "bundle:browser": "webpack --config webpack.config.js",
     "bundle": "run-p bundle:*",
     "build": "run-s clean bundle types",
-    "yalc": "yarn build && yalc push"
+    "yalc": "yarn build && yalc push",
+    "postversion": "git push && git push --tags"
   },
   "files": [
     "dist/**/*",
