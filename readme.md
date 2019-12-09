@@ -50,14 +50,6 @@ const qr = new QRBill();
 const bufferOrBlob = await qr.generate(params);
 ```
 
-## TODOS
-
-- Generalize build 
-  - Both should be bundled with rollup, but until now I was not able to get things working for the web build ;)
-- Optimize IBAN tests
-- Reference (ISO whateverItIsICanTRememberATM)
-  - Implement validation
-
 
 ## Specification
 
