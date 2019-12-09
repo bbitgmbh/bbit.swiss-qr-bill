@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-// const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: 'production',
   entry: [path.resolve('./src/index.ts')],
   devtool: 'sourcemap',
+  target: 'web',
   output: {
-    path: path.resolve('./dist'),
-    filename: 'swiss-qr-bill.js',
+    path: path.resolve('./dist/es'),
+    filename: 'index.js',
     library: 'swiss-qr-bill',
     libraryTarget: 'umd',
     umdNamedDefine: true,

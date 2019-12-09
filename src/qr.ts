@@ -4,7 +4,7 @@ import { QRBillValidationError } from './errors/validation-error';
 import { IQRBill, QRBillVersion, IQRBillAddress, QRBillAddressType } from './interfaces';
 import { IBAN } from './iban/iban';
 import * as qrcode from 'qrcode';
-import { Image, Canvas } from 'canvas';
+import { Image, createCanvas, Canvas } from 'canvas';
 
 export class QRCodeGenerator {
   private _iban = new IBAN();
@@ -191,8 +191,7 @@ export class QRCodeGenerator {
   private _createCanvas(): Canvas | HTMLCanvasElement {
     if (isNodeJs) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const Canvas = require('canvas');
-      return Canvas.createCanvas(500, 500);
+      return createCanvas(500, 500);
     } else {
       /* istanbul ignore next: not tesed with jest */
       return document.createElement('canvas');
@@ -202,8 +201,7 @@ export class QRCodeGenerator {
   private _createImage(): Image | HTMLImageElement {
     if (isNodeJs) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const Canvas = require('canvas');
-      return new Canvas.Image();
+      return new Image();
     } else {
       /* istanbul ignore next: not tesed with jest */
       return document.createElement('img');

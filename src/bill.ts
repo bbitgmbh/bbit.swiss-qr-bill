@@ -1,4 +1,3 @@
-import { isJest } from './utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Reference } from './reference/reference';
 import { QRCodeGenerator } from './qr';
@@ -29,14 +28,10 @@ export class QRBillGenerator {
   private _reference = new Reference();
   private _t: ITranslations;
   public constructor() {
-    if (!isJest) {
+    if (!isNodeJs) {
       fs.writeFileSync('data/Helvetica.afm', Helvetica);
       fs.writeFileSync('data/Helvetica-Bold.afm', HelveticaBold);
     }
-
-    // const font = fs.readFileSync('data/Helvetica.afm');
-    // console.log('arsch', 'load font');
-    // console.log('arsch', font);
   }
 
   public async generate(params: IQRBill): Promise<Buffer | Blob> {
@@ -47,7 +42,7 @@ export class QRBillGenerator {
       margin: 0,
     });
     const stream = new CustomWritableStream();
-    doc.pipe(stream);
+    doc.pipe(stream as any);
 
     // create qr code
     const code = await this._qr.generate(params);
