@@ -52,22 +52,17 @@ const qr = new QRBill();
 const bufferOrBlob = await qr.generate(params);
 ```
 
-## Specification
-
-[Swiss Payment Standards 2019](https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf)
-
-[Validation](https://www.swiss-qr-invoice.org/validator/?lang=de)
-
-## Informations
-
-### Fonts
-
-At the moment everything is generated with `Helvetica`. You don't have a lot of options because of the specification and we hate `Arial` - so...
-
-### TODOS
+## TODOS
 
 - Generalize build 
   - Both should be bundled with rollup, but until now I was not able to get things working for the web build ;)
 - Optimize IBAN tests
 - Reference (ISO whateverItIsICanTRememberATM)
   - Implement validation
+
+
+## Specification
+
+[Swiss Payment Standards 2019](https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf)
+
+[Validation](https://www.swiss-qr-invoice.org/validator/?lang=de)
