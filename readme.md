@@ -1,8 +1,6 @@
 [![Actions Status](https://github.com/bbit-cloud/swiss-qr-bill/workflows/Node%20CI/badge.svg)](https://github.com//bbit-cloud/swiss-qr-bill/actions)
 [![codecov](https://codecov.io/gh/bbit-cloud/swiss-qr-bill/branch/master/graph/badge.svg)](https://codecov.io/gh/bbit-cloud/swiss-qr-bill)
 
-> WORK IN PROGRESS - NOT READY TO USE
-
 # Swiss QR bill for Node.js and browsers
 
 ## Installation
