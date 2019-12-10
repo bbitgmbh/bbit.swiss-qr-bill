@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "canvas": "^2.6.0",
-    "pdfkit": "^0.10.0",
+    "pdfkit": "^0.11.0",
     "qrcode": "^1.4.4"
   },
   "config": {
