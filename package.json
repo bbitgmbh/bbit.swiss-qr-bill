@@ -69,7 +69,7 @@
     "terser-webpack-plugin": "^1.4.2",
     "transform-loader": "^0.2.4",
     "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
+    "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2",
     "webpack-node-externals": "^1.7.2"
