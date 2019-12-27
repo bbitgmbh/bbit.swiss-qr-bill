@@ -555,10 +555,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.21.tgz#aa44a6363291c7037111c47e4661ad210aded23f"
   integrity sha512-8sRGhbpU+ck1n0PGAUgVrWrWdjSW2aqNeyC15W88GRsMpSwzv6RJGlLhE7s2RhVSOdyDmxbqlWSeThq4/7xqlA==
 
-"@types/pdfkit@^0.10.4":
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.10.4.tgz#959fa4bf677a8b406bfc2806c087df16de8f29c3"
-  integrity sha512-diz1hzKaV1scFXqvZboRPiEiT90mINNOQpOffCvhj1l4s6FvG5wRpRSw9MKN+eOwJNtiE8om7SgRPH9krML5tA==
+"@types/pdfkit@^0.10.5":
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.10.5.tgz#2dae29e4b0b162a34ffa7e259faf9b2ea141b77d"
+  integrity sha512-VBv1XDVge3mfeY6MsiyFLm9bPCDTWhxR0+yV3GeiSyjGY3CkbSQHOOdYfKVr834B2grALC763PAM6TreTM5vJA==
   dependencies:
     "@types/node" "*"
 
