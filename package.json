@@ -57,7 +57,7 @@
     "pdfjs-dist": "^2.2.228",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
-    "rimraf": "^3.0.0",
+    "rimraf": "^3.0.1",
     "rollup": "^1.29.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-babel": "^4.3.3",
