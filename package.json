@@ -42,7 +42,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-ts-nameof": "4.2.0",
     "brfs": "^2.0.2",
-    "codecov": "^3.6.1",
+    "codecov": "^3.6.5",
     "cz-conventional-changelog": "3.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
