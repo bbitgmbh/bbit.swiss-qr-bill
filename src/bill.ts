@@ -91,10 +91,7 @@ export class QRBillGenerator {
   private _renderReceipt(doc: any, params: IQRBill, options: IPDFOptions): void {
     // render receipt
     let newY = options.topX;
-    doc
-      .fontSize(options.titleFontSize)
-      .font('Helvetica-Bold')
-      .text(this._t.receipt, options.receiptX, newY);
+    doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.receipt, options.receiptX, newY);
 
     newY = options.topX + options.titleFontSize * 2;
 
@@ -124,10 +121,7 @@ export class QRBillGenerator {
       .stroke();
 
     // titile
-    doc
-      .fontSize(options.titleFontSize)
-      .font('Helvetica-Bold')
-      .text(this._t.paymentPart, options.paymentPartLeftX, newY);
+    doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.paymentPart, options.paymentPartLeftX, newY);
 
     // qr code
     newY = options.topX + 30;
@@ -149,38 +143,23 @@ export class QRBillGenerator {
 
     if (params.unstructeredMessage && params.billInformation) {
       newY = newY + (options.paymentFontSize + 1) * 2;
-      doc
-        .fontSize(options.paymentTitleFontSize)
-        .font('Helvetica-Bold')
-        .text(this._t.additionalInfo, options.paymentPartRightX, newY);
+      doc.fontSize(options.paymentTitleFontSize).font('Helvetica-Bold').text(this._t.additionalInfo, options.paymentPartRightX, newY);
       const message = params.billInformation || params.unstructeredMessage;
       for (const line of message.split('\n')) {
         newY = newY + options.paymentFontSize + 1;
-        doc
-          .fontSize(options.paymentFontSize)
-          .font('Helvetica')
-          .text(line, options.paymentPartRightX, newY);
+        doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
       }
     }
   }
 
   private _renderPayableTo(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
-    doc
-      .fontSize(titleFontSize)
-      .font('Helvetica-Bold')
-      .text(this._t.accountPayableTo, x, y);
+    doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.accountPayableTo, x, y);
 
     y = y + fontSize + 1;
-    doc
-      .fontSize(fontSize)
-      .font('Helvetica')
-      .text(this._iban.printFormat(params.account), x, y);
+    doc.fontSize(fontSize).font('Helvetica').text(this._iban.printFormat(params.account), x, y);
 
     y = y + fontSize + 1;
-    doc
-      .fontSize(fontSize)
-      .font('Helvetica')
-      .text(params.debtor.name, x, y);
+    doc.fontSize(fontSize).font('Helvetica').text(params.debtor.name, x, y);
 
     y = y + fontSize + 1;
     doc
@@ -206,32 +185,20 @@ export class QRBillGenerator {
   private _renderReference(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
     if (params.reference) {
       y = y + (fontSize + 1) * 2;
-      doc
-        .fontSize(titleFontSize)
-        .font('Helvetica-Bold')
-        .text(this._t.reference, x, y);
+      doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.reference, x, y);
 
       y = y + fontSize + 1;
-      doc
-        .fontSize(fontSize)
-        .font('Helvetica')
-        .text(this._reference.format(params.reference), x, y);
+      doc.fontSize(fontSize).font('Helvetica').text(this._reference.format(params.reference), x, y);
     }
     return y;
   }
 
   private _renderPayableBy(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
     y = y + (fontSize + 1) * 2;
-    doc
-      .fontSize(titleFontSize)
-      .font('Helvetica-Bold')
-      .text(this._t.payableBy, x, y);
+    doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.payableBy, x, y);
 
     y = y + fontSize + 1;
-    doc
-      .fontSize(fontSize)
-      .font('Helvetica')
-      .text(params.creditor.name, x, y);
+    doc.fontSize(fontSize).font('Helvetica').text(params.creditor.name, x, y);
 
     y = y + fontSize + 1;
     doc
@@ -255,10 +222,7 @@ export class QRBillGenerator {
   }
 
   private _renderAmount(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
-    doc
-      .fontSize(titleFontSize)
-      .font('Helvetica-Bold')
-      .text(this._t.currency, x, y);
+    doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.currency, x, y);
 
     doc
       .fontSize(fontSize)

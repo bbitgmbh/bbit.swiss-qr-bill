@@ -141,10 +141,7 @@ export class IBANSpecification {
    * @returns the BBAN
    */
   public toBBAN(iban: string, separator: string): string {
-    return this._regex()
-      .exec(iban.slice(4))
-      .slice(1)
-      .join(separator);
+    return this._regex().exec(iban.slice(4)).slice(1).join(separator);
   }
 
   /**
