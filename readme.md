@@ -1,5 +1,6 @@
 # Swiss QR bill for Node.js and browsers
 
+![Main](https://github.com/bbitgmbh/bbit.swiss-qr-bill/workflows/Main/badge.svg)
 [![codecov](https://codecov.io/gh/bbitgmbh/bbit.swiss-qr-bill/branch/master/graph/badge.svg)](https://codecov.io/gh/bbitgmbh/bbit.swiss-qr-bill)
 
 ## Installation
