@@ -18,7 +18,7 @@ npm install @bbitgmbh/bbit.swiss-qr-bill --save
 ## Usage
 
 ```ts
-import { QRBillGenerator, IQRBill, QRBillLanguage } from '@bbit/swiss-qr-bill';
+import { QRBillGenerator, IQRBill, QRBillLanguage } from '@bbitgmbh/bbit.swiss-qr-bill';
 
 const defaultData: IQRBill = {
   account: 'CH2830000011623852950',
