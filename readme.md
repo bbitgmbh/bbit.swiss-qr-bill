@@ -1,18 +1,17 @@
-[![Actions Status](https://github.com/bbit-cloud/swiss-qr-bill/workflows/Node%20CI/badge.svg)](https://github.com//bbit-cloud/swiss-qr-bill/actions)
-[![codecov](https://codecov.io/gh/bbit-cloud/swiss-qr-bill/branch/master/graph/badge.svg)](https://codecov.io/gh/bbit-cloud/swiss-qr-bill)
-
 # Swiss QR bill for Node.js and browsers
+
+[![codecov](https://codecov.io/gh/bbitgmbh/bbit.swiss-qr-bill/branch/master/graph/badge.svg)](https://codecov.io/gh/bbitgmbh/bbit.swiss-qr-bill)
 
 ## Installation
 
 ```bash
-yarn add @bbit/swiss-qr-bill
+yarn add @bbitgmbh/bbit.swiss-qr-bill
 ```
 
 or
 
 ```bash
-npm install @bbit/swiss-qr-bill --save
+npm install @bbitgmbh/bbit.swiss-qr-bill --save
 ```
 
 ## Usage
@@ -49,7 +48,6 @@ const defaultData: IQRBill = {
 const qr = new QRBill();
 const bufferOrBlob = await qr.generate(params);
 ```
-
 
 ## Specification
 

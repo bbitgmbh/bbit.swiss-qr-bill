@@ -1,0 +1,58 @@
+name: Main
+
+on:
+  push:
+    branches: [master]
+    tags:
+      - v*
+  pull_request:
+    branches: [master]
+
+env:
+  NODE_VERSION: 12.x
+
+jobs:
+  testBuildAndRelease:
+    name: 'Test, build and release'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://npm.pkg.github.com
+          always-auth: 'true'
+
+      - name: Install dependencies
+        run: yarn
+        env:
+          NODE_AUTH_TOKEN: ${{ steps.azureKeyVault.outputs.gitHubPackages }}
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test
+        env:
+          CI: 'true'
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/cobertura-coverage.xml
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish package
+        if: contains(github.ref, 'refs/tags/v')
+        run: |
+          cd dist
+          yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

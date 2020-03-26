@@ -11,10 +11,10 @@ module.exports = {
   //     statements: 100,
   //   },
   // },
-  reporters: ['default', 'jest-junit'],
+  reporters: ['default'],
   collectCoverage: true,
   moduleNameMapper: {
-    'pdfkit/js/data/Helvetica.afm': '<rootDir>/test/__mocks__/helvetica.ts',
-    'pdfkit/js/data/Helvetica-Bold.afm': '<rootDir>/test/__mocks__/helvetica-bold.ts',
+    'pdfkit/js/data/Helvetica.afm': '<rootDir>/src/__mocks__/helvetica.ts',
+    'pdfkit/js/data/Helvetica-Bold.afm': '<rootDir>/src/__mocks__/helvetica-bold.ts',
   },
 };

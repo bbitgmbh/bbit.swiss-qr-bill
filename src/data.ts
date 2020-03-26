@@ -1,4 +1,4 @@
-import { IQRBill, QRBillCurrency, QRBillAddressType, QRBillLanguage } from './../src/interfaces';
+import { IQRBill, QRBillCurrency, QRBillAddressType, QRBillLanguage } from './interfaces';
 
 export const defaultData: IQRBill = {
   account: 'CH2830000011623852950',

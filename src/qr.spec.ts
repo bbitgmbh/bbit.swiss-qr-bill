@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QRBillValidationError } from '../src/errors/validation-error';
-import { QRBillVersion, QRBillAddressType } from '../src/interfaces';
-import { QRCodeGenerator } from '../src/qr';
+import { QRBillValidationError } from './errors/validation-error';
+import { QRBillVersion, QRBillAddressType } from './interfaces';
+import { QRCodeGenerator } from './qr';
 import * as _ from 'lodash';
 import { defaultData } from './data';
 

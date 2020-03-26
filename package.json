@@ -1,37 +1,40 @@
 {
-  "name": "@bbit/swiss-qr-bill",
+  "name": "@bbitgmbh/bbit.swiss-qr-bill",
   "version": "0.1.2",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/types/index.d.ts",
-  "repository": "git@github.com:bbit-cloud/swiss-qr-bill.git",
   "author": "Yannik Eicher <ache@bbit.io>",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
     "clean": "rimraf coverage dist junit.xml",
     "test": "jest",
-    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
     "types": "tsc --emitDeclarationOnly",
-    "publish-coverage": "codecov",
     "bundle:node": "rollup -c rollup.config.js",
     "bundle:browser": "webpack --config webpack.config.js",
     "bundle": "run-p bundle:*",
     "build": "run-s clean bundle types",
     "yalc": "yarn build && yalc push",
-    "postversion": "git push && git push --tags"
+    "bbitprecommit": "run-p lint test build"
   },
   "files": [
     "dist/**/*",
     "readme.md"
   ],
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "pdfkit": "^0.11.0",
+    "qrcode": "^1.4.4"
+  },
   "devDependencies": {
     "@babel/core": "7.8.3",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "7.8.3",
     "@babel/plugin-proposal-optional-catch-binding": "7.8.3",
     "@babel/plugin-transform-modules-commonjs": "7.7.5",
-    "@types/jest": "^24.0.25",
     "@babel/preset-typescript": "7.7.7",
+    "@types/jest": "^24.0.25",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.5.0",
     "@types/pdfkit": "^0.10.5",
@@ -73,15 +76,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2",
     "webpack-node-externals": "^1.7.2"
-  },
-  "dependencies": {
-    "canvas": "^2.6.1",
-    "pdfkit": "^0.11.0",
-    "qrcode": "^1.4.4"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

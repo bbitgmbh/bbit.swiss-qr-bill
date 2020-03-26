@@ -1,5 +1,5 @@
-import { pdfBufferToImage } from './utils';
-import { QRBillGenerator } from './../src/bill';
+import { pdfBufferToImage } from './test-utils';
+import { QRBillGenerator } from './bill';
 import { defaultData } from './data';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 expect.extend({ toMatchImageSnapshot });
