@@ -27,6 +27,18 @@ jobs:
           registry-url: https://npm.pkg.github.com
           always-auth: 'true'
 
+      - name: Get yarn cache directory path
+        id: yarnCacheDirPath
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+        
+      - name: Yarn cache
+        uses: actions/cache@v1
+        id: yarnCache
+        with:
+          path: ${{ steps.yarnCacheDirPath.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn
         env:
