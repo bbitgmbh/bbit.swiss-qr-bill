@@ -150,6 +150,7 @@ export class QRBillGenerator {
         doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
       }
     }
+    newY = this._renderPayableBy(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
   }
 
   private _renderPayableTo(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
