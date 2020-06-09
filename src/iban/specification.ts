@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 export class IBANSpecification {
   public countryCode: string;
   public length: number;
