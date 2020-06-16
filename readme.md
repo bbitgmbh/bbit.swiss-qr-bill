@@ -12,7 +12,7 @@ yarn add @bbitgmbh/bbit.swiss-qr-bill
 or
 
 ```bash
-npm install @bbitgmbh/bbit.swiss-qr-bill --save
+npm install @bbit/swiss-qr-bill --save
 ```
 
 ## Usage
