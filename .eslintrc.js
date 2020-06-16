@@ -30,11 +30,13 @@ module.exports = {
     },
   ],
   rules: {
-    '@typescript-eslint/interface-name-prefix': [1, 'always'],
     '@typescript-eslint/explicit-member-accessibility': ['error'],
-    '@typescript-eslint/explicit-function-return-type': ['error', {
-      "allowTypedFunctionExpressions": false
-    }],
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      {
+        allowTypedFunctionExpressions: false,
+      },
+    ],
     quotes: [2, 'single', 'avoid-escape'],
   },
 };

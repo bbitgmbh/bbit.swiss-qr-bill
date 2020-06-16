@@ -9,7 +9,6 @@ const bill = new QRBillGenerator();
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
-    // eslint-disable-next-line @typescript-eslint/interface-name-prefix
     interface Matchers<R, T> {
       toMatchImageSnapshot(options?: { failureThreshold?: number; failureThresholdType?: string }): R;
     }

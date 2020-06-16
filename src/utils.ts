@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as stream from 'stream';
 import { QRBillLanguage, ITranslations } from './interfaces';
 
