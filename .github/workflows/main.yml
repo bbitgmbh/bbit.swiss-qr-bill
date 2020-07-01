@@ -97,9 +97,16 @@ jobs:
           name: artifacts
           path: ./dist
 
-      - name: Publish package
+      - name: Publish package to GitHub packages
         run: |
           cd dist
           yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package to npm
+        run: |
+          cd dist
+          yarn publish --access public --registry https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
