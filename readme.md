@@ -5,11 +5,15 @@
 
 ## Installation
 
+### Requirements
+
+### yarn
+
 ```bash
 yarn add @bbitgmbh/bbit.swiss-qr-bill
 ```
 
-or
+### npm
 
 ```bash
 npm install @bbit/swiss-qr-bill --save

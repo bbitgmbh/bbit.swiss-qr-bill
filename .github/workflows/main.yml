@@ -8,7 +8,6 @@ on:
   pull_request:
     branches: [master]
 
-
 jobs:
   testAndBuild:
     name: 'Test and build'
@@ -70,8 +69,8 @@ jobs:
           name: artifacts
           path: ./dist
 
-  release:
-    name: 'Release'
+  releaseGitHub:
+    name: 'Release to GitHub Packages'
     runs-on: ubuntu-latest
     needs: testAndBuild
     if: contains(github.ref, 'refs/tags/v')
@@ -97,16 +96,37 @@ jobs:
           name: artifacts
           path: ./dist
 
-      - name: Publish package to GitHub packages
-        run: |
-          cd dist
-          yarn publish --access public
+      - name: Publish package on GitHub Packages
+        run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish package to npm
-        run: |
-          cd dist
-          yarn publish --access public --registry https://registry.npmjs.org
+  releaseNpm:
+    name: 'Release to npm'
+    runs-on: ubuntu-latest
+    needs: testAndBuild
+    if: contains(github.ref, 'refs/tags/v')
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: artifacts
+          path: ./dist
+
+      - name: Publish package on GitHub Packages
+        run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
