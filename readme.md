@@ -5,8 +5,6 @@
 
 ## Installation
 
-### Requirements
-
 ### yarn
 
 ```bash
