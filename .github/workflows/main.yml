@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: yarn
         env:
-          NODE_AUTH_TOKEN: ${{ steps.azureKeyVault.outputs.gitHubPackages }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Lint
         run: yarn lint
@@ -99,7 +99,7 @@ jobs:
       - name: Publish package
         run: yarn publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
   publishNpm:
     name: 'Publish to npm'
