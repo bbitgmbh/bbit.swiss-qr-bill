@@ -14,19 +14,20 @@ yarn add @bbitgmbh/bbit.swiss-qr-bill
 ### npm
 
 ```bash
-npm install @bbit/swiss-qr-bill --save
+npm install @bbitgmbh/bbit.swiss-qr-bill --save
 ```
 
 ## Usage
 
 ```ts
-import { QRBillGenerator, IQRBill, QRBillLanguage } from '@bbitgmbh/bbit.swiss-qr-bill';
+import { QRBillGenerator, IQRBill, QRBillLanguage,QRBillAddressType } from '@bbitgmbh/bbit.swiss-qr-bill';
 
 const defaultData: IQRBill = {
   account: 'CH2830000011623852950',
   amount: 1234.55,
   currency: 'CHF',
   creditor: {
+    type: QRBillAddressType.UNSTRUCTURED,
     name: 'bbit gmbh',
     address: 'Rainweg 10',
     postalCode: '3612',
@@ -35,6 +36,7 @@ const defaultData: IQRBill = {
   },
   reference: '000000000000000012312312316',
   debtor: {
+    type: QRBillAddressType.UNSTRUCTURED,
     name: 'Test AG',
     address: 'Musterstrasse 1',
     postalCode: '3600',
@@ -48,8 +50,8 @@ const defaultData: IQRBill = {
 
 // create pdf
 // returns a Buffer in Node.js or a Blob in browsers
-const qr = new QRBill();
-const bufferOrBlob = await qr.generate(params);
+const qr = new QRBillGenerator();
+const bufferOrBlob = await qr.generate(defaultData);
 ```
 
 ## Specification
