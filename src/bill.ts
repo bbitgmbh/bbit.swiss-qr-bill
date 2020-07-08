@@ -160,16 +160,16 @@ export class QRBillGenerator {
     doc.fontSize(fontSize).font('Helvetica').text(this._iban.printFormat(params.account), x, y);
 
     y = y + fontSize + 1;
-    doc.fontSize(fontSize).font('Helvetica').text(params.debtor.name, x, y);
+    doc.fontSize(fontSize).font('Helvetica').text(params.creditor.name, x, y);
 
     y = y + fontSize + 1;
     doc
       .fontSize(fontSize)
       .font('Helvetica')
       .text(
-        params.debtor.type === QRBillAddressType.STRUCTURED
-          ? params.debtor.street + ' ' + params.debtor.buildingNumber
-          : params.debtor.address,
+        params.creditor.type === QRBillAddressType.STRUCTURED
+          ? params.creditor.street + ' ' + params.creditor.buildingNumber
+          : params.creditor.address,
         x,
         y,
       );
@@ -178,7 +178,7 @@ export class QRBillGenerator {
     doc
       .fontSize(fontSize)
       .font('Helvetica')
-      .text(params.debtor.postalCode + ' ' + params.debtor.locality, x, y);
+      .text(params.creditor.postalCode + ' ' + params.creditor.locality, x, y);
 
     return y;
   }
@@ -199,16 +199,16 @@ export class QRBillGenerator {
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.payableBy, x, y);
 
     y = y + fontSize + 1;
-    doc.fontSize(fontSize).font('Helvetica').text(params.creditor.name, x, y);
+    doc.fontSize(fontSize).font('Helvetica').text(params.debtor.name, x, y);
 
     y = y + fontSize + 1;
     doc
       .fontSize(fontSize)
       .font('Helvetica')
       .text(
-        params.creditor.type === QRBillAddressType.STRUCTURED
-          ? params.creditor.street + ' ' + params.creditor.buildingNumber
-          : params.creditor.address,
+        params.debtor.type === QRBillAddressType.STRUCTURED
+          ? params.debtor.street + ' ' + params.debtor.buildingNumber
+          : params.debtor.address,
         x,
         y,
       );
@@ -217,7 +217,7 @@ export class QRBillGenerator {
     doc
       .fontSize(fontSize)
       .font('Helvetica')
-      .text(params.creditor.postalCode + ' ' + params.creditor.locality, x, y);
+      .text(params.debtor.postalCode + ' ' + params.debtor.locality, x, y);
 
     return y;
   }
