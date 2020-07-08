@@ -14,7 +14,7 @@ yarn add @bbitgmbh/bbit.swiss-qr-bill
 ### npm
 
 ```bash
-npm install @bbit/swiss-qr-bill --save
+npm install @bbitgmbh/bbit.swiss-qr-bill --save
 ```
 
 ## Usage
