@@ -16,7 +16,9 @@
     "bundle": "run-p bundle:*",
     "build": "run-s clean bundle types",
     "yalc": "yarn build && yalc push",
-    "bbitprecommit": "run-p lint test build"
+    "bbitprecommit": "run-p lint test build",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "files": [
     "dist/**/*",
@@ -25,7 +27,8 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "pdfkit": "^0.11.0",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "snyk": "^1.362.1"
   },
   "devDependencies": {
     "@babel/core": "7.10.4",
@@ -75,5 +78,6 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.0.9",
     "webpack-node-externals": "^2.5.0"
-  }
+  },
+  "snyk": true
 }
