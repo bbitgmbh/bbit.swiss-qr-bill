@@ -16,9 +16,7 @@
     "bundle": "run-p bundle:*",
     "build": "run-s clean bundle types",
     "yalc": "yarn build && yalc push",
-    "bbitprecommit": "run-p lint test build",
-    "snyk-protect": "snyk protect",
-    "prepare": "yarn run snyk-protect"
+    "bbitprecommit": "run-p lint test build"
   },
   "files": [
     "dist/**/*",
@@ -27,8 +25,7 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "pdfkit": "^0.11.0",
-    "qrcode": "^1.4.4",
-    "snyk": "^1.362.1"
+    "qrcode": "^1.4.4"
   },
   "devDependencies": {
     "@babel/core": "7.10.4",
@@ -73,6 +70,7 @@
     "terser-webpack-plugin": "^3.0.6",
     "transform-loader": "^0.2.4",
     "ts-node": "^8.10.2",
+    "snyk": "^1.362.1",
     "typescript": "^3.9.6",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.12",
