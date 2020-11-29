@@ -67,7 +67,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-string": "^3.0.0",
-    "snyk": "^1.381.2",
+    "snyk": "^1.425.4",
     "terser-webpack-plugin": "^4.1.0",
     "transform-loader": "^0.2.4",
     "ts-node": "^9.0.0",
