@@ -1,4 +1,4 @@
-import * as PDFJS from 'pdfjs-dist';
+import * as PDFJS from 'pdfjs-dist/es5/build/pdf.js';
 import { createCanvas } from 'canvas';
 
 class NodeCanvasFactory {

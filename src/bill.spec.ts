@@ -6,15 +6,6 @@ expect.extend({ toMatchImageSnapshot });
 
 const bill = new QRBillGenerator();
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R, T> {
-      toMatchImageSnapshot(options?: { failureThreshold?: number; failureThresholdType?: string }): R;
-    }
-  }
-}
-
 describe('QRBill', (): void => {
   it('should create bills', async (): Promise<void> => {
     const data = await bill.generate(defaultData);
