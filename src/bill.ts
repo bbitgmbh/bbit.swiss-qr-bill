@@ -2,7 +2,7 @@
 import { Reference } from './reference/reference';
 import { QRCodeGenerator } from './qr';
 import { isNodeJs, CustomWritableStream, translations } from './utils';
-import { IQRBill, QRBillAddressType, ITranslations } from './interfaces';
+import { IQRBill, QRBillAddressType, IQRBillTranslations } from './interfaces';
 import PDFDocument from 'pdfkit';
 import { IBAN } from './iban/iban';
 import * as fs from 'fs';
@@ -26,7 +26,7 @@ export class QRBillGenerator {
   private _qr = new QRCodeGenerator();
   private _iban = new IBAN();
   private _reference = new Reference();
-  private _t: ITranslations;
+  private _t: IQRBillTranslations;
   public constructor() {
     if (!isNodeJs) {
       fs.writeFileSync('data/Helvetica.afm', Helvetica);

@@ -16,10 +16,12 @@
     "bundle": "run-p bundle:*",
     "build": "run-s clean bundle types",
     "yalc": "yarn build && yalc push",
+    "create-interfaces-package": "ts-node scripts/create-interfaces-package.ts",
     "bbitprecommit": "run-p lint test build"
   },
   "files": [
     "dist/**/*",
+    "!dist/interfaces/**/*",
     "readme.md"
   ],
   "dependencies": {

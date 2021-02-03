@@ -30,7 +30,7 @@ export class QRCodeGenerator {
       /* istanbul ignore next: not tesed with jest */
       return new Promise((resolve): void => {
         canvas.toBlob(
-          async (blob): Promise<void> => {
+          async (blob: Blob): Promise<void> => {
             const buffer = await blob.arrayBuffer();
             resolve(buffer);
           },

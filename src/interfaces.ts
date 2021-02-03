@@ -44,7 +44,7 @@ export enum QRBillAddressType {
   STRUCTURED = 'S',
 }
 
-export interface ITranslations {
+export interface IQRBillTranslations {
   paymentPart: string;
   accountPayableTo: string;
   reference: string;

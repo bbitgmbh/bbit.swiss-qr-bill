@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as PDFJS from 'pdfjs-dist/es5/build/pdf.js';
 import { createCanvas } from 'canvas';
 
 class NodeCanvasFactory {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public create(width, height): any {
+  public create(width: number, height: number): any {
     // assert(width > 0 && height > 0, 'Invalid canvas size');
     const canvas = createCanvas(width, height);
     const context = canvas.getContext('2d');
@@ -13,14 +14,14 @@ class NodeCanvasFactory {
     };
   }
 
-  public reset(canvasAndContext, width, height): void {
+  public reset(canvasAndContext: any, width: number, height: number): void {
     // assert(canvasAndContext.canvas, 'Canvas is not specified');
     // assert(width > 0 && height > 0, 'Invalid canvas size');
     canvasAndContext.canvas.width = width;
     canvasAndContext.canvas.height = height;
   }
 
-  public destroy(canvasAndContext): void {
+  public destroy(canvasAndContext: any): void {
     // assert(canvasAndContext.canvas, 'Canvas is not specified');
 
     // Zeroing the width and height cause Firefox to release graphics

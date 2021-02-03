@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as stream from 'stream';
-import { QRBillLanguage, ITranslations } from './interfaces';
+import { QRBillLanguage, IQRBillTranslations } from './interfaces';
 
 export const isNodeJs = typeof document === 'undefined';
 
@@ -25,22 +26,22 @@ export class QRData {
 
 export class CustomWritableStream extends stream.Writable {
   private _chunks = [];
-  private _length = 0;
-  public constructor(options?) {
+  // private _length = 0;
+  public constructor(options?: unknown) {
     super(options);
   }
 
-  public _write(chunk, enc, callback): void {
+  public _write(chunk: any, _enc: unknown, callback: (...params: any[]) => void): void {
     if (isNodeJs) {
       if (!(chunk instanceof Uint8Array)) chunk = new Uint8Array(chunk);
     }
 
-    this._length += chunk.length;
+    // this._length += chunk.length;
     this._chunks.push(chunk);
     return callback(null);
   }
 
-  public _destroy(err, callback): void {
+  public _destroy(_err: unknown, callback: (...params: any[]) => void): void {
     this._chunks = null;
     return callback(null);
   }
@@ -59,7 +60,7 @@ export class CustomWritableStream extends stream.Writable {
 export const isJest = process.env.NODE_ENV === 'test';
 
 const translations: {
-  [key: string]: ITranslations;
+  [key: string]: IQRBillTranslations;
 } = {};
 
 translations[QRBillLanguage.DE] = {

@@ -31,6 +31,7 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/explicit-member-accessibility': ['error'],
+    '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/explicit-function-return-type': [
       'error',
       {
