@@ -1,11 +1,11 @@
-import { IQRBill, QRBillCurrency, QRBillAddressType, QRBillLanguage } from './interfaces';
+import { IBbitQRBill, BbitQRBillCurrency, BbitQRBillAddressType, BbitQRBillLanguage } from '@bbitgmbh/bbit.banking-utils';
 
-export const defaultData: IQRBill = {
+export const defaultData: IBbitQRBill = {
   account: 'CH2830000011623852950',
   amount: 100.0,
-  currency: QRBillCurrency.CHF,
+  currency: BbitQRBillCurrency.CHF,
   creditor: {
-    type: QRBillAddressType.UNSTRUCTURED,
+    type: BbitQRBillAddressType.UNSTRUCTURED,
     name: 'bbit gmbh',
     address: 'Rainweg 10',
     postalCode: '3612',
@@ -14,7 +14,7 @@ export const defaultData: IQRBill = {
   },
   reference: '000000000000000012312312316',
   debtor: {
-    type: QRBillAddressType.STRUCTURED,
+    type: BbitQRBillAddressType.STRUCTURED,
     name: 'Test AG',
     street: 'Musterstrasse',
     buildingNumber: '1',
@@ -22,7 +22,7 @@ export const defaultData: IQRBill = {
     locality: 'Thun',
     country: 'CH',
   },
-  unstructeredMessage: 'Test message',
+  unstructuredMessage: 'Test message',
   billInformation: 'Test billing information',
-  language: QRBillLanguage.DE,
+  language: BbitQRBillLanguage.DE,
 };

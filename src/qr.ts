@@ -1,16 +1,21 @@
-import { Reference } from './reference/reference';
-import { isNodeJs, swissCorssImage, QRData } from './utils';
+import { isNodeJs, swissCrossImage, QRData } from './utils';
 import { QRBillValidationError } from './errors/validation-error';
-import { IQRBill, QRBillVersion, IQRBillAddress, QRBillAddressType } from './interfaces';
-import { IBAN } from './iban/iban';
 import * as qrcode from 'qrcode';
 import { Image, createCanvas, Canvas } from 'canvas';
+import {
+  BbitIBAN,
+  BbitBankingReference,
+  IBbitQRBill,
+  BbitQRBillVersion,
+  BbitQRBillAddressType,
+  IBbitQRBillAddress,
+} from '@bbitgmbh/bbit.banking-utils';
 
-export class QRCodeGenerator {
-  private _iban = new IBAN();
-  private _reference = new Reference();
+export class BbitQRCodeGenerator {
+  private _iban = new BbitIBAN();
+  private _reference = new BbitBankingReference();
 
-  public async generate(params: IQRBill): Promise<ArrayBuffer | Buffer> {
+  public async generate(params: IBbitQRBill): Promise<ArrayBuffer | Buffer> {
     const data = this.generateQRCodeContent(params);
 
     const canvas = await qrcode.toCanvas(this._createCanvas(), data, { margin: 0 });
@@ -19,7 +24,7 @@ export class QRCodeGenerator {
     const imgDim = { width: 40, height: 40 };
     const context = canvas.getContext('2d');
     const imageObj = this._createImage();
-    imageObj.src = swissCorssImage;
+    imageObj.src = swissCrossImage;
     imageObj.width = imgDim.width;
     imageObj.height = imgDim.height;
     context.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
@@ -27,7 +32,7 @@ export class QRCodeGenerator {
     if (isNodeJs) {
       return canvas.toBuffer();
     } else {
-      /* istanbul ignore next: not tesed with jest */
+      /* istanbul ignore next: not tested with jest */
       return new Promise((resolve): void => {
         canvas.toBlob(
           async (blob: Blob): Promise<void> => {
@@ -39,11 +44,11 @@ export class QRCodeGenerator {
     }
   }
 
-  public generateQRCodeContent(params: IQRBill): string {
+  public generateQRCodeContent(params: IBbitQRBill): string {
     this._setDefaultVersionIfMissing(params);
     this._verifyParams(params);
     switch (params.version) {
-      case QRBillVersion.V2_0:
+      case BbitQRBillVersion.V2_0:
         const data = new QRData();
         data.add('SPC');
         data.add('0200');
@@ -51,14 +56,14 @@ export class QRCodeGenerator {
         data.add(this._iban.electronicFormat(params.account));
         data.add(params.creditor.type);
         data.add(params.creditor.name);
-        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address);
+        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address);
         data.add(
-          params.creditor.type === QRBillAddressType.STRUCTURED
+          params.creditor.type === BbitQRBillAddressType.STRUCTURED
             ? params.creditor.buildingNumber
             : params.creditor.postalCode + ' ' + params.creditor.locality,
         );
-        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.postalCode : '');
-        data.add(params.creditor.type === QRBillAddressType.STRUCTURED ? params.creditor.locality : '');
+        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.postalCode : '');
+        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.locality : '');
         data.add(params.creditor.country);
         data.add();
         data.add();
@@ -71,18 +76,18 @@ export class QRCodeGenerator {
         data.add(params.currency);
         data.add(params.debtor.type);
         data.add(params.debtor.name);
-        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address);
+        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address);
         data.add(
-          params.debtor.type === QRBillAddressType.STRUCTURED
+          params.debtor.type === BbitQRBillAddressType.STRUCTURED
             ? params.debtor.buildingNumber
             : params.debtor.postalCode + ' ' + params.debtor.locality,
         );
-        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.postalCode : '');
-        data.add(params.debtor.type === QRBillAddressType.STRUCTURED ? params.debtor.locality : '');
+        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.postalCode : '');
+        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.locality : '');
         data.add(params.debtor.country);
         data.add(this._iban.isQRIBAN(params.account) ? 'QRR' : 'SCOR');
         data.add(params.reference);
-        data.add(params.unstructeredMessage);
+        data.add(params.unstructuredMessage);
         data.add('EPD');
         data.add();
         return data.toString();
@@ -91,7 +96,7 @@ export class QRCodeGenerator {
     }
   }
 
-  private _verifyParams(params: IQRBill): void {
+  private _verifyParams(params: IBbitQRBill): void {
     const errors: string[] = [];
 
     if (!params.account) {
@@ -132,7 +137,7 @@ export class QRCodeGenerator {
     }
   }
 
-  private _verifyAddress(address: IQRBillAddress, type: 'creditor' | 'debtor'): string[] {
+  private _verifyAddress(address: IBbitQRBillAddress, type: 'creditor' | 'debtor'): string[] {
     const errors: string[] = [];
 
     if (!address) {
@@ -148,13 +153,13 @@ export class QRCodeGenerator {
       errors.push(`Property 'name' on '${type}' has to be defined`);
     }
 
-    if (address.type === QRBillAddressType.UNSTRUCTURED) {
+    if (address.type === BbitQRBillAddressType.UNSTRUCTURED) {
       if (!address.address) {
         errors.push(`Property 'address' on '${type}' has to be defined`);
       }
     }
 
-    if (address.type === QRBillAddressType.STRUCTURED) {
+    if (address.type === BbitQRBillAddressType.STRUCTURED) {
       if (!address.street) {
         errors.push(`Property 'street' on '${type}' has to be defined`);
       }
@@ -178,9 +183,9 @@ export class QRCodeGenerator {
     return errors;
   }
 
-  private _setDefaultVersionIfMissing(params: IQRBill): void {
+  private _setDefaultVersionIfMissing(params: IBbitQRBill): void {
     if (!params.version) {
-      params.version = QRBillVersion.V2_0;
+      params.version = BbitQRBillVersion.V2_0;
     }
   }
 
@@ -193,7 +198,7 @@ export class QRCodeGenerator {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return createCanvas(500, 500);
     } else {
-      /* istanbul ignore next: not tesed with jest */
+      /* istanbul ignore next: not tested with jest */
       return document.createElement('canvas');
     }
   }
@@ -203,7 +208,7 @@ export class QRCodeGenerator {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return new Image();
     } else {
-      /* istanbul ignore next: not tesed with jest */
+      /* istanbul ignore next: not tested with jest */
       return document.createElement('img');
     }
   }

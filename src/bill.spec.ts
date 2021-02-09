@@ -1,10 +1,10 @@
 import { pdfBufferToImage } from './test-utils';
-import { QRBillGenerator } from './bill';
+import { BbitQRBillGenerator } from './bill';
 import { defaultData } from './data';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 expect.extend({ toMatchImageSnapshot });
 
-const bill = new QRBillGenerator();
+const bill = new BbitQRBillGenerator();
 
 describe('QRBill', (): void => {
   it('should create bills', async (): Promise<void> => {

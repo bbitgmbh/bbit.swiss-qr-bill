@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QRBillValidationError } from './errors/validation-error';
-import { QRBillVersion, QRBillAddressType } from './interfaces';
-import { QRCodeGenerator } from './qr';
-import * as _ from 'lodash';
+import { BbitQRBillVersion, BbitQRBillAddressType } from '@bbitgmbh/bbit.banking-utils';
+import { BbitQRCodeGenerator } from './qr';
+import _ from 'lodash';
 import { defaultData } from './data';
 
-const qr = new QRCodeGenerator();
+const qr = new BbitQRCodeGenerator();
 
 describe('QR test', (): void => {
-  it('Usnupported version should fail', (): void => {
+  it('Unsupported version should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    cloned.version = 'unsupported' as QRBillVersion;
+    cloned.version = 'unsupported' as BbitQRBillVersion;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
@@ -84,7 +84,7 @@ describe('QR test', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
-      type: QRBillAddressType.STRUCTURED,
+      type: BbitQRBillAddressType.STRUCTURED,
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -105,7 +105,7 @@ describe('QR test', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
-      type: QRBillAddressType.UNSTRUCTURED,
+      type: BbitQRBillAddressType.UNSTRUCTURED,
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -153,11 +153,11 @@ describe('QR test', (): void => {
     expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
   });
 
-  it('Missing structred debtor properties should fail', (): void => {
+  it('Missing structured debtor properties should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
-      type: QRBillAddressType.STRUCTURED,
+      type: BbitQRBillAddressType.STRUCTURED,
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -174,11 +174,11 @@ describe('QR test', (): void => {
     expect(error.getValidationErrors()[5]).toBe("Property 'country' on 'debtor' has to be defined");
   });
 
-  it('Missing unstructred debtor properties should fail', (): void => {
+  it('Missing unstructured debtor properties should fail', (): void => {
     let error: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
-      type: QRBillAddressType.UNSTRUCTURED,
+      type: BbitQRBillAddressType.UNSTRUCTURED,
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -264,7 +264,7 @@ describe('QR test', (): void => {
     expect(data2).toMatchSnapshot();
 
     const withoutMessage = _.cloneDeep(defaultData);
-    delete withoutMessage.unstructeredMessage;
+    delete withoutMessage.unstructuredMessage;
     delete withoutMessage.billInformation;
     const data3 = qr.generateQRCodeContent(withoutMessage);
     expect(data3).toBeDefined();

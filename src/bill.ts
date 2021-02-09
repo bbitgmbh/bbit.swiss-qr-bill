@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Reference } from './reference/reference';
-import { QRCodeGenerator } from './qr';
+import { BbitQRCodeGenerator } from './qr';
 import { isNodeJs, CustomWritableStream, translations } from './utils';
-import { IQRBill, QRBillAddressType, IQRBillTranslations } from './interfaces';
 import PDFDocument from 'pdfkit';
-import { IBAN } from './iban/iban';
 import * as fs from 'fs';
 import Helvetica from 'pdfkit/js/data/Helvetica.afm';
 import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm';
+import { BbitBankingReference, BbitIBAN, IBbitQRBillTranslations, IBbitQRBill, BbitQRBillAddressType } from '@bbitgmbh/bbit.banking-utils';
 
 interface IPDFOptions {
   titleFontSize: number;
@@ -22,11 +20,11 @@ interface IPDFOptions {
   amountY: number;
 }
 
-export class QRBillGenerator {
-  private _qr = new QRCodeGenerator();
-  private _iban = new IBAN();
-  private _reference = new Reference();
-  private _t: IQRBillTranslations;
+export class BbitQRBillGenerator {
+  private _qr = new BbitQRCodeGenerator();
+  private _iban = new BbitIBAN();
+  private _reference = new BbitBankingReference();
+  private _t: IBbitQRBillTranslations;
   public constructor() {
     if (!isNodeJs) {
       fs.writeFileSync('data/Helvetica.afm', Helvetica);
@@ -34,7 +32,7 @@ export class QRBillGenerator {
     }
   }
 
-  public async generate(params: IQRBill): Promise<Buffer | Blob> {
+  public async generate(params: IBbitQRBill): Promise<Buffer | Blob> {
     // create document and pipe stream
     const doc = new PDFDocument({
       layout: 'landscape',
@@ -88,7 +86,7 @@ export class QRBillGenerator {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _renderReceipt(doc: any, params: IQRBill, options: IPDFOptions): void {
+  private _renderReceipt(doc: any, params: IBbitQRBill, options: IPDFOptions): void {
     // render receipt
     let newY = options.topX;
     doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.receipt, options.receiptX, newY);
@@ -111,7 +109,7 @@ export class QRBillGenerator {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _renderPayment(doc: any, params: IQRBill, code: Buffer | ArrayBuffer, options: IPDFOptions): void {
+  private _renderPayment(doc: any, params: IBbitQRBill, code: Buffer | ArrayBuffer, options: IPDFOptions): void {
     // left part
     // line
     let newY = options.topX;
@@ -120,7 +118,7 @@ export class QRBillGenerator {
       .lineTo(options.paymentPartLeftX - 20, newY + 300)
       .stroke();
 
-    // titile
+    // title
     doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.paymentPart, options.paymentPartLeftX, newY);
 
     // qr code
@@ -141,10 +139,10 @@ export class QRBillGenerator {
     newY = this._renderPayableTo(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
     newY = this._renderReference(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
 
-    if (params.unstructeredMessage && params.billInformation) {
+    if (params.unstructuredMessage && params.billInformation) {
       newY = newY + (options.paymentFontSize + 1) * 2;
       doc.fontSize(options.paymentTitleFontSize).font('Helvetica-Bold').text(this._t.additionalInfo, options.paymentPartRightX, newY);
-      const message = params.billInformation || params.unstructeredMessage;
+      const message = params.billInformation || params.unstructuredMessage;
       for (const line of message.split('\n')) {
         newY = newY + options.paymentFontSize + 1;
         doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
@@ -153,7 +151,7 @@ export class QRBillGenerator {
     newY = this._renderPayableBy(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
   }
 
-  private _renderPayableTo(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
+  private _renderPayableTo(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.accountPayableTo, x, y);
 
     y = y + fontSize + 1;
@@ -167,7 +165,7 @@ export class QRBillGenerator {
       .fontSize(fontSize)
       .font('Helvetica')
       .text(
-        params.creditor.type === QRBillAddressType.STRUCTURED
+        params.creditor.type === BbitQRBillAddressType.STRUCTURED
           ? params.creditor.street + ' ' + params.creditor.buildingNumber
           : params.creditor.address,
         x,
@@ -183,7 +181,7 @@ export class QRBillGenerator {
     return y;
   }
 
-  private _renderReference(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
+  private _renderReference(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
     if (params.reference) {
       y = y + (fontSize + 1) * 2;
       doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.reference, x, y);
@@ -194,7 +192,7 @@ export class QRBillGenerator {
     return y;
   }
 
-  private _renderPayableBy(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
+  private _renderPayableBy(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
     y = y + (fontSize + 1) * 2;
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.payableBy, x, y);
 
@@ -206,7 +204,7 @@ export class QRBillGenerator {
       .fontSize(fontSize)
       .font('Helvetica')
       .text(
-        params.debtor.type === QRBillAddressType.STRUCTURED
+        params.debtor.type === BbitQRBillAddressType.STRUCTURED
           ? params.debtor.street + ' ' + params.debtor.buildingNumber
           : params.debtor.address,
         x,
@@ -222,7 +220,7 @@ export class QRBillGenerator {
     return y;
   }
 
-  private _renderAmount(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IQRBill): number {
+  private _renderAmount(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.currency, x, y);
 
     doc
