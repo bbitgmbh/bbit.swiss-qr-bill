@@ -62,9 +62,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Create interfaces package
-        run: yarn create-interfaces-package
-
       - name: Upload artifacts
         if: contains(github.ref, 'refs/tags/v') && matrix.node-version == '14.x'
         uses: actions/upload-artifact@v1
@@ -104,13 +101,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
-      - name: Publish interfaces package
-        run: |
-          cd dist/interfaces
-          yarn publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-
   publishNpm:
     name: 'Publish to npm'
     runs-on: ubuntu-latest
@@ -139,12 +129,6 @@ jobs:
 
       - name: Publish package
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          yarn publish --access public
-
-      - name: Publish interfaces package
-        run: |
-          cd dist/interfaces
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
           yarn publish --access public
 

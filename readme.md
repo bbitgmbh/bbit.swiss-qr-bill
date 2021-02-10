@@ -50,7 +50,7 @@ const defaultData: IBbitQRBill = {
 
 // create pdf
 // returns a Buffer in Node.js or a Blob in browsers
-const qr = new QRBillGenerator();
+const qr = new BbitQRBillGenerator();
 const bufferOrBlob = await qr.generate(defaultData);
 ```
 
