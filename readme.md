@@ -20,9 +20,9 @@ npm install @bbitgmbh/bbit.swiss-qr-bill --save
 ## Usage
 
 ```ts
-import { QRBillGenerator, IQRBill, QRBillLanguage,QRBillAddressType } from '@bbitgmbh/bbit.swiss-qr-bill';
+import { BbitQRBillGenerator, IBbitQRBill, BbitQRBillLanguage, BbitQRBillAddressType } from '@bbitgmbh/bbit.swiss-qr-bill';
 
-const defaultData: IQRBill = {
+const defaultData: IBbitQRBill = {
   account: 'CH2830000011623852950',
   amount: 1234.55,
   currency: 'CHF',
@@ -43,7 +43,7 @@ const defaultData: IQRBill = {
     locality: 'Thun',
     country: 'CH',
   },
-  unstructeredMessage: 'Test message',
+  unstructuredMessage: 'Test message',
   billInformation: 'Test billing information',
   language: QRBillLanguage.DE,
 };

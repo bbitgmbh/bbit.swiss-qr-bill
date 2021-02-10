@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BbitQRCodeGenerator } from './qr';
-import { isNodeJs, CustomWritableStream, translations } from './utils';
+import { isNodeJs, CustomWritableStream, translations, scissorsHImageBuffer, scissorsVImageBuffer } from './utils';
 import PDFDocument from 'pdfkit';
 import * as fs from 'fs';
 import Helvetica from 'pdfkit/js/data/Helvetica.afm';
 import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm';
-import { BbitBankingReference, BbitIBAN, IBbitQRBillTranslations, IBbitQRBill, BbitQRBillAddressType } from '@bbitgmbh/bbit.banking-utils';
+import {
+  BbitBankingReference,
+  BbitIBAN,
+  IBbitQRBillTranslations,
+  IBbitQRBill,
+  BbitQRBillAddressType,
+  BbitQRBillFormat,
+} from '@bbitgmbh/bbit.banking-utils';
 
 interface IPDFOptions {
   titleFontSize: number;
@@ -13,7 +20,7 @@ interface IPDFOptions {
   receiptFontSize: number;
   paymentTitleFontSize: number;
   paymentFontSize: number;
-  topX: number;
+  topY: number;
   receiptX: number;
   paymentPartLeftX: number;
   paymentPartRightX: number;
@@ -33,10 +40,33 @@ export class BbitQRBillGenerator {
   }
 
   public async generate(params: IBbitQRBill): Promise<Buffer | Blob> {
+    // prepare format
+    let topY: number;
+    let size: [number, number];
+    let generateAsA4: boolean;
+    let preventLines: boolean;
+    switch (params.format) {
+      case BbitQRBillFormat.DEFAULT_WITHOUT_LINES:
+        preventLines = true;
+      case BbitQRBillFormat.DEFAULT:
+        generateAsA4 = false;
+        topY = 15;
+        size = [297.64, 595.28];
+        break;
+      case BbitQRBillFormat.A4_WITHOUT_LINES:
+        preventLines = true;
+      case BbitQRBillFormat.A4:
+      default:
+        generateAsA4 = true;
+        topY = 559.23;
+        size = [841.89, 595.28];
+        break;
+    }
+
     // create document and pipe stream
     const doc = new PDFDocument({
       layout: 'landscape',
-      size: [300, 595.28],
+      size,
       margin: 0,
     });
     const stream = new CustomWritableStream();
@@ -49,7 +79,6 @@ export class BbitQRBillGenerator {
     this._t = translations[params.language];
 
     // prepare rendering options
-    const topX = 15;
     const options: IPDFOptions = {
       titleFontSize: 11,
       receiptTitleFontSize: 6,
@@ -58,16 +87,19 @@ export class BbitQRBillGenerator {
       paymentFontSize: 10,
 
       // define default positions
-      topX,
+      topY,
       receiptX: 15,
       paymentPartLeftX: 200,
       paymentPartRightX: 360,
-      amountY: topX + 190,
+      amountY: topY + 190,
     };
 
     this._renderReceipt(doc, params, options);
-
     this._renderPayment(doc, params, code, options);
+
+    if (!preventLines) {
+      this._renderLines(doc, generateAsA4, options);
+    }
 
     doc.end();
 
@@ -85,13 +117,28 @@ export class BbitQRBillGenerator {
     });
   }
 
+  private _renderLines(doc: any, generateAsA4: boolean, options: IPDFOptions): void {
+    const top = options.topY - 15;
+    const left = options.paymentPartLeftX - 20;
+    doc
+      .moveTo(left, top) // set the current point
+      .lineTo(left, top + 300)
+      .stroke();
+
+    if (generateAsA4) {
+      doc.moveTo(0, top).lineTo(600, top).stroke();
+      doc.image(scissorsHImageBuffer, options.receiptX, top - 5, { height: 10 });
+      doc.image(scissorsVImageBuffer, left - 5, top + 265, { width: 10 });
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _renderReceipt(doc: any, params: IBbitQRBill, options: IPDFOptions): void {
     // render receipt
-    let newY = options.topX;
+    let newY = options.topY;
     doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.receipt, options.receiptX, newY);
 
-    newY = options.topX + options.titleFontSize * 2;
+    newY = options.topY + options.titleFontSize * 2;
 
     newY = this._renderPayableTo(doc, options.receiptX, newY, options.receiptTitleFontSize, options.receiptFontSize, params);
 
@@ -112,17 +159,13 @@ export class BbitQRBillGenerator {
   private _renderPayment(doc: any, params: IBbitQRBill, code: Buffer | ArrayBuffer, options: IPDFOptions): void {
     // left part
     // line
-    let newY = options.topX;
-    doc
-      .moveTo(options.paymentPartLeftX - 20, newY - 20) // set the current point
-      .lineTo(options.paymentPartLeftX - 20, newY + 300)
-      .stroke();
+    let newY = options.topY;
 
     // title
     doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.paymentPart, options.paymentPartLeftX, newY);
 
     // qr code
-    newY = options.topX + 30;
+    newY = options.topY + 30;
     doc.image(code, options.paymentPartLeftX, newY, { width: 140 });
 
     newY = this._renderAmount(
@@ -135,7 +178,7 @@ export class BbitQRBillGenerator {
     );
 
     // right part
-    newY = options.topX;
+    newY = options.topY;
     newY = this._renderPayableTo(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
     newY = this._renderReference(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
 
