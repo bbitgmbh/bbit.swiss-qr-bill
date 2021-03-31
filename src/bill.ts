@@ -211,7 +211,7 @@ export class BbitQRBillGenerator {
 
       // Hack to ensure each line will be printed on one line in the PDF
       // Otherwise, we can't track correctly the newY position
-      let messageLines = message.split('\n').flatMap((l) => l.match(/.{1,40}/g))
+      const messageLines = message.split('\n').flatMap((l): RegExpMatchArray => l.match(/.{1,40}/g));
       for (const line of messageLines) {
         newY = newY + options.paymentFontSize + 1;
         doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
