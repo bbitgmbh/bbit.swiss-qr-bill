@@ -1,6 +1,6 @@
 {
   "name": "@bbitgmbh/bbit.swiss-qr-bill",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/types/index.d.ts",
