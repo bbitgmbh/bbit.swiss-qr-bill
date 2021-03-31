@@ -182,11 +182,37 @@ export class BbitQRBillGenerator {
     newY = this._renderPayableTo(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
     newY = this._renderReference(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
 
-    if (params.unstructuredMessage && params.billInformation) {
+    if (params.unstructuredMessage || params.billInformation) {
       newY = newY + (options.paymentFontSize + 1) * 2;
       doc.fontSize(options.paymentTitleFontSize).font('Helvetica-Bold').text(this._t.additionalInfo, options.paymentPartRightX, newY);
-      const message = params.billInformation || params.unstructuredMessage;
-      for (const line of message.split('\n')) {
+
+      let message = '';
+
+      if (params.unstructuredMessage) {
+        message += params.unstructuredMessage;
+      }
+
+      // If both elements are filled in, then a line break can be introduced
+      // after the information in the first element “Ustrd”(Unstructured message)
+      if (message && params.billInformation) {
+        message += '\n';
+      }
+
+      if (params.billInformation) {
+        message += params.billInformation;
+      }
+
+      // Both fields together can only contain a maximum of 140characters.
+      // If not all the details contained in the QR code can be displayed,
+      // the shortened content must be marked with an ellipsis “...” at the end.
+      if (message.length > 140) {
+        message = `${message.slice(0, 139)}…`;
+      }
+
+      // Hack to ensure each line will be printed on one line in the PDF
+      // Otherwise, we can't track correctly the newY position
+      let messageLines = message.split('\n').flatMap((l) => l.match(/.{1,40}/g))
+      for (const line of messageLines) {
         newY = newY + options.paymentFontSize + 1;
         doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
       }
