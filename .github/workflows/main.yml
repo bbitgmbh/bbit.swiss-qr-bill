@@ -40,8 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Lint
         run: yarn lint
@@ -86,7 +84,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://npm.pkg.github.com
-          always-auth: 'true'
+          always-auth: true
 
       - name: Download artifacts
         uses: actions/download-artifact@v1
