@@ -112,11 +112,11 @@ export class BbitQRCodeGenerator {
     } else {
       if (this._iban.isQRIBAN(params.account)) {
         if (!this._reference.isQRReference(params.reference) || !this._reference.isQRReferenceValid(params.reference)) {
-          errors.push("Property 'reference' is not valid");
+          errors.push("Property 'reference' is not valid (QR-IBAN)");
         }
       } else {
         if (this._reference.isQRReference(params.reference) || !this._reference.isReferenceValid(params.reference)) {
-          errors.push("Property 'reference' is not valid");
+          errors.push("Property 'reference' is not valid (non QR-IBAN)");
         }
       }
     }
