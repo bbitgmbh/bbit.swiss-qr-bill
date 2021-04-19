@@ -34,7 +34,7 @@ class NodeCanvasFactory {
 }
 
 export const pdfBufferToImage = async (pdfBuffer: Buffer | Blob): Promise<Buffer> => {
-  const pdf = await PDFJS.getDocument({ data: pdfBuffer, disableFontFace: false }).promise;
+  const pdf = await PDFJS.getDocument({ data: pdfBuffer as any, disableFontFace: false }).promise;
   const page1 = await pdf.getPage(1);
   const viewport = page1.getViewport({ scale: 1.5 });
   const canvasFactory = new NodeCanvasFactory();

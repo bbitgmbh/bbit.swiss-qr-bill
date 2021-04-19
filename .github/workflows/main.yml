@@ -33,18 +33,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
-      - name: Get yarn cache directory path
-        id: yarnCacheDirPath
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Yarn cache
-        uses: actions/cache@v1
-        id: yarnCache
-        with:
-          path: ${{ steps.yarnCacheDirPath.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-
       - name: Install dependencies
         run: yarn
 
@@ -55,12 +43,6 @@ jobs:
         run: yarn test
         env:
           CI: 'true'
-
-      - name: Upload code coverage
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/cobertura-coverage.xml
 
       - name: Build
         run: yarn build
@@ -134,5 +116,3 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
           yarn publish --access public
-
-    # yarn create-interfaces-package

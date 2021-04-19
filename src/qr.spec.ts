@@ -219,7 +219,7 @@ describe('QR test', (): void => {
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
-    expect(error.getValidationErrors()[0]).toBe("Property 'reference' is not valid");
+    expect(error.getValidationErrors()[0]).toBe("Property 'reference' is not valid (QR-IBAN)");
   });
 
   it('Missing currency should fail', (): void => {
