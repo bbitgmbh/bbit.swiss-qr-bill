@@ -104,16 +104,13 @@ export class BbitQRBillGenerator {
     doc.end();
 
     return new Promise((resolve): void => {
-      stream.on(
-        'finish',
-        async (): Promise<void> => {
-          if (isNodeJs) {
-            resolve(stream.toBuffer());
-          } else {
-            resolve(stream.toBlob());
-          }
-        },
-      );
+      stream.on('finish', async (): Promise<void> => {
+        if (isNodeJs) {
+          resolve(stream.toBuffer());
+        } else {
+          resolve(stream.toBlob());
+        }
+      });
     });
   }
 

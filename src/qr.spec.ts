@@ -92,13 +92,13 @@ describe('QR test', (): void => {
       error = err;
     }
     expect(error).toBeDefined();
-    expect(error.getValidationErrors()).toHaveLength(6);
+    expect(error.getValidationErrors()).toHaveLength(4);
     expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[3]).toBe("Property 'postalCode' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[4]).toBe("Property 'locality' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[5]).toBe("Property 'country' on 'creditor' has to be defined");
+    // expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'creditor' has to be defined");
+    // expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'postalCode' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'locality' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'country' on 'creditor' has to be defined");
   });
 
   it('Missing unstructured creditor properties should fail', (): void => {
@@ -113,12 +113,12 @@ describe('QR test', (): void => {
       error = err;
     }
     expect(error).toBeDefined();
-    expect(error.getValidationErrors()).toHaveLength(5);
+    expect(error.getValidationErrors()).toHaveLength(4);
     expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'creditor' has to be defined");
-    expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'creditor' has to be defined");
+    // expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'postalCode' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'locality' on 'creditor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'country' on 'creditor' has to be defined");
   });
 
   it('Missing debtor should fail', (): void => {
@@ -165,13 +165,13 @@ describe('QR test', (): void => {
       error = err;
     }
     expect(error).toBeDefined();
-    expect(error.getValidationErrors()).toHaveLength(6);
+    expect(error.getValidationErrors()).toHaveLength(4);
     expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[3]).toBe("Property 'postalCode' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[4]).toBe("Property 'locality' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[5]).toBe("Property 'country' on 'debtor' has to be defined");
+    // expect(error.getValidationErrors()[1]).toBe("Property 'street' on 'debtor' has to be defined");
+    // expect(error.getValidationErrors()[2]).toBe("Property 'buildingNumber' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'postalCode' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'locality' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'country' on 'debtor' has to be defined");
   });
 
   it('Missing unstructured debtor properties should fail', (): void => {
@@ -186,12 +186,12 @@ describe('QR test', (): void => {
       error = err;
     }
     expect(error).toBeDefined();
-    expect(error.getValidationErrors()).toHaveLength(5);
+    expect(error.getValidationErrors()).toHaveLength(4);
     expect(error.getValidationErrors()[0]).toBe("Property 'name' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[2]).toBe("Property 'postalCode' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[3]).toBe("Property 'locality' on 'debtor' has to be defined");
-    expect(error.getValidationErrors()[4]).toBe("Property 'country' on 'debtor' has to be defined");
+    // expect(error.getValidationErrors()[1]).toBe("Property 'address' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[1]).toBe("Property 'postalCode' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[2]).toBe("Property 'locality' on 'debtor' has to be defined");
+    expect(error.getValidationErrors()[3]).toBe("Property 'country' on 'debtor' has to be defined");
   });
 
   it('Missing reference should fail', (): void => {

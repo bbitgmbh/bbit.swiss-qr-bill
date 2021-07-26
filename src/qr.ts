@@ -27,19 +27,37 @@ export class BbitQRCodeGenerator {
     imageObj.src = swissCrossImage;
     imageObj.width = imgDim.width;
     imageObj.height = imgDim.height;
-    context.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
+
+    const drawSwissCross = async (): Promise<void> => {
+      await context?.drawImage(
+        imageObj,
+        canvas.width / 2 - imgDim.width / 2,
+        canvas.height / 2 - imgDim.height / 2,
+        imgDim.width,
+        imgDim.height,
+      );
+    };
+
+    if (isNodeJs) {
+      await drawSwissCross();
+    } else {
+      await new Promise<void>(async (resolve): Promise<void> => {
+        imageObj.onload = async (): Promise<void> => {
+          await drawSwissCross();
+          resolve();
+        };
+      });
+    }
 
     if (isNodeJs) {
       return canvas.toBuffer();
     } else {
       /* istanbul ignore next: not tested with jest */
       return new Promise((resolve): void => {
-        canvas.toBlob(
-          async (blob: Blob): Promise<void> => {
-            const buffer = await blob.arrayBuffer();
-            resolve(buffer);
-          },
-        );
+        canvas.toBlob(async (blob: Blob): Promise<void> => {
+          const buffer = await blob.arrayBuffer();
+          resolve(buffer);
+        });
       });
     }
   }
@@ -153,20 +171,22 @@ export class BbitQRCodeGenerator {
       errors.push(`Property 'name' on '${type}' has to be defined`);
     }
 
-    if (address.type === BbitQRBillAddressType.UNSTRUCTURED) {
-      if (!address.address) {
-        errors.push(`Property 'address' on '${type}' has to be defined`);
-      }
-    }
+    // Not required
+    // if (address.type === BbitQRBillAddressType.UNSTRUCTURED) {
+    //   if (!address.address) {
+    //     errors.push(`Property 'address' on '${type}' has to be defined`);
+    //   }
+    // }
 
-    if (address.type === BbitQRBillAddressType.STRUCTURED) {
-      if (!address.street) {
-        errors.push(`Property 'street' on '${type}' has to be defined`);
-      }
-      if (!address.buildingNumber) {
-        errors.push(`Property 'buildingNumber' on '${type}' has to be defined`);
-      }
-    }
+    // Not required
+    // if (address.type === BbitQRBillAddressType.STRUCTURED) {
+    //   if (!address.street) {
+    //     errors.push(`Property 'street' on '${type}' has to be defined`);
+    //   }
+    //   if (!address.buildingNumber) {
+    //     errors.push(`Property 'buildingNumber' on '${type}' has to be defined`);
+    //   }
+    // }
 
     if (!address.postalCode) {
       errors.push(`Property 'postalCode' on '${type}' has to be defined`);
