@@ -69,8 +69,21 @@ export class BbitQRBillGenerator {
       size,
       margin: 0,
     });
+
     const stream = new CustomWritableStream();
-    doc.pipe(stream as any);
+    const finishingPromise = new Promise<Buffer | Blob>((resolve, reject): void => {
+      stream.on('finish', async (): Promise<void> => {
+        if (isNodeJs) {
+          resolve(stream.toBuffer());
+        } else {
+          resolve(stream.toBlob());
+        }
+      });
+      stream.on('error', (err): void => {
+        reject(err);
+      });
+    });
+    doc.pipe(stream);
 
     // create qr code
     const code = await this._qr.generate(params);
@@ -103,18 +116,10 @@ export class BbitQRBillGenerator {
 
     doc.end();
 
-    return new Promise((resolve): void => {
-      stream.on('finish', async (): Promise<void> => {
-        if (isNodeJs) {
-          resolve(stream.toBuffer());
-        } else {
-          resolve(stream.toBlob());
-        }
-      });
-    });
+    return await finishingPromise;
   }
 
-  private _renderLines(doc: any, generateAsA4: boolean, options: IPDFOptions): void {
+  private _renderLines(doc: typeof PDFDocument, generateAsA4: boolean, options: IPDFOptions): void {
     const top = options.topY - 15;
     const left = options.paymentPartLeftX - 20;
     doc
@@ -130,7 +135,7 @@ export class BbitQRBillGenerator {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _renderReceipt(doc: any, params: IBbitQRBill, options: IPDFOptions): void {
+  private _renderReceipt(doc: typeof PDFDocument, params: IBbitQRBill, options: IPDFOptions): void {
     // render receipt
     let newY = options.topY;
     doc.fontSize(options.titleFontSize).font('Helvetica-Bold').text(this._t.receipt, options.receiptX, newY);
@@ -153,7 +158,7 @@ export class BbitQRBillGenerator {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _renderPayment(doc: any, params: IBbitQRBill, code: Buffer | ArrayBuffer, options: IPDFOptions): void {
+  private _renderPayment(doc: typeof PDFDocument, params: IBbitQRBill, code: Buffer | ArrayBuffer, options: IPDFOptions): void {
     // left part
     // line
     let newY = options.topY;
@@ -217,7 +222,14 @@ export class BbitQRBillGenerator {
     newY = this._renderPayableBy(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
   }
 
-  private _renderPayableTo(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
+  private _renderPayableTo(
+    doc: typeof PDFDocument,
+    x: number,
+    y: number,
+    titleFontSize: number,
+    fontSize: number,
+    params: IBbitQRBill,
+  ): number {
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.accountPayableTo, x, y);
 
     y = y + fontSize + 1;
@@ -247,7 +259,14 @@ export class BbitQRBillGenerator {
     return y;
   }
 
-  private _renderReference(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
+  private _renderReference(
+    doc: typeof PDFDocument,
+    x: number,
+    y: number,
+    titleFontSize: number,
+    fontSize: number,
+    params: IBbitQRBill,
+  ): number {
     if (params.reference) {
       y = y + (fontSize + 1) * 2;
       doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.reference, x, y);
@@ -258,7 +277,14 @@ export class BbitQRBillGenerator {
     return y;
   }
 
-  private _renderPayableBy(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
+  private _renderPayableBy(
+    doc: typeof PDFDocument,
+    x: number,
+    y: number,
+    titleFontSize: number,
+    fontSize: number,
+    params: IBbitQRBill,
+  ): number {
     y = y + (fontSize + 1) * 2;
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.payableBy, x, y);
 
@@ -286,7 +312,14 @@ export class BbitQRBillGenerator {
     return y;
   }
 
-  private _renderAmount(doc: any, x: number, y: number, titleFontSize: number, fontSize: number, params: IBbitQRBill): number {
+  private _renderAmount(
+    doc: typeof PDFDocument,
+    x: number,
+    y: number,
+    titleFontSize: number,
+    fontSize: number,
+    params: IBbitQRBill,
+  ): number {
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.currency, x, y);
 
     doc

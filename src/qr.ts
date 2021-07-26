@@ -28,24 +28,18 @@ export class BbitQRCodeGenerator {
     imageObj.width = imgDim.width;
     imageObj.height = imgDim.height;
 
-    const drawSwissCross = async (): Promise<void> => {
-      await context?.drawImage(
-        imageObj,
-        canvas.width / 2 - imgDim.width / 2,
-        canvas.height / 2 - imgDim.height / 2,
-        imgDim.width,
-        imgDim.height,
-      );
+    const drawSwissCross = (): void => {
+      context?.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
     };
 
     if (isNodeJs) {
-      await drawSwissCross();
+      drawSwissCross();
     } else {
       await new Promise<void>(async (resolve): Promise<void> => {
-        imageObj.onload = async (): Promise<void> => {
-          await drawSwissCross();
+        (imageObj as HTMLImageElement).addEventListener('load', async (): Promise<void> => {
+          drawSwissCross();
           resolve();
-        };
+        });
       });
     }
 

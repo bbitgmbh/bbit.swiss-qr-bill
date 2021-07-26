@@ -35,7 +35,7 @@ export class QRData {
 
 export class CustomWritableStream extends stream.Writable {
   private _chunks = [];
-  // private _length = 0;
+  private _length = 0;
   public constructor(options?: unknown) {
     super(options);
   }
@@ -45,7 +45,7 @@ export class CustomWritableStream extends stream.Writable {
       if (!(chunk instanceof Uint8Array)) chunk = new Uint8Array(chunk);
     }
 
-    // this._length += chunk.length;
+    this._length += chunk.length;
     this._chunks.push(chunk);
     return callback(null);
   }

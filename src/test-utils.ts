@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as PDFJS from 'pdfjs-dist/es5/build/pdf.js';
+import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
 import { createCanvas } from 'canvas';
 
 class NodeCanvasFactory {
