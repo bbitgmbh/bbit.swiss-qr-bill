@@ -101,7 +101,7 @@ export class BbitQRCodeGenerator {
         data.add(params.reference);
         data.add(params.unstructuredMessage);
         data.add('EPD');
-        if(params.billInformation) {
+        if (params.billInformation) {
           data.add(params.billInformation);
         }
         data.add();
