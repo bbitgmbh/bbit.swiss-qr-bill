@@ -37,8 +37,8 @@ export const pdfBufferToImage = async (pdfBuffer: Buffer | Blob): Promise<Buffer
   // Use standard fonts for testing so it should work on all systems
   const pdf = await PDFJS.getDocument({
     data: pdfBuffer as any,
-    disableFontFace: false,
-    useSystemFonts: false,
+    disableFontFace: true,
+    // useSystemFonts: false,
     standardFontDataUrl: './node_modules/pdfjs-dist/standard_fonts/',
   }).promise;
   const page1 = await pdf.getPage(1);
