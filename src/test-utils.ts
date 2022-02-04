@@ -34,7 +34,13 @@ class NodeCanvasFactory {
 }
 
 export const pdfBufferToImage = async (pdfBuffer: Buffer | Blob): Promise<Buffer> => {
-  const pdf = await PDFJS.getDocument({ data: pdfBuffer as any, disableFontFace: false }).promise;
+  // Use standard fonts for testing so it should work on all systems
+  const pdf = await PDFJS.getDocument({
+    data: pdfBuffer as any,
+    disableFontFace: false,
+    useSystemFonts: false,
+    standardFontDataUrl: './node_modules/pdfjs-dist/standard_fonts/',
+  }).promise;
   const page1 = await pdf.getPage(1);
   const viewport = page1.getViewport({ scale: 1.5 });
   const canvasFactory = new NodeCanvasFactory();
