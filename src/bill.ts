@@ -22,8 +22,10 @@ interface IPDFOptions {
   paymentFontSize: number;
   topY: number;
   receiptX: number;
+  receiptMarginRight: number;
   paymentPartLeftX: number;
   paymentPartRightX: number;
+  paymentPartMarginRight: number;
   amountY: number;
 }
 
@@ -92,6 +94,8 @@ export class BbitQRBillGenerator {
     this._t = translations[params.language];
 
     // prepare rendering options
+    const margin = 15;
+    const paymentPartLeftX = 200;
     const options: IPDFOptions = {
       titleFontSize: 11,
       receiptTitleFontSize: 6,
@@ -101,9 +105,11 @@ export class BbitQRBillGenerator {
 
       // define default positions
       topY,
-      receiptX: 15,
-      paymentPartLeftX: 200,
+      receiptX: margin,
+      receiptMarginRight: paymentPartLeftX - margin * 2,
+      paymentPartLeftX,
       paymentPartRightX: 360,
+      paymentPartMarginRight: size[1] - margin,
       amountY: topY + 190,
     };
 
@@ -142,11 +148,27 @@ export class BbitQRBillGenerator {
 
     newY = options.topY + options.titleFontSize * 2;
 
-    newY = this._renderPayableTo(doc, options.receiptX, newY, options.receiptTitleFontSize, options.receiptFontSize, params);
+    newY = this._renderPayableTo(
+      doc,
+      options.receiptX,
+      newY,
+      options.receiptMarginRight,
+      options.receiptTitleFontSize,
+      options.receiptFontSize,
+      params,
+    );
 
     newY = this._renderReference(doc, options.receiptX, newY, options.receiptTitleFontSize, options.receiptFontSize, params);
 
-    newY = this._renderPayableBy(doc, options.receiptX, newY, options.receiptTitleFontSize, options.receiptFontSize, params);
+    newY = this._renderPayableBy(
+      doc,
+      options.receiptX,
+      newY,
+      options.receiptMarginRight,
+      options.receiptTitleFontSize,
+      options.receiptFontSize,
+      params,
+    );
 
     newY = this._renderAmount(doc, options.receiptX, options.amountY, options.receiptTitleFontSize, options.receiptFontSize, params);
 
@@ -181,12 +203,21 @@ export class BbitQRBillGenerator {
 
     // right part
     newY = options.topY;
-    newY = this._renderPayableTo(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
+    newY = this._renderPayableTo(
+      doc,
+      options.paymentPartRightX,
+      newY,
+      options.paymentPartMarginRight,
+      options.paymentTitleFontSize,
+      options.paymentFontSize,
+      params,
+    );
     newY = this._renderReference(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
 
     if (params.unstructuredMessage || params.billInformation) {
       newY = newY + (options.paymentFontSize + 1) * 2;
       doc.fontSize(options.paymentTitleFontSize).font('Helvetica-Bold').text(this._t.additionalInfo, options.paymentPartRightX, newY);
+      newY = doc.y;
 
       let message = '';
 
@@ -204,41 +235,69 @@ export class BbitQRBillGenerator {
         message += params.billInformation;
       }
 
-      // Both fields together can only contain a maximum of 140characters.
+      // Both fields together can only contain a maximum of 140 characters.
       // If not all the details contained in the QR code can be displayed,
       // the shortened content must be marked with an ellipsis “...” at the end.
       if (message.length > 140) {
         message = `${message.slice(0, 139)}…`;
       }
 
-      // Hack to ensure each line will be printed on one line in the PDF
-      // Otherwise, we can't track correctly the newY position
-      const messageLines = message.split('\n').flatMap((l): RegExpMatchArray => l.match(/.{1,40}/g));
-      for (const line of messageLines) {
-        newY = newY + options.paymentFontSize + 1;
-        doc.fontSize(options.paymentFontSize).font('Helvetica').text(line, options.paymentPartRightX, newY);
-      }
+      doc
+        .fontSize(options.paymentFontSize)
+        .font('Helvetica')
+        // Height is not constrained as we have already added ellipsis after 139 characters
+        .text(message, options.paymentPartRightX, newY, {
+          width: options.paymentPartMarginRight - options.paymentPartRightX,
+        });
+      // Remove one font size to avoid a too big space due to _renderPayableBy
+      newY = doc.y - (options.paymentFontSize + 1);
     }
-    newY = this._renderPayableBy(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
+    newY = this._renderPayableBy(
+      doc,
+      options.paymentPartRightX,
+      newY,
+      options.paymentPartMarginRight,
+      options.paymentTitleFontSize,
+      options.paymentFontSize,
+      params,
+    );
   }
 
   private _renderPayableTo(
     doc: typeof PDFDocument,
     x: number,
     y: number,
+    marginRight: number,
     titleFontSize: number,
     fontSize: number,
     params: IBbitQRBill,
   ): number {
+    const width = marginRight - x;
+
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.accountPayableTo, x, y);
 
     y = y + fontSize + 1;
     doc.fontSize(fontSize).font('Helvetica').text(this._iban.printFormat(params.account), x, y);
 
     y = y + fontSize + 1;
-    doc.fontSize(fontSize).font('Helvetica').text(params.creditor.name, x, y);
+    /*
+     * From the implementation guide:
+     * > If the name of the creditor is too long, it can be truncated.
+     * > Truncation is only permitted if the information remains
+     * > clear. The name can be printed on two lines in the visible
+     * > part.
+     */
+    doc
+      .fontSize(fontSize)
+      .font('Helvetica')
+      .text(params.creditor.name, x, y, {
+        width,
+        height: (fontSize + 1) * 3,
+        ellipsis: false,
+      });
 
-    y = y + fontSize + 1;
+    y = doc.y;
+    /* There's no recommendation for number of lines to display address, give it at max 2 lines */
     doc
       .fontSize(fontSize)
       .font('Helvetica')
@@ -248,9 +307,13 @@ export class BbitQRBillGenerator {
           : params.creditor.address,
         x,
         y,
+        {
+          width,
+          height: (fontSize + 1) * 3,
+        },
       );
 
-    y = y + fontSize + 1;
+    y = doc.y;
     doc
       .fontSize(fontSize)
       .font('Helvetica')
@@ -281,17 +344,33 @@ export class BbitQRBillGenerator {
     doc: typeof PDFDocument,
     x: number,
     y: number,
+    marginRight: number,
     titleFontSize: number,
     fontSize: number,
     params: IBbitQRBill,
   ): number {
+    const width = marginRight - x;
     y = y + (fontSize + 1) * 2;
     doc.fontSize(titleFontSize).font('Helvetica-Bold').text(this._t.payableBy, x, y);
 
     y = y + fontSize + 1;
-    doc.fontSize(fontSize).font('Helvetica').text(params.debtor.name, x, y);
+    /*
+     * From the implementation guide:
+     * > If the name of the debtor is too long, it can be truncated.
+     * > Truncation is only permitted if the information remains clear. The
+     * > name can be printed on two lines in the visible part.
+     */
+    doc
+      .fontSize(fontSize)
+      .font('Helvetica')
+      .text(params.debtor.name, x, y, {
+        width,
+        height: (fontSize + 1) * 3,
+        ellipsis: false,
+      });
 
-    y = y + fontSize + 1;
+    y = doc.y;
+    /* There's no recommendation for number of lines to display address, give it at max 2 lines */
     doc
       .fontSize(fontSize)
       .font('Helvetica')
@@ -301,8 +380,13 @@ export class BbitQRBillGenerator {
           : params.debtor.address,
         x,
         y,
+        {
+          width,
+          height: (fontSize + 1) * 3,
+          ellipsis: false,
+        },
       );
-    y = y + fontSize + 1;
+    y = doc.y;
 
     doc
       .fontSize(fontSize)
