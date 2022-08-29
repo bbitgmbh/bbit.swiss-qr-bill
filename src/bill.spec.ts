@@ -67,4 +67,16 @@ describe('QRBill', (): void => {
       failureThresholdType: 'percent',
     });
   });
+
+  it('should create bills in A4 with separation hint', async (): Promise<void> => {
+    defaultData.format = BbitQRBillFormat.A4_WITH_SEPARATION_HINT;
+    const data = await bill.generate(defaultData);
+    expect(data).toBeDefined();
+    const image = await pdfBufferToImage(data);
+    // set higher threshold because inline fonts are not loaded and might be slightly different
+    expect(image).toMatchImageSnapshot({
+      failureThreshold: 0.05,
+      failureThresholdType: 'percent',
+    });
+  });
 });

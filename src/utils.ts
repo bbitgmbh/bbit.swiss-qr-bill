@@ -83,6 +83,7 @@ translations[BbitQRBillLanguage.DE] = {
   acceptancePoint: 'Annahmestelle',
   payableBy: 'Zahlbar durch',
   payableByNameAddr: 'Zahlbar durch (Name/Adresse)',
+  separationHint: 'Vor der Einzahlung abzutrennen',
 };
 
 translations[BbitQRBillLanguage.FR] = {
@@ -96,6 +97,7 @@ translations[BbitQRBillLanguage.FR] = {
   acceptancePoint: 'Point de dépôt',
   payableBy: 'Payable par',
   payableByNameAddr: 'Payable par (nom/adresse)',
+  separationHint: 'A détacher avant le versement',
 };
 
 translations[BbitQRBillLanguage.IT] = {
@@ -109,6 +111,7 @@ translations[BbitQRBillLanguage.IT] = {
   acceptancePoint: 'Punto di accettazione',
   payableBy: 'Pagabile da',
   payableByNameAddr: 'Pagabile da (nome/indirizzo)',
+  separationHint: 'Da staccare prima del versamento',
 };
 
 translations[BbitQRBillLanguage.EN] = {
@@ -122,6 +125,7 @@ translations[BbitQRBillLanguage.EN] = {
   acceptancePoint: 'Acceptance point',
   payableBy: 'Payable by',
   payableByNameAddr: 'Payable by (name/address)',
+  separationHint: 'Separate before paying in',
 };
 
 export { translations };

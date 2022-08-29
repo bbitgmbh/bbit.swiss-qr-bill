@@ -27,6 +27,7 @@ interface IPDFOptions {
   paymentPartRightX: number;
   paymentPartMarginRight: number;
   amountY: number;
+  separationHint: boolean;
 }
 
 export class BbitQRBillGenerator {
@@ -47,6 +48,7 @@ export class BbitQRBillGenerator {
     let size: [number, number];
     let generateAsA4: boolean;
     let preventLines: boolean;
+    let separationHint: boolean;
     switch (params.format) {
       case BbitQRBillFormat.DEFAULT_WITHOUT_LINES:
         preventLines = true;
@@ -57,6 +59,9 @@ export class BbitQRBillGenerator {
         break;
       case BbitQRBillFormat.A4_WITHOUT_LINES:
         preventLines = true;
+      case BbitQRBillFormat.A4_WITH_SEPARATION_HINT:
+        preventLines = false;
+        separationHint = true;
       case BbitQRBillFormat.A4:
       default:
         generateAsA4 = true;
@@ -102,6 +107,7 @@ export class BbitQRBillGenerator {
       receiptFontSize: 8,
       paymentTitleFontSize: 8,
       paymentFontSize: 10,
+      separationHint,
 
       // define default positions
       topY,
@@ -135,8 +141,15 @@ export class BbitQRBillGenerator {
 
     if (generateAsA4) {
       doc.moveTo(0, top).lineTo(600, top).stroke();
-      doc.image(scissorsHImageBuffer, options.receiptX, top - 5, { height: 10 });
-      doc.image(scissorsVImageBuffer, left - 5, top + 265, { width: 10 });
+      if (options.separationHint) {
+        doc
+          .fontSize(options.receiptFontSize)
+          .font('Helvetica')
+          .text(this._t.separationHint, left, options.topY - options.receiptFontSize * 3);
+      } else {
+        doc.image(scissorsHImageBuffer, options.receiptX, top - 5, { height: 10 });
+        doc.image(scissorsVImageBuffer, left - 5, top + 265, { width: 10 });
+      }
     }
   }
 
