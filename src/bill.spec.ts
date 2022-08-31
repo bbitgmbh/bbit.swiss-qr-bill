@@ -37,9 +37,9 @@ describe('QRBill', (): void => {
     const data = await bill.generate(largeData);
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
-    // set higher threshold because inline fonts are not loaded and might be slightly different
+    // set even higher threshold because inline fonts are not loaded and might be slightly different on different os
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold: 0.1,
       failureThresholdType: 'percent',
     });
   });

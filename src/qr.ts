@@ -18,18 +18,25 @@ export class BbitQRCodeGenerator {
   public async generate(params: IBbitQRBill): Promise<ArrayBuffer | Buffer> {
     const data = this.generateQRCodeContent(params);
 
-    const canvas = await qrcode.toCanvas(this._createCanvas(), data, { margin: 0 });
+    const canvas = this._createCanvas();
+    await qrcode.toCanvas(canvas, data, { margin: 0 });
 
     // adding swiss cross at center
     const imgDim = { width: 40, height: 40 };
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
     const imageObj = this._createImage();
     imageObj.src = swissCrossImage;
     imageObj.width = imgDim.width;
     imageObj.height = imgDim.height;
 
     const drawSwissCross = (): void => {
-      context?.drawImage(imageObj, canvas.width / 2 - imgDim.width / 2, canvas.height / 2 - imgDim.height / 2, imgDim.width, imgDim.height);
+      context?.drawImage(
+        imageObj as HTMLImageElement,
+        canvas.width / 2 - imgDim.width / 2,
+        canvas.height / 2 - imgDim.height / 2,
+        imgDim.width,
+        imgDim.height,
+      );
     };
 
     if (isNodeJs) {
@@ -44,11 +51,11 @@ export class BbitQRCodeGenerator {
     }
 
     if (isNodeJs) {
-      return canvas.toBuffer();
+      return (canvas as Canvas).toBuffer();
     } else {
       /* istanbul ignore next: not tested with jest */
       return new Promise((resolve): void => {
-        canvas.toBlob(async (blob: Blob): Promise<void> => {
+        (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
           const buffer = await blob.arrayBuffer();
           resolve(buffer);
         });

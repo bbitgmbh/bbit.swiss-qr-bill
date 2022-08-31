@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`QR test generate should work 1`] = `
-Object {
-  "data": Array [
+{
+  "data": [
     137,
     80,
     78,
