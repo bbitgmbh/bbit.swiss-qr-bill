@@ -535,10 +535,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@bbitgmbh/bbit.banking-utils@^1.0.9":
+"@bbitgmbh/bbit.banking-utils@^1.1.1":
   version "1.1.1"
-  resolved "https://npm.pkg.github.com/download/@bbitgmbh/bbit.banking-utils/1.1.1/f991f0d2147eda44c5638db857d4a90c3cd716396d1b26fc797ed3316e6c07fa#d6a49cfadfae5e4dae4aa100625fdce974a7a614"
-  integrity sha512-zKuy6nZ1Iw7c+XYtuqptpzTe5fdP/Qh0epb/KiJrk5/YajU8rd5GNVKDDwn8FUb9LTGnAFd0uBeNba/4+aCj7w==
+  resolved "https://registry.yarnpkg.com/@bbitgmbh/bbit.banking-utils/-/bbit.banking-utils-1.1.1.tgz#1e5f9934811d80931cf8411416eb92ccb253e376"
+  integrity sha512-FEDdr1hMV8b4Vfx+hEj9ZGzedMTsWS9ZfcCI2iKZqZEiHqtO1CrDDLCEgO+j1ov6XXXyT4ic6P+0ZKY8+p5dMA==
   dependencies:
     node-iso11649 "^2.1.2"
 

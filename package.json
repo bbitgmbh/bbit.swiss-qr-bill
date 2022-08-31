@@ -24,7 +24,7 @@
     "readme.md"
   ],
   "dependencies": {
-    "@bbitgmbh/bbit.banking-utils": "^1.0.9",
+    "@bbitgmbh/bbit.banking-utils": "^1.1.1",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
