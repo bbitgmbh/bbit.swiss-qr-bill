@@ -74,15 +74,17 @@ export class BbitQRCodeGenerator {
         data.add('1');
         data.add(this._iban.electronicFormat(params.account));
         data.add(params.creditor.type);
-        data.add(params.creditor.name);
-        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address);
+        data.add(params.creditor.name.substring(0, 70));
+        data.add(
+          (params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address).substring(0, 70),
+        );
         data.add(
           params.creditor.type === BbitQRBillAddressType.STRUCTURED
-            ? params.creditor.buildingNumber
-            : params.creditor.postalCode + ' ' + params.creditor.locality,
+            ? params.creditor.buildingNumber.substring(0, 16)
+            : (params.creditor.postalCode + ' ' + params.creditor.locality).substring(0, 70),
         );
-        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.postalCode : '');
-        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.locality : '');
+        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.postalCode.substring(0, 16) : '');
+        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.locality.substring(0, 35) : '');
         data.add(params.creditor.country);
         data.add();
         data.add();
@@ -94,22 +96,22 @@ export class BbitQRCodeGenerator {
         data.add(this._parseAmount(params.amount));
         data.add(params.currency);
         data.add(params.debtor.type);
-        data.add(params.debtor.name);
-        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address);
+        data.add(params.debtor.name.substring(0, 70));
+        data.add((params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address).substring(0, 70));
         data.add(
           params.debtor.type === BbitQRBillAddressType.STRUCTURED
-            ? params.debtor.buildingNumber
-            : params.debtor.postalCode + ' ' + params.debtor.locality,
+            ? params.debtor.buildingNumber.substring(0, 16)
+            : (params.debtor.postalCode + ' ' + params.debtor.locality).substring(0, 70),
         );
-        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.postalCode : '');
-        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.locality : '');
+        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.postalCode.substring(0, 16) : '');
+        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.locality.substring(0, 35) : '');
         data.add(params.debtor.country);
         data.add(this._iban.isQRIBAN(params.account) ? 'QRR' : 'SCOR');
-        data.add(params.reference);
-        data.add(params.unstructuredMessage);
+        data.add(params.reference.substring(0, 27));
+        data.add((params.unstructuredMessage || '').substring(0, 140));
         data.add('EPD');
         if (params.billInformation) {
-          data.add(params.billInformation);
+          data.add(params.billInformation.substring(0, 140));
         }
         data.add();
         return data.toString();
