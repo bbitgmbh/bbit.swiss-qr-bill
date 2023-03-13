@@ -9,11 +9,71 @@ import {
   BbitQRBillVersion,
   BbitQRBillAddressType,
   IBbitQRBillAddress,
+  IBbitQRBillBillInformation,
 } from '@bbitgmbh/bbit.banking-utils';
 
 export class BbitQRCodeGenerator {
   private _iban = new BbitIBAN();
   private _reference = new BbitBankingReference();
+
+  public generateQrBillInformation(data: string | IBbitQRBillBillInformation): string {
+    if (typeof data === 'string') {
+      return data || '';
+    }
+    if (!data) {
+      return '';
+    }
+    const values = [];
+    if (data.documentNumber) {
+      values.push(`/10/${data.documentNumber.replace(/\//g, '_')}`);
+    }
+    if (data.documentDate) {
+      values.push(`/11/${data.documentDate}`);
+    }
+    if (data.customerReference) {
+      values.push(`/20/${data.customerReference.replace(/\//g, '_')}`);
+    }
+    if (data.vatNumber) {
+      values.push(`/30/${data.vatNumber.replace(/\D/g, '')}`);
+    }
+    if (data.vatDate) {
+      if (typeof data.vatDate === 'string') {
+        values.push(`/31/${data.vatDate}`);
+      } else {
+        values.push(`/31/${data.vatDate.start}${data.vatDate.end}`);
+      }
+    }
+    if (data.vat?.length > 0) {
+      const arr = [];
+      for (const o of data.vat) {
+        if (!o.netAmount) {
+          arr.push(o.rate);
+          continue;
+        }
+        arr.push(`${o.rate}:${o.netAmount}`);
+      }
+      values.push(`/32/${arr.join(';')}`);
+    }
+    if (data.vatImportTax?.length > 0) {
+      const arr = [];
+      for (const o of data.vatImportTax) {
+        arr.push(`${o.rate}:${o.vatAmount}`);
+      }
+      values.push(`/33/${arr.join(';')}`);
+    }
+    if (data.paymentTerms?.length > 0) {
+      const arr = [];
+      for (const o of data.paymentTerms) {
+        arr.push(`${o.cashDiscountPercent || 0}:${o.days}`);
+      }
+      values.push(`/40/${arr.join(';')}`);
+    }
+
+    if (values.length > 0) {
+      return '//S1' + values.join('');
+    }
+    return '';
+  }
 
   public async generate(params: IBbitQRBill): Promise<ArrayBuffer | Buffer> {
     const data = this.generateQRCodeContent(params);
@@ -66,6 +126,7 @@ export class BbitQRCodeGenerator {
   public generateQRCodeContent(params: IBbitQRBill): string {
     this._setDefaultVersionIfMissing(params);
     this._verifyParams(params);
+    const billInformation = this.generateQrBillInformation(params.billInformation);
     switch (params.version) {
       case BbitQRBillVersion.V2_0:
         const data = new QRData();
@@ -110,8 +171,8 @@ export class BbitQRCodeGenerator {
         data.add(params.reference.substring(0, 27));
         data.add((params.unstructuredMessage || '').substring(0, 140));
         data.add('EPD');
-        if (params.billInformation) {
-          data.add(params.billInformation.substring(0, 140));
+        if (billInformation) {
+          data.add(billInformation.substring(0, 140));
         }
         data.add();
         return data.toString();

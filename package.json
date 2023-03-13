@@ -24,11 +24,12 @@
     "readme.md"
   ],
   "dependencies": {
-    "@bbitgmbh/bbit.banking-utils": "^2.0.0",
+    "@bbitgmbh/bbit.banking-utils": "^2.1.4",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "canvas": "^2.10.0",
+    "luxon": "^3.3.0",
     "pdfkit": "^0.13.0",
     "qrcode": "^1.5.1",
     "stream-browserify": "^3.0.0",
@@ -44,6 +45,7 @@
     "@types/jest": "^29.0.0",
     "@types/jest-image-snapshot": "^5.1.0",
     "@types/lodash": "^4.14.184",
+    "@types/luxon": "^3.2.0",
     "@types/node": "^18.7.15",
     "@types/pdfkit": "^0.12.6",
     "@types/qrcode": "^1.5.0",

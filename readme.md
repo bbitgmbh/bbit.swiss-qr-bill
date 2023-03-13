@@ -57,4 +57,6 @@ const bufferOrBlob = await qr.generate(defaultData);
 
 [Swiss Payment Standards 2019](https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf)
 
+[Bill information structure](https://www.swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf)
+
 [Validation](https://www.swiss-qr-invoice.org/validator/?lang=de)
