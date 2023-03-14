@@ -278,14 +278,14 @@ describe('QR test', (): void => {
   });
 
   it('generate billInformation should work', async (): Promise<void> => {
-    expect(qr.generateQrBillInformation('test')).toBe('test');
-    expect(qr.generateQrBillInformation({ documentNumber: '1234' })).toBe('//S1/10/1234');
-    expect(qr.generateQrBillInformation({ documentNumber: '1234', documentDate: '230301' })).toBe('//S1/10/1234/11/230301');
-    expect(qr.generateQrBillInformation({ documentNumber: '1234', documentDate: '230301', customerReference: 'test' })).toBe(
+    expect(qr.generateQRBillInformation('test')).toBe('test');
+    expect(qr.generateQRBillInformation({ documentNumber: '1234' })).toBe('//S1/10/1234');
+    expect(qr.generateQRBillInformation({ documentNumber: '1234', documentDate: '230301' })).toBe('//S1/10/1234/11/230301');
+    expect(qr.generateQRBillInformation({ documentNumber: '1234', documentDate: '230301', customerReference: 'test' })).toBe(
       '//S1/10/1234/11/230301/20/test',
     );
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -293,7 +293,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -302,7 +302,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -311,7 +311,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301230302');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -321,7 +321,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -331,7 +331,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7:100');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -344,7 +344,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7:100;2.5:100');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -361,7 +361,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7:100;2.5:100/33/7.7:10;2.5:10');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -379,7 +379,7 @@ describe('QR test', (): void => {
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7:100;2.5:100/33/7.7:10;2.5:10/40/0:30');
     expect(
-      qr.generateQrBillInformation({
+      qr.generateQRBillInformation({
         documentNumber: '1234',
         documentDate: '230301',
         customerReference: 'test',
@@ -396,5 +396,11 @@ describe('QR test', (): void => {
         paymentTerms: [{ days: 30 }, { days: 14, cashDiscountPercent: 2 }],
       }),
     ).toBe('//S1/10/1234/11/230301/20/test/30/000000000/31/230301/32/7.7:100;2.5:100/33/7.7:10;2.5:10/40/0:30;2:14');
+
+    expect(
+      qr.generateQRBillInformation({
+        documentNumber: '1234/\\',
+      }),
+    ).toBe('//S1/10/1234\\/\\\\');
   });
 });

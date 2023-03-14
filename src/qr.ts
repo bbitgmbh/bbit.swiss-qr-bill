@@ -16,7 +16,11 @@ export class BbitQRCodeGenerator {
   private _iban = new BbitIBAN();
   private _reference = new BbitBankingReference();
 
-  public generateQrBillInformation(data: string | IBbitQRBillBillInformation): string {
+  private _escapeQRBillInformationString(input: string): string {
+    return input.replace(/\\/g, '\\\\').replace(/\//g, '\\/');
+  }
+
+  public generateQRBillInformation(data: string | IBbitQRBillBillInformation): string {
     if (typeof data === 'string') {
       return data || '';
     }
@@ -25,10 +29,10 @@ export class BbitQRCodeGenerator {
     }
     const values = [];
     if (data.documentNumber) {
-      values.push(`/10/${data.documentNumber.replace(/\//g, '_')}`);
+      values.push(`/10/${this._escapeQRBillInformationString(data.documentNumber)}`);
     }
     if (data.documentDate) {
-      values.push(`/11/${data.documentDate}`);
+      values.push(`/11/${this._escapeQRBillInformationString(data.documentDate)}`);
     }
     if (data.customerReference) {
       values.push(`/20/${data.customerReference.replace(/\//g, '_')}`);
@@ -126,7 +130,7 @@ export class BbitQRCodeGenerator {
   public generateQRCodeContent(params: IBbitQRBill): string {
     this._setDefaultVersionIfMissing(params);
     this._verifyParams(params);
-    const billInformation = this.generateQrBillInformation(params.billInformation);
+    const billInformation = this.generateQRBillInformation(params.billInformation);
     switch (params.version) {
       case BbitQRBillVersion.V2_0:
         const data = new QRData();
