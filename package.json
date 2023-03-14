@@ -28,7 +28,7 @@
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "canvas": "2.10.0",
+    "canvas": "^2.11.0",
     "pdfkit": "0.13.0",
     "qrcode": "^1.5.1",
     "stream-browserify": "^3.0.0",
