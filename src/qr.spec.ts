@@ -276,7 +276,6 @@ describe('QR test', (): void => {
     expect(data).toBeDefined();
     expect(data).toMatchSnapshot();
   });
-
   it('generate billInformation should work', async (): Promise<void> => {
     expect(qr.generateQRBillInformation('test')).toBe('test');
     expect(qr.generateQRBillInformation({ documentNumber: '1234' })).toBe('//S1/10/1234');

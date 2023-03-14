@@ -227,7 +227,8 @@ export class BbitQRBillGenerator {
     );
     newY = this._renderReference(doc, options.paymentPartRightX, newY, options.paymentTitleFontSize, options.paymentFontSize, params);
 
-    if (params.unstructuredMessage || params.billInformation) {
+    const billInformation = this._qr.generateQRBillInformation(params.billInformation);
+    if (params.unstructuredMessage || billInformation) {
       newY = newY + (options.paymentFontSize + 1) * 2;
       doc.fontSize(options.paymentTitleFontSize).font('Helvetica-Bold').text(this._t.additionalInfo, options.paymentPartRightX, newY);
       newY = doc.y;
@@ -240,12 +241,12 @@ export class BbitQRBillGenerator {
 
       // If both elements are filled in, then a line break can be introduced
       // after the information in the first element “Ustrd”(Unstructured message)
-      if (message && params.billInformation) {
+      if (message && billInformation) {
         message += '\n';
       }
 
-      if (params.billInformation) {
-        message += params.billInformation;
+      if (billInformation) {
+        message += billInformation;
       }
 
       // Both fields together can only contain a maximum of 140 characters.
