@@ -1,9 +1,9 @@
 import { BbitQRBillFormat } from '@bbitgmbh/bbit.banking-utils/dist';
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
 import { describe, expect, it } from 'vitest';
 import { BbitQRBillGenerator } from './bill';
 import { defaultData, largeData } from './data';
 import { pdfBufferToImage } from './test-utils';
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
 expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
