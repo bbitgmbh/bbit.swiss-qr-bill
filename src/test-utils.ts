@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
 import { createCanvas } from 'canvas';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 class NodeCanvasFactory {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public create(width: number, height: number): any {
     // assert(width > 0 && height > 0, 'Invalid canvas size');
     const canvas = createCanvas(width, height);
@@ -14,6 +15,7 @@ class NodeCanvasFactory {
     };
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public reset(canvasAndContext: any, width: number, height: number): void {
     // assert(canvasAndContext.canvas, 'Canvas is not specified');
     // assert(width > 0 && height > 0, 'Invalid canvas size');
@@ -21,6 +23,7 @@ class NodeCanvasFactory {
     canvasAndContext.canvas.height = height;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public destroy(canvasAndContext: any): void {
     // assert(canvasAndContext.canvas, 'Canvas is not specified');
 
@@ -33,9 +36,10 @@ class NodeCanvasFactory {
   }
 }
 
-export const pdfBufferToImage = async (pdfBuffer: Buffer | Blob): Promise<Buffer> => {
+export const pdfBufferToImage = async (pdfBuffer: Uint8Array): Promise<Buffer> => {
   // Use standard fonts for testing so it should work on all systems
   const pdf = await PDFJS.getDocument({
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     data: pdfBuffer as any,
     disableFontFace: true,
     // useSystemFonts: false,

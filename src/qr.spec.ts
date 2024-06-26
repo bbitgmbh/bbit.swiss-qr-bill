@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { QRBillValidationError } from './errors/validation-error';
-import { BbitQRBillVersion, BbitQRBillAddressType } from '@bbitgmbh/bbit.banking-utils';
-import { BbitQRCodeGenerator } from './qr';
+import { BbitQRBillAddressType, type BbitQRBillVersion } from '@bbitgmbh/bbit.banking-utils';
 import _ from 'lodash';
 import { defaultData } from './data';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { QRBillValidationError } from './errors/validation-error';
+import { BbitQRCodeGenerator } from './qr';
+import { describe, expect, it } from 'vitest';
 
 const qr = new BbitQRCodeGenerator();
 
@@ -23,6 +24,8 @@ describe('QR test', (): void => {
   it('Missing account (IBAN) should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/performance/noDelete: <explanation>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).account;
     try {
       qr.generateQRCodeContent(cloned);
@@ -51,6 +54,8 @@ describe('QR test', (): void => {
   it('Missing creditor should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    // biome-ignore lint/performance/noDelete: <explanation>
     delete (cloned as any).creditor;
     try {
       qr.generateQRCodeContent(cloned);
@@ -65,6 +70,7 @@ describe('QR test', (): void => {
   it('Missing creditor properties should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     cloned.creditor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -85,6 +91,7 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
       type: BbitQRBillAddressType.STRUCTURED,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -106,6 +113,7 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
       type: BbitQRBillAddressType.UNSTRUCTURED,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -124,6 +132,8 @@ describe('QR test', (): void => {
   it('Missing debtor should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/performance/noDelete: <explanation>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).debtor;
     try {
       qr.generateQRCodeContent(cloned);
@@ -138,6 +148,7 @@ describe('QR test', (): void => {
   it('Missing debtor properties should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     cloned.debtor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -158,6 +169,7 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
       type: BbitQRBillAddressType.STRUCTURED,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -179,6 +191,7 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
       type: BbitQRBillAddressType.UNSTRUCTURED,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
@@ -197,6 +210,8 @@ describe('QR test', (): void => {
   it('Missing reference should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/performance/noDelete: <explanation>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).reference;
     try {
       qr.generateQRCodeContent(cloned);
@@ -225,6 +240,8 @@ describe('QR test', (): void => {
   it('Missing currency should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/performance/noDelete: <explanation>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).currency;
     try {
       qr.generateQRCodeContent(cloned);
@@ -239,6 +256,8 @@ describe('QR test', (): void => {
   it('Missing amount should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    // biome-ignore lint/performance/noDelete: <explanation>
     delete (cloned as any).amount;
     try {
       qr.generateQRCodeContent(cloned);
@@ -264,7 +283,9 @@ describe('QR test', (): void => {
     expect(data2).toMatchSnapshot();
 
     const withoutMessage = _.cloneDeep(defaultData);
+    // biome-ignore lint/performance/noDelete: <explanation>
     delete withoutMessage.unstructuredMessage;
+    // biome-ignore lint/performance/noDelete: <explanation>
     delete withoutMessage.billInformation;
     const data3 = qr.generateQRCodeContent(withoutMessage);
     expect(data3).toBeDefined();
@@ -279,10 +300,19 @@ describe('QR test', (): void => {
   it('generate billInformation should work', async (): Promise<void> => {
     expect(qr.generateQRBillInformation('test')).toBe('test');
     expect(qr.generateQRBillInformation({ documentNumber: '1234' })).toBe('//S1/10/1234');
-    expect(qr.generateQRBillInformation({ documentNumber: '1234', documentDate: '230301' })).toBe('//S1/10/1234/11/230301');
-    expect(qr.generateQRBillInformation({ documentNumber: '1234', documentDate: '230301', customerReference: 'test' })).toBe(
-      '//S1/10/1234/11/230301/20/test',
-    );
+    expect(
+      qr.generateQRBillInformation({
+        documentNumber: '1234',
+        documentDate: '230301',
+      }),
+    ).toBe('//S1/10/1234/11/230301');
+    expect(
+      qr.generateQRBillInformation({
+        documentNumber: '1234',
+        documentDate: '230301',
+        customerReference: 'test',
+      }),
+    ).toBe('//S1/10/1234/11/230301/20/test');
     expect(
       qr.generateQRBillInformation({
         documentNumber: '1234',

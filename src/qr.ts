@@ -1,16 +1,16 @@
-import { isNodeJs, swissCrossImage, QRData } from './utils';
-import { QRBillValidationError } from './errors/validation-error';
-import * as qrcode from 'qrcode';
-import { Image, createCanvas, Canvas } from 'canvas';
 import {
-  BbitIBAN,
   BbitBankingReference,
-  IBbitQRBill,
-  BbitQRBillVersion,
+  BbitIBAN,
   BbitQRBillAddressType,
-  IBbitQRBillAddress,
-  IBbitQRBillBillInformation,
+  BbitQRBillVersion,
+  type IBbitQRBill,
+  type IBbitQRBillAddress,
+  type IBbitQRBillBillInformation,
 } from '@bbitgmbh/bbit.banking-utils';
+import { type Canvas, Image, createCanvas } from 'canvas';
+import * as qrcode from 'qrcode';
+import { QRBillValidationError } from './errors/validation-error';
+import { QRData, isNodeJs, swissCrossImage } from './utils';
 
 export class BbitQRCodeGenerator {
   private _iban = new BbitIBAN();
@@ -74,7 +74,7 @@ export class BbitQRCodeGenerator {
     }
 
     if (values.length > 0) {
-      return '//S1' + values.join('');
+      return `//S1${values.join('')}`;
     }
     return '';
   }
@@ -106,6 +106,7 @@ export class BbitQRCodeGenerator {
     if (isNodeJs) {
       drawSwissCross();
     } else {
+      // biome-ignore lint/suspicious/noAsyncPromiseExecutor: <explanation>
       await new Promise<void>(async (resolve): Promise<void> => {
         (imageObj as HTMLImageElement).addEventListener('load', async (): Promise<void> => {
           drawSwissCross();
@@ -116,15 +117,14 @@ export class BbitQRCodeGenerator {
 
     if (isNodeJs) {
       return (canvas as Canvas).toBuffer();
-    } else {
-      /* istanbul ignore next: not tested with jest */
-      return new Promise((resolve): void => {
-        (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
-          const buffer = await blob.arrayBuffer();
-          resolve(buffer);
-        });
-      });
     }
+    /* istanbul ignore next: not tested with jest */
+    return new Promise((resolve): void => {
+      (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
+        const buffer = await blob.arrayBuffer();
+        resolve(buffer);
+      });
+    });
   }
 
   public generateQRCodeContent(params: IBbitQRBill): string {
@@ -132,7 +132,7 @@ export class BbitQRCodeGenerator {
     this._verifyParams(params);
     const billInformation = this.generateQRBillInformation(params.billInformation);
     switch (params.version) {
-      case BbitQRBillVersion.V2_0:
+      case BbitQRBillVersion.V2_0: {
         const data = new QRData();
         data.add('SPC');
         data.add('0200');
@@ -141,15 +141,22 @@ export class BbitQRCodeGenerator {
         data.add(params.creditor.type);
         data.add(params.creditor.name.substring(0, 70));
         data.add(
-          (params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.street : params.creditor.address).substring(0, 70),
+          (params.creditor.type === BbitQRBillAddressType.STRUCTURED
+            ? params.creditor.street
+            : params.creditor.address
+          ).substring(0, 70),
         );
         data.add(
           params.creditor.type === BbitQRBillAddressType.STRUCTURED
             ? params.creditor.buildingNumber.substring(0, 16)
-            : (params.creditor.postalCode + ' ' + params.creditor.locality).substring(0, 70),
+            : `${params.creditor.postalCode} ${params.creditor.locality}`.substring(0, 70),
         );
-        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.postalCode.substring(0, 16) : '');
-        data.add(params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.locality.substring(0, 35) : '');
+        data.add(
+          params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.postalCode.substring(0, 16) : '',
+        );
+        data.add(
+          params.creditor.type === BbitQRBillAddressType.STRUCTURED ? params.creditor.locality.substring(0, 35) : '',
+        );
         data.add(params.creditor.country);
         data.add();
         data.add();
@@ -162,14 +169,23 @@ export class BbitQRCodeGenerator {
         data.add(params.currency);
         data.add(params.debtor.type);
         data.add(params.debtor.name.substring(0, 70));
-        data.add((params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.street : params.debtor.address).substring(0, 70));
+        data.add(
+          (params.debtor.type === BbitQRBillAddressType.STRUCTURED
+            ? params.debtor.street
+            : params.debtor.address
+          ).substring(0, 70),
+        );
         data.add(
           params.debtor.type === BbitQRBillAddressType.STRUCTURED
             ? params.debtor.buildingNumber.substring(0, 16)
-            : (params.debtor.postalCode + ' ' + params.debtor.locality).substring(0, 70),
+            : `${params.debtor.postalCode} ${params.debtor.locality}`.substring(0, 70),
         );
-        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.postalCode.substring(0, 16) : '');
-        data.add(params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.locality.substring(0, 35) : '');
+        data.add(
+          params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.postalCode.substring(0, 16) : '',
+        );
+        data.add(
+          params.debtor.type === BbitQRBillAddressType.STRUCTURED ? params.debtor.locality.substring(0, 35) : '',
+        );
         data.add(params.debtor.country);
         data.add(this._iban.isQRIBAN(params.account) ? 'QRR' : 'SCOR');
         data.add(params.reference.substring(0, 27));
@@ -180,6 +196,7 @@ export class BbitQRCodeGenerator {
         }
         data.add();
         return data.toString();
+      }
       default:
         throw new Error(`QR bill version ${params.version} is not supported`);
     }
@@ -288,19 +305,17 @@ export class BbitQRCodeGenerator {
     if (isNodeJs) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return createCanvas(500, 500);
-    } else {
-      /* istanbul ignore next: not tested with jest */
-      return document.createElement('canvas');
     }
+    /* istanbul ignore next: not tested with jest */
+    return document.createElement('canvas');
   }
 
   private _createImage(): Image | HTMLImageElement {
     if (isNodeJs) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return new Image();
-    } else {
-      /* istanbul ignore next: not tested with jest */
-      return document.createElement('img');
     }
+    /* istanbul ignore next: not tested with jest */
+    return document.createElement('img');
   }
 }

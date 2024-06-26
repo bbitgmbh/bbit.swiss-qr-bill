@@ -1,8 +1,9 @@
-import { pdfBufferToImage } from './test-utils';
+import { BbitQRBillFormat } from '@bbitgmbh/bbit.banking-utils/dist';
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
+import { describe, expect, it } from 'vitest';
 import { BbitQRBillGenerator } from './bill';
 import { defaultData, largeData } from './data';
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
-import { BbitQRBillFormat } from '@bbitgmbh/bbit.banking-utils/dist';
+import { pdfBufferToImage } from './test-utils';
 expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
@@ -123,6 +124,7 @@ describe('QRBill', (): void => {
         ],
       },
       language: 'de-CH',
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any);
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);

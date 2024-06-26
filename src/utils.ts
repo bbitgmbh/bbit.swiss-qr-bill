@@ -1,7 +1,7 @@
+import * as stream from 'stream';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { IBbitQRBillTranslations, BbitQRBillLanguage } from '@bbitgmbh/bbit.banking-utils';
-import * as stream from 'stream';
+import { BbitQRBillLanguage, type IBbitQRBillTranslations } from '@bbitgmbh/bbit.banking-utils';
 
 export const isNodeJs = typeof document === 'undefined';
 
@@ -24,7 +24,7 @@ export class QRData {
     if (!data) {
       this._data += '\n';
     } else {
-      this._data += data.replace(/\n/gm, '') + '\n';
+      this._data += `${data.replace(/\n/gm, '')}\n`;
     }
   }
 
@@ -36,10 +36,12 @@ export class QRData {
 export class CustomWritableStream extends stream.Writable {
   private _chunks = [];
   private _length = 0;
+  // biome-ignore lint/complexity/noUselessConstructor: <explanation>
   public constructor(options?: unknown) {
     super(options);
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public _write(chunk: any, _enc: unknown, callback: (...params: any[]) => void): void {
     if (isNodeJs) {
       if (!(chunk instanceof Uint8Array)) chunk = new Uint8Array(chunk);
@@ -47,11 +49,14 @@ export class CustomWritableStream extends stream.Writable {
 
     this._length += chunk.length;
     this._chunks.push(chunk);
+    // biome-ignore lint/correctness/noVoidTypeReturn: <explanation>
     return callback(null);
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public _destroy(_err: unknown, callback: (...params: any[]) => void): void {
     this._chunks = null;
+    // biome-ignore lint/correctness/noVoidTypeReturn: <explanation>
     return callback(null);
   }
 

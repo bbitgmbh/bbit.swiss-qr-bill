@@ -1,4 +1,9 @@
-import { IBbitQRBill, BbitQRBillCurrency, BbitQRBillAddressType, BbitQRBillLanguage } from '@bbitgmbh/bbit.banking-utils';
+import {
+  BbitQRBillAddressType,
+  BbitQRBillCurrency,
+  BbitQRBillLanguage,
+  type IBbitQRBill,
+} from '@bbitgmbh/bbit.banking-utils';
 
 const LOREM_IPSUM =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in lorem maximus turpis dignissim cursus nec vel nisl. Morbi bibendum fusce.';
