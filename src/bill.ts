@@ -226,7 +226,7 @@ export class BbitQRBillGenerator {
   private _renderPayment(
     doc: typeof PDFDocument,
     params: IBbitQRBill,
-    code: Buffer | ArrayBuffer,
+    code: Uint8Array,
     options: IPDFOptions,
   ): void {
     // left part
@@ -241,7 +241,7 @@ export class BbitQRBillGenerator {
 
     // qr code
     newY = options.topY + 30;
-    doc.image(code, options.paymentPartLeftX, newY, { width: 140 });
+    doc.image(Buffer.from(code), options.paymentPartLeftX, newY, { width: 140 });
 
     newY = this._renderAmount(
       doc,

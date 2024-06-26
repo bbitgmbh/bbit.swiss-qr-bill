@@ -79,7 +79,7 @@ export class BbitQRCodeGenerator {
     return '';
   }
 
-  public async generate(params: IBbitQRBill): Promise<ArrayBuffer | Buffer> {
+  public async generate(params: IBbitQRBill): Promise<Uint8Array> {
     const data = this.generateQRCodeContent(params);
 
     const canvas = this._createCanvas();
@@ -116,13 +116,13 @@ export class BbitQRCodeGenerator {
     }
 
     if (isNodeJs) {
-      return (canvas as Canvas).toBuffer();
+      return new Uint8Array((canvas as Canvas).toBuffer());
     }
     /* istanbul ignore next: not tested with jest */
     return new Promise((resolve): void => {
       (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
         const buffer = await blob.arrayBuffer();
-        resolve(buffer);
+        resolve(new Uint8Array(buffer));
       });
     });
   }
