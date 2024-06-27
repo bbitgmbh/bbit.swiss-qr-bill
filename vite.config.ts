@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     minWorkers: 0,
     maxWorkers: 1,
+    pool: 'forks' // canvas is incompatible with worker_threads
   },
   resolve: {
     alias: {

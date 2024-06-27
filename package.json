@@ -49,6 +49,7 @@
 		"@types/node": "^20.14.9",
 		"@types/pdfkit": "^0.13.4",
 		"@types/qrcode": "^1.5.5",
+		"@vitest/ui": "^1.6.0",
 		"babel-jest": "29.7.0",
 		"babel-loader": "^9.1.3",
 		"babel-plugin-ts-nameof": "4.2.1",
