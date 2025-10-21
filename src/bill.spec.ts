@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { BbitQRBillGenerator } from './bill';
 import { defaultData, largeData } from './data';
 import { pdfBufferToImage } from './test-utils';
+
 expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
@@ -124,7 +125,7 @@ describe('QRBill', (): void => {
         ],
       },
       language: 'de-CH',
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      // biome-ignore lint/suspicious/noExplicitAny: required
     } as any);
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);

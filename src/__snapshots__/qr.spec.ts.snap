@@ -2879,6 +2879,116 @@ EPD
 "
 `;
 
+exports[`QR test > generateQRCodeContent should work with structured data 1`] = `
+"SPC
+0200
+1
+CH2830000011623852950
+S
+bbit gmbh
+Rainweg
+10
+3612
+Steffisburg
+CH
+
+
+
+
+
+
+
+100.00
+CHF
+S
+Test AG
+Musterstrasse
+
+3600
+Thun
+CH
+QRR
+000000000000000012312312316
+Test message
+EPD
+Test billing information
+
+"
+`;
+
+exports[`QR test > generateQRCodeContent should work with structured data 2`] = `
+"SPC
+0200
+1
+CH2830000011623852950
+S
+Test AG
+Musterstrasse
+1
+3600
+Thun
+CH
+
+
+
+
+
+
+
+100.00
+CHF
+K
+bbit gmbh
+Rainweg 10
+3612 Steffisburg
+
+
+CH
+QRR
+000000000000000012312312316
+Test message
+EPD
+Test billing information
+
+"
+`;
+
+exports[`QR test > generateQRCodeContent should work with structured data 3`] = `
+"SPC
+0200
+1
+CH2830000011623852950
+K
+bbit gmbh
+Rainweg 10
+3612 Steffisburg
+
+
+CH
+
+
+
+
+
+
+
+100.00
+CHF
+S
+Test AG
+Musterstrasse
+1
+3600
+Thun
+CH
+QRR
+000000000000000012312312316
+
+EPD
+
+"
+`;
+
 exports[`QR test generate should work 1`] = `
 {
   "data": [

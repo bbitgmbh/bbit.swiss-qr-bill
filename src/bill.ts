@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import {
   BbitBankingReference,
   BbitIBAN,
@@ -7,9 +6,10 @@ import {
   type IBbitQRBill,
   type IBbitQRBillTranslations,
 } from '@bbitgmbh/bbit.banking-utils';
+import * as fs from 'fs';
 import PDFDocument from 'pdfkit';
-import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm';
 import Helvetica from 'pdfkit/js/data/Helvetica.afm';
+import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BbitQRCodeGenerator } from './qr';
 import { CustomWritableStream, isNodeJs, scissorsHImageBuffer, scissorsVImageBuffer, translations } from './utils';
@@ -379,7 +379,7 @@ export class BbitQRBillGenerator {
     doc
       .fontSize(fontSize)
       .font('Helvetica')
-      // biome-ignore lint/style/useTemplate: <explanation>
+      // biome-ignore lint/style/useTemplate: required
       .text(params.creditor.postalCode + ' ' + params.creditor.locality, x, y);
 
     return y;
@@ -439,7 +439,7 @@ export class BbitQRBillGenerator {
       .font('Helvetica')
       .text(
         params.debtor.type === BbitQRBillAddressType.STRUCTURED
-          ? // biome-ignore lint/style/useTemplate: <explanation>
+          ? // biome-ignore lint/style/useTemplate: required
             params.debtor.street + ' ' + params.debtor.buildingNumber
           : params.debtor.address,
         x,
@@ -455,7 +455,7 @@ export class BbitQRBillGenerator {
     doc
       .fontSize(fontSize)
       .font('Helvetica')
-      // biome-ignore lint/style/useTemplate: <explanation>
+      // biome-ignore lint/style/useTemplate: required
       .text(params.debtor.postalCode + ' ' + params.debtor.locality, x, y);
 
     return y;

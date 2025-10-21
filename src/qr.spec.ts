@@ -1,10 +1,11 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: required for testing */
 import { BbitQRBillAddressType, type BbitQRBillVersion } from '@bbitgmbh/bbit.banking-utils';
 import _ from 'lodash';
-import { defaultData } from './data';
+import { describe, expect, it } from 'vitest';
+import { defaultData, defaultDataStructured } from './data';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { QRBillValidationError } from './errors/validation-error';
 import { BbitQRCodeGenerator } from './qr';
-import { describe, expect, it } from 'vitest';
 
 const qr = new BbitQRCodeGenerator();
 
@@ -16,7 +17,7 @@ describe('QR test', (): void => {
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toEqual(new Error(`QR bill version ${cloned.version} is not supported`));
   });
@@ -24,13 +25,11 @@ describe('QR test', (): void => {
   it('Missing account (IBAN) should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/performance/noDelete: <explanation>
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).account;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(2);
@@ -44,7 +43,7 @@ describe('QR test', (): void => {
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -54,13 +53,11 @@ describe('QR test', (): void => {
   it('Missing creditor should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    // biome-ignore lint/performance/noDelete: <explanation>
     delete (cloned as any).creditor;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -70,12 +67,11 @@ describe('QR test', (): void => {
   it('Missing creditor properties should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     cloned.creditor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(5);
@@ -91,12 +87,11 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
       type: BbitQRBillAddressType.STRUCTURED,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(4);
@@ -113,12 +108,11 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.creditor = {
       type: BbitQRBillAddressType.UNSTRUCTURED,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(4);
@@ -132,13 +126,11 @@ describe('QR test', (): void => {
   it('Missing debtor should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/performance/noDelete: <explanation>
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).debtor;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -148,12 +140,11 @@ describe('QR test', (): void => {
   it('Missing debtor properties should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     cloned.debtor = {} as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(5);
@@ -169,12 +160,11 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
       type: BbitQRBillAddressType.STRUCTURED,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(4);
@@ -191,12 +181,11 @@ describe('QR test', (): void => {
     const cloned = _.cloneDeep(defaultData);
     cloned.debtor = {
       type: BbitQRBillAddressType.UNSTRUCTURED,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } as any;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(4);
@@ -210,13 +199,11 @@ describe('QR test', (): void => {
   it('Missing reference should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/performance/noDelete: <explanation>
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).reference;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -230,7 +217,7 @@ describe('QR test', (): void => {
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -240,13 +227,11 @@ describe('QR test', (): void => {
   it('Missing currency should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/performance/noDelete: <explanation>
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     delete (cloned as any).currency;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -256,13 +241,11 @@ describe('QR test', (): void => {
   it('Missing amount should fail', (): void => {
     let error!: QRBillValidationError;
     const cloned = _.cloneDeep(defaultData);
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    // biome-ignore lint/performance/noDelete: <explanation>
     delete (cloned as any).amount;
     try {
       qr.generateQRCodeContent(cloned);
     } catch (err) {
-      error = err;
+      error = err as QRBillValidationError;
     }
     expect(error).toBeDefined();
     expect(error.getValidationErrors()).toHaveLength(1);
@@ -284,9 +267,30 @@ describe('QR test', (): void => {
       expect(data2).toMatchSnapshot();
 
       const withoutMessage = _.cloneDeep(defaultData);
-      // biome-ignore lint/performance/noDelete: <explanation>
       delete withoutMessage.unstructuredMessage;
-      // biome-ignore lint/performance/noDelete: <explanation>
+      delete withoutMessage.billInformation;
+      const data3 = qr.generateQRCodeContent(withoutMessage);
+      expect(data3).toBeDefined();
+      expect(data3).toMatchSnapshot();
+    }
+  });
+
+  it('generateQRCodeContent should work with structured data', (): void => {
+    const data = qr.generateQRCodeContent(defaultDataStructured);
+    expect(data).toBeDefined();
+    if (!process.env.CI) {
+      expect(data).toMatchSnapshot();
+
+      const switchedAddresses = _.cloneDeep(defaultData);
+      const save = switchedAddresses.debtor;
+      switchedAddresses.debtor = defaultData.creditor;
+      switchedAddresses.creditor = save;
+      const data2 = qr.generateQRCodeContent(switchedAddresses);
+      expect(data2).toBeDefined();
+      expect(data2).toMatchSnapshot();
+
+      const withoutMessage = _.cloneDeep(defaultData);
+      delete withoutMessage.unstructuredMessage;
       delete withoutMessage.billInformation;
       const data3 = qr.generateQRCodeContent(withoutMessage);
       expect(data3).toBeDefined();

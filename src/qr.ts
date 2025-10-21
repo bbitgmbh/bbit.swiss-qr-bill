@@ -7,10 +7,10 @@ import {
   type IBbitQRBillAddress,
   type IBbitQRBillBillInformation,
 } from '@bbitgmbh/bbit.banking-utils';
-import { type Canvas, Image, createCanvas } from 'canvas';
+import { type Canvas, createCanvas, Image } from 'canvas';
 import * as qrcode from 'qrcode';
 import { QRBillValidationError } from './errors/validation-error';
-import { QRData, isNodeJs, swissCrossImage } from './utils';
+import { isNodeJs, QRData, swissCrossImage } from './utils';
 
 export class BbitQRCodeGenerator {
   private _iban = new BbitIBAN();
@@ -106,7 +106,7 @@ export class BbitQRCodeGenerator {
     if (isNodeJs) {
       drawSwissCross();
     } else {
-      // biome-ignore lint/suspicious/noAsyncPromiseExecutor: <explanation>
+      // biome-ignore lint/suspicious/noAsyncPromiseExecutor: required
       await new Promise<void>(async (resolve): Promise<void> => {
         (imageObj as HTMLImageElement).addEventListener('load', async (): Promise<void> => {
           drawSwissCross();
@@ -177,7 +177,7 @@ export class BbitQRCodeGenerator {
         );
         data.add(
           params.debtor.type === BbitQRBillAddressType.STRUCTURED
-            ? params.debtor.buildingNumber.substring(0, 16)
+            ? params.debtor.buildingNumber?.substring(0, 16) || ''
             : `${params.debtor.postalCode} ${params.debtor.locality}`.substring(0, 70),
         );
         data.add(

@@ -35,6 +35,34 @@ export const defaultData: IBbitQRBill = {
   language: BbitQRBillLanguage.DE,
 };
 
+export const defaultDataStructured: IBbitQRBill = {
+  account: 'CH2830000011623852950',
+  amount: 100.0,
+  currency: BbitQRBillCurrency.CHF,
+  creditor: {
+    type: BbitQRBillAddressType.STRUCTURED,
+    name: 'bbit gmbh',
+    street: 'Rainweg',
+    buildingNumber: '10',
+    postalCode: '3612',
+    locality: 'Steffisburg',
+    country: 'CH',
+  },
+  reference: '000000000000000012312312316',
+  debtor: {
+    type: BbitQRBillAddressType.STRUCTURED,
+    name: 'Test AG',
+    street: 'Musterstrasse',
+    buildingNumber: undefined,
+    postalCode: '3600',
+    locality: 'Thun',
+    country: 'CH',
+  },
+  unstructuredMessage: 'Test message',
+  billInformation: 'Test billing information',
+  language: BbitQRBillLanguage.DE,
+};
+
 export const largeData: IBbitQRBill = {
   account: 'CH2830000011623852950',
   amount: 100.0,
