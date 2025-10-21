@@ -73,7 +73,7 @@ export class CustomWritableStream extends stream.Writable {
   }
 }
 
-export const isJest = process.env.NODE_ENV === 'test';
+export const isTest = process.env.NODE_ENV === 'test';
 
 const translations: {
   [key: string]: IBbitQRBillTranslations;

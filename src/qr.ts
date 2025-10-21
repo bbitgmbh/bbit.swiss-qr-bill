@@ -118,7 +118,6 @@ export class BbitQRCodeGenerator {
     if (isNodeJs) {
       return (canvas as Canvas).toBuffer();
     }
-    /* istanbul ignore next: not tested with jest */
     return new Promise((resolve): void => {
       (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
         const buffer = await blob.arrayBuffer();
@@ -306,7 +305,6 @@ export class BbitQRCodeGenerator {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return createCanvas(500, 500);
     }
-    /* istanbul ignore next: not tested with jest */
     return document.createElement('canvas');
   }
 
@@ -315,7 +313,6 @@ export class BbitQRCodeGenerator {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       return new Image();
     }
-    /* istanbul ignore next: not tested with jest */
     return document.createElement('img');
   }
 }
