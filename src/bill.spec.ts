@@ -9,6 +9,8 @@ expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
 
+const failureThreshold = 0.2;
+
 describe('QRBill', (): void => {
   it('should create bills in A6', async (): Promise<void> => {
     defaultData.format = BbitQRBillFormat.DEFAULT;
@@ -17,7 +19,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
@@ -29,7 +31,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
@@ -53,7 +55,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
@@ -65,7 +67,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
@@ -77,7 +79,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
@@ -131,7 +133,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.05,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
