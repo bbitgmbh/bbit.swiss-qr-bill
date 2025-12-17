@@ -294,11 +294,11 @@ describe('QR test', (): void => {
     expect(data3).toMatchSnapshot();
   });
 
-  // it('generate should work', async (): Promise<void> => {
-  //   const data = await qr.generate(defaultData);
-  //   expect(data).toBeDefined();
-  //   expect(data).toMatchSnapshot();
-  // });
+  it('generate should work', async (): Promise<void> => {
+    const data = await qr.generate(defaultData);
+    expect(data).toBeDefined();
+    expect(data).toMatchSnapshot();
+  });
   it('generate billInformation should work', async (): Promise<void> => {
     expect(qr.generateQRBillInformation('test')).toBe('test');
     expect(qr.generateQRBillInformation({ documentNumber: '1234' })).toBe('//S1/10/1234');
