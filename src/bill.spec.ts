@@ -10,7 +10,7 @@ expect.extend({ toMatchImageSnapshot });
 const bill = new BbitQRBillGenerator();
 
 const snapshotOptions: MatchImageSnapshotOptions = {
-  failureThreshold: 25,
+  failureThreshold: 1,
   failureThresholdType: 'percent',
 };
 
