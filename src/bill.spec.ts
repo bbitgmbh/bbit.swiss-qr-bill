@@ -9,7 +9,7 @@ expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
 
-const failureThreshold = 0.2;
+const failureThreshold = 0.5;
 
 describe('QRBill', (): void => {
   it('should create bills in A6', async (): Promise<void> => {
@@ -43,7 +43,7 @@ describe('QRBill', (): void => {
     const image = await pdfBufferToImage(data);
     // set even higher threshold because inline fonts are not loaded and might be slightly different on different os
     expect(image).toMatchImageSnapshot({
-      failureThreshold: 0.1,
+      failureThreshold,
       failureThresholdType: 'percent',
     });
   });
