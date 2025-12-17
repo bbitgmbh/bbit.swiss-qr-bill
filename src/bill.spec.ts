@@ -1,5 +1,5 @@
 import { BbitQRBillFormat } from '@bbitgmbh/bbit.banking-utils/dist';
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
+import { MatchImageSnapshotOptions, toMatchImageSnapshot } from 'jest-image-snapshot';
 import { describe, expect, it } from 'vitest';
 import { BbitQRBillGenerator } from './bill';
 import { defaultData, largeData } from './data';
@@ -9,7 +9,10 @@ expect.extend({ toMatchImageSnapshot });
 
 const bill = new BbitQRBillGenerator();
 
-const failureThreshold = 0.5;
+const snapshotOptions: MatchImageSnapshotOptions = {
+  failureThreshold: 0.5,
+  failureThresholdType: 'percent',
+};
 
 describe('QRBill', (): void => {
   it('should create bills in A6', async (): Promise<void> => {
@@ -18,10 +21,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills in A6 without lines', async (): Promise<void> => {
@@ -30,10 +30,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills with wraped lines', async (): Promise<void> => {
@@ -42,10 +39,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set even higher threshold because inline fonts are not loaded and might be slightly different on different os
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills in A4', async (): Promise<void> => {
@@ -54,10 +48,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills in A4 without lines', async (): Promise<void> => {
@@ -66,10 +57,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills in A4 with separation hint', async (): Promise<void> => {
@@ -78,10 +66,7 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 
   it('should create bills in A4 with billInformation object', async (): Promise<void> => {
@@ -132,9 +117,6 @@ describe('QRBill', (): void => {
     expect(data).toBeDefined();
     const image = await pdfBufferToImage(data);
     // set higher threshold because inline fonts are not loaded and might be slightly different
-    expect(image).toMatchImageSnapshot({
-      failureThreshold,
-      failureThresholdType: 'percent',
-    });
+    expect(image).toMatchImageSnapshot(snapshotOptions);
   });
 });
