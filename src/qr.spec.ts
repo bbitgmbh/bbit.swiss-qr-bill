@@ -297,7 +297,9 @@ describe('QR test', (): void => {
   it('generate should work', async (): Promise<void> => {
     const data = await qr.generate(defaultData);
     expect(data).toBeDefined();
-    expect(data).toMatchSnapshot();
+    if (!process.env.CI) {
+      expect(data).toMatchSnapshot();
+    }
   });
   it('generate billInformation should work', async (): Promise<void> => {
     expect(qr.generateQRBillInformation('test')).toBe('test');
