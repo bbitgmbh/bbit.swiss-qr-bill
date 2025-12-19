@@ -80,32 +80,32 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
-  # publishNpm:
-  #   name: "Publish to npm"
-  #   runs-on: ubuntu-latest
-  #   needs: testAndBuild
-  #   if: contains(github.ref, 'refs/tags/v')
+  publishNpm:
+    name: "Publish to npm"
+    runs-on: ubuntu-latest
+    needs: testAndBuild
+    if: contains(github.ref, 'refs/tags/v')
 
-  #   strategy:
-  #     matrix:
-  #       node-version: [24.x]
+    strategy:
+      matrix:
+        node-version: [24.x]
 
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v6
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
 
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v6
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
 
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v7
-  #       with:
-  #         name: artifacts
-  #         path: ./dist
+      - name: Download artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: artifacts
+          path: ./dist
 
-  #     - name: Publish package
-  #       run: |
-  #         echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-  #         yarn publish --access public
+      - name: Publish package
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          yarn publish --access public
