@@ -1,54 +1,12 @@
 name: Create tag
 
-# Triggers when a release/v* PR is merged into master.
-# Creates a semver tag via the GitHub API, which then triggers main.yml to publish.
-#
-# Example branch: release/v1.2.3
-# Created tag:    v1.2.3
-
 on:
   pull_request:
     types: [closed]
-    branches: [master]
+    branches: [main]
 
 jobs:
-  tag:
-    # Only run when merged (not just closed) and branch matches release/vX.Y.Z
-    if: |
-      github.event.pull_request.merged == true &&
-      startsWith(github.head_ref, 'release/v') &&
-      contains(github.head_ref, '.')
-    name: 'Create release tag'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Extract and validate semver tag
-        id: version
-        run: |
-          TAG="${GITHUB_HEAD_REF#release/}"
-          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
-            echo "Branch '$GITHUB_HEAD_REF' does not contain a valid semver tag: $TAG"
-            exit 1
-          fi
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-
-      # GH_TAG_TOKEN must be a fine-grained PAT (repo-scoped) with Contents: write.
-      # A tag pushed with the built-in GITHUB_TOKEN would NOT trigger main.yml's
-      # publish run — a PAT is required so the downstream workflow fires.
-      - name: Create tag via GitHub API
-        env:
-          GH_TOKEN: ${{ secrets.GH_TAG_TOKEN }}
-        run: |
-          gh api repos/${{ github.repository }}/git/refs \
-            --method POST \
-            --field ref="refs/tags/${{ steps.version.outputs.tag }}" \
-            --field sha="${{ github.event.pull_request.merge_commit_sha }}"
-
-      - name: Create GitHub release
-        env:
-          GH_TOKEN: ${{ secrets.GH_TAG_TOKEN }}
-        run: |
-          gh release create ${{ steps.version.outputs.tag }} \
-            --repo ${{ github.repository }} \
-            --title "${{ steps.version.outputs.tag }}" \
-            --generate-notes
+  createTag:
+    uses: bbitgmbh/github-actions/.github/workflows/create-tag.yml@v1
+    name: Create tag
+    secrets: inherit
