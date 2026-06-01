@@ -1,58 +1,58 @@
 {
-	"name": "@bbitgmbh/bbit.swiss-qr-bill",
-	"version": "5.0.16",
-	"type": "module",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		}
-	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"author": "Yannik Eicher <ache@bbit.io>",
-	"license": "SEE LICENSE IN LICENSE.md",
-	"scripts": {
-		"clean": "rimraf coverage dist junit.xml",
-		"test": "vitest run",
-		"lint": "biome lint ./src",
-		"biome:check": "biome check --apply ./src",
-		"types": "tsc --emitDeclarationOnly",
-		"bundle": "rolldown -c rolldown.config.ts",
-		"build": "run-s clean bundle types",
-		"yalc": "nr build && yalc push",
-		"bbitprecommit": "run-p lint test build"
-	},
-	"files": [
-		"dist/**/*",
-		"!dist/interfaces/**/*",
-		"readme.md"
-	],
-	"dependencies": {
-		"@bbitgmbh/bbit.banking-utils": "^2.1.4",
-		"canvas": "^3.2.0",
-		"pdfkit": "0.18.0",
-		"qrcode": "^1.5.4"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.3.10",
-		"@types/jest-image-snapshot": "^6.4.0",
-		"@types/lodash": "^4.17.21",
-		"@types/node": "^25.0.3",
-		"@types/pdfkit": "^0.17.4",
-		"@types/qrcode": "^1.5.6",
-		"@vitest/ui": "^4.0.16",
-		"iconv-lite": "^0.7.1",
-		"jest-image-snapshot": "^6.5.1",
-		"jsdom": "^29.1.1",
-		"lodash": "^4.17.21",
-		"npm-run-all": "^4.1.5",
-		"pdf-to-png-converter": "^4.0.0",
-		"prettier": "^3.7.4",
-		"rimraf": "^6.1.2",
-		"rolldown": "^1.0.3",
-		"typescript": "^6.0.3",
-		"vitest": "^4.0.16"
-	}
+  "name": "@bbitgmbh/bbit.swiss-qr-bill",
+  "version": "6.0.0-beta.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "author": "Yannik Eicher <ache@bbit.io>",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "scripts": {
+    "clean": "rimraf coverage dist junit.xml",
+    "test": "vitest run",
+    "lint": "biome lint ./src",
+    "biome:check": "biome check --apply ./src",
+    "types": "tsc --emitDeclarationOnly",
+    "bundle": "rolldown -c rolldown.config.ts",
+    "build": "run-s clean bundle types",
+    "yalc": "nr build && yalc push",
+    "bbitprecommit": "run-p lint test build"
+  },
+  "files": [
+    "dist/**/*",
+    "!dist/interfaces/**/*",
+    "readme.md"
+  ],
+  "dependencies": {
+    "@bbitgmbh/bbit.banking-utils": "^2.1.4",
+    "canvas": "^3.2.0",
+    "pdfkit": "0.18.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
+    "@types/jest-image-snapshot": "^6.4.0",
+    "@types/lodash": "^4.17.21",
+    "@types/node": "^25.0.3",
+    "@types/pdfkit": "^0.17.4",
+    "@types/qrcode": "^1.5.6",
+    "@vitest/ui": "^4.0.16",
+    "iconv-lite": "^0.7.1",
+    "jest-image-snapshot": "^6.5.1",
+    "jsdom": "^29.1.1",
+    "lodash": "^4.17.21",
+    "npm-run-all": "^4.1.5",
+    "pdf-to-png-converter": "^4.0.0",
+    "prettier": "^3.7.4",
+    "rimraf": "^6.1.2",
+    "rolldown": "^1.0.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.0.16"
+  }
 }
