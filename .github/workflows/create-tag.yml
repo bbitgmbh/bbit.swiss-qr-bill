@@ -1,0 +1,12 @@
+name: Create tag
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  createTag:
+    uses: bbitgmbh/github-actions/.github/workflows/create-tag.yml@v1
+    name: Create tag
+    secrets: inherit
