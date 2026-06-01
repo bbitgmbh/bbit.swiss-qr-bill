@@ -1,0 +1,47 @@
+name: Setup
+description: Install tooling via mise and authenticate the GitHub Packages registry for @bbitgmbh/* installs.
+inputs:
+  gh-packages-token:
+    description: Token with read access to GitHub Packages (e.g. secrets.GH_PACKAGES_TOKEN).
+    required: true
+runs:
+  using: composite
+  steps:
+    # Auth GitHub Packages so @bbitgmbh/* deps install. The token is passed via
+    # env (not interpolated into the run script) to keep it out of the logs.
+    - name: Configure GitHub Packages registry
+      shell: bash
+      env:
+        GH_PACKAGES_TOKEN: ${{ inputs.gh-packages-token }}
+      run: |
+        echo "@bbitgmbh:registry=https://npm.pkg.github.com" >> ~/.npmrc
+        echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}" >> ~/.npmrc
+
+    # Installs node/pnpm/ni etc. from mise.toml and puts their shims on PATH.
+    - uses: jdx/mise-action@v3
+
+    - id: pm-cache
+      shell: bash
+      run: |
+        if [ -f "pnpm-lock.yaml" ]; then
+          echo "pm=pnpm" >> $GITHUB_OUTPUT
+          echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+          echo "lockfile=pnpm-lock.yaml" >> $GITHUB_OUTPUT
+        elif [ -f "yarn.lock" ]; then
+          echo "pm=yarn" >> $GITHUB_OUTPUT
+          echo "path=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          echo "lockfile=yarn.lock" >> $GITHUB_OUTPUT
+        else
+          echo "pm=npm" >> $GITHUB_OUTPUT
+          echo "path=$(npm config get cache)" >> $GITHUB_OUTPUT
+          echo "lockfile=package-lock.json" >> $GITHUB_OUTPUT
+        fi
+
+    - uses: actions/cache@v4
+      with:
+        path: ${{ steps.pm-cache.outputs.path }}
+        key: ${{ steps.pm-cache.outputs.pm }}-${{ runner.os }}-${{ hashFiles(format('**/{0}', steps.pm-cache.outputs.lockfile)) }}
+        restore-keys: ${{ steps.pm-cache.outputs.pm }}-${{ runner.os }}-
+
+    - run: nci
+      shell: bash
