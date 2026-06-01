@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "strict": true,
     "declaration": true,
-    "declarationDir": "./dist/types",
-    "target": "es6",
-    "lib": ["es2019", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "declarationDir": "./dist",
+    "rootDir": "./src",
+    "target": "es2022",
+    "lib": ["es2022", "dom"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -17,5 +18,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["**/*.spec.ts", ".yalc/**/*"]
+  "exclude": ["**/*.spec.ts", "src/__mocks__/**", "src/test-utils.ts", ".yalc/**/*"]
 }

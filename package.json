@@ -1,9 +1,16 @@
 {
 	"name": "@bbitgmbh/bbit.swiss-qr-bill",
 	"version": "5.0.16",
-	"main": "dist/cjs/index.js",
-	"module": "dist/es/index.js",
-	"types": "dist/types/index.d.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"author": "Yannik Eicher <ache@bbit.io>",
 	"license": "SEE LICENSE IN LICENSE.md",
 	"scripts": {
@@ -12,11 +19,9 @@
 		"lint": "biome lint ./src",
 		"biome:check": "biome check --apply ./src",
 		"types": "tsc --emitDeclarationOnly",
-		"bundle:node": "rollup -c rollup.config.js --bundleConfigAsCjs",
-		"bundle:browser": "webpack --config webpack.config.js",
-		"bundle": "run-p bundle:*",
+		"bundle": "rolldown -c rolldown.config.ts",
 		"build": "run-s clean bundle types",
-		"yalc": "yarn build && yalc push",
+		"yalc": "nr build && yalc push",
 		"bbitprecommit": "run-p lint test build"
 	},
 	"files": [
@@ -26,22 +31,11 @@
 	],
 	"dependencies": {
 		"@bbitgmbh/bbit.banking-utils": "^2.1.4",
-		"assert": "^2.1.0",
-		"browserify-zlib": "^0.2.0",
-		"buffer": "^6.0.3",
 		"canvas": "^3.2.0",
-		"pdfkit": "0.17.2",
-		"qrcode": "^1.5.4",
-		"stream-browserify": "^3.0.0",
-		"util": "^0.12.3"
+		"pdfkit": "0.18.0",
+		"qrcode": "^1.5.4"
 	},
 	"devDependencies": {
-		"@babel/core": "7.28.5",
-		"@babel/plugin-proposal-class-properties": "7.18.6",
-		"@babel/plugin-proposal-object-rest-spread": "7.20.7",
-		"@babel/plugin-proposal-optional-catch-binding": "7.18.6",
-		"@babel/plugin-transform-modules-commonjs": "7.27.1",
-		"@babel/preset-typescript": "7.28.5",
 		"@biomejs/biome": "^2.3.10",
 		"@types/jest-image-snapshot": "^6.4.0",
 		"@types/lodash": "^4.17.21",
@@ -49,34 +43,16 @@
 		"@types/pdfkit": "^0.17.4",
 		"@types/qrcode": "^1.5.6",
 		"@vitest/ui": "^4.0.16",
-		"babel-loader": "^10.0.0",
-		"babel-plugin-ts-nameof": "4.2.1",
-		"brfs": "^2.0.2",
 		"iconv-lite": "^0.7.1",
 		"jest-image-snapshot": "^6.5.1",
-		"jsdom": "^27.3.0",
+		"jsdom": "^29.1.1",
 		"lodash": "^4.17.21",
 		"npm-run-all": "^4.1.5",
-		"pdf-to-png-converter": "^3.11.0",
+		"pdf-to-png-converter": "^4.0.0",
 		"prettier": "^3.7.4",
-		"raw-loader": "^4.0.2",
 		"rimraf": "^6.1.2",
-		"rollup": "^4.53.5",
-		"rollup-plugin-auto-external": "^2.0.0",
-		"rollup-plugin-babel": "^4.4.0",
-		"rollup-plugin-brfs": "^1.0.1",
-		"rollup-plugin-browserify-transform": "^1.0.1",
-		"rollup-plugin-commonjs": "^10.1.0",
-		"rollup-plugin-node-resolve": "^5.2.0",
-		"rollup-plugin-string": "^3.0.0",
-		"terser-webpack-plugin": "^5.3.16",
-		"transform-loader": "^0.2.4",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.9.3",
-		"vitest": "^4.0.16",
-		"webpack": "^5.104.0",
-		"webpack-cli": "^6.0.1",
-		"webpack-merge": "^6.0.1",
-		"webpack-node-externals": "^3.0.0"
+		"rolldown": "^1.0.3",
+		"typescript": "^6.0.3",
+		"vitest": "^4.0.16"
 	}
 }

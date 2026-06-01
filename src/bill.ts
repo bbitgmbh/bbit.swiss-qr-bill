@@ -34,7 +34,7 @@ export class BbitQRBillGenerator {
   private _qr = new BbitQRCodeGenerator();
   private _iban = new BbitIBAN();
   private _reference = new BbitBankingReference();
-  private _t: IBbitQRBillTranslations;
+  private _t!: IBbitQRBillTranslations;
   public constructor() {
     if (!isNodeJs) {
       fs.writeFileSync('data/Helvetica.afm', Helvetica);
@@ -47,8 +47,8 @@ export class BbitQRBillGenerator {
     let topY: number;
     let size: [number, number];
     let generateAsA4: boolean;
-    let preventLines: boolean;
-    let separationHint: boolean;
+    let preventLines = false;
+    let separationHint = false;
     switch (params.format) {
       case BbitQRBillFormat.DEFAULT_WITHOUT_LINES:
         preventLines = true;
@@ -156,7 +156,7 @@ export class BbitQRBillGenerator {
         doc
           .fontSize(options.receiptFontSize)
           .font('Helvetica')
-          .text(this._t.separationHint, left, options.topY - options.receiptFontSize * 3);
+          .text(this._t.separationHint ?? '', left, options.topY - options.receiptFontSize * 3);
       } else {
         doc.image(scissorsHImageBuffer, options.receiptX, top - 5, {
           height: 10,
@@ -366,7 +366,7 @@ export class BbitQRBillGenerator {
       .text(
         params.creditor.type === BbitQRBillAddressType.STRUCTURED
           ? `${params.creditor.street} ${params.creditor.buildingNumber}`
-          : params.creditor.address,
+          : params.creditor.address ?? '',
         x,
         y,
         {
@@ -441,7 +441,7 @@ export class BbitQRBillGenerator {
         params.debtor.type === BbitQRBillAddressType.STRUCTURED
           ? // biome-ignore lint/style/useTemplate: required
             params.debtor.street + ' ' + params.debtor.buildingNumber
-          : params.debtor.address,
+          : params.debtor.address ?? '',
         x,
         y,
         {

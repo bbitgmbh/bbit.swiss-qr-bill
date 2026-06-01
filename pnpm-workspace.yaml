@@ -1,0 +1,7 @@
+allowBuilds:
+  canvas: true
+  es5-ext: true
+
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@bbitgmbh/*'

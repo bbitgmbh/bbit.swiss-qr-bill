@@ -20,14 +20,14 @@ export class BbitQRCodeGenerator {
     return input.replace(/\\/g, '\\\\').replace(/\//g, '\\/');
   }
 
-  public generateQRBillInformation(data: string | IBbitQRBillBillInformation): string {
+  public generateQRBillInformation(data?: string | IBbitQRBillBillInformation): string {
     if (typeof data === 'string') {
       return data || '';
     }
     if (!data) {
       return '';
     }
-    const values = [];
+    const values: string[] = [];
     if (data.documentNumber) {
       values.push(`/10/${this._escapeQRBillInformationString(data.documentNumber)}`);
     }
@@ -47,8 +47,8 @@ export class BbitQRCodeGenerator {
         values.push(`/31/${data.vatDate.start}${data.vatDate.end}`);
       }
     }
-    if (data.vat?.length > 0) {
-      const arr = [];
+    if (data.vat && data.vat.length > 0) {
+      const arr: (string | number)[] = [];
       for (const o of data.vat) {
         if (!o.netAmount) {
           arr.push(o.rate);
@@ -58,15 +58,15 @@ export class BbitQRCodeGenerator {
       }
       values.push(`/32/${arr.join(';')}`);
     }
-    if (data.vatImportTax?.length > 0) {
-      const arr = [];
+    if (data.vatImportTax && data.vatImportTax.length > 0) {
+      const arr: string[] = [];
       for (const o of data.vatImportTax) {
         arr.push(`${o.rate}:${o.vatAmount}`);
       }
       values.push(`/33/${arr.join(';')}`);
     }
-    if (data.paymentTerms?.length > 0) {
-      const arr = [];
+    if (data.paymentTerms && data.paymentTerms.length > 0) {
+      const arr: string[] = [];
       for (const o of data.paymentTerms) {
         arr.push(`${o.cashDiscountPercent || 0}:${o.days}`);
       }
@@ -119,7 +119,10 @@ export class BbitQRCodeGenerator {
       return (canvas as Canvas).toBuffer();
     }
     return new Promise((resolve): void => {
-      (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob): Promise<void> => {
+      (canvas as unknown as HTMLCanvasElement).toBlob(async (blob: Blob | null): Promise<void> => {
+        if (!blob) {
+          return;
+        }
         const buffer = await blob.arrayBuffer();
         resolve(buffer);
       });
@@ -143,11 +146,11 @@ export class BbitQRCodeGenerator {
           (params.creditor.type === BbitQRBillAddressType.STRUCTURED
             ? params.creditor.street
             : params.creditor.address
-          ).substring(0, 70),
+          )?.substring(0, 70),
         );
         data.add(
           params.creditor.type === BbitQRBillAddressType.STRUCTURED
-            ? params.creditor.buildingNumber.substring(0, 16)
+            ? params.creditor.buildingNumber?.substring(0, 16) || ''
             : `${params.creditor.postalCode} ${params.creditor.locality}`.substring(0, 70),
         );
         data.add(
@@ -172,7 +175,7 @@ export class BbitQRCodeGenerator {
           (params.debtor.type === BbitQRBillAddressType.STRUCTURED
             ? params.debtor.street
             : params.debtor.address
-          ).substring(0, 70),
+          )?.substring(0, 70),
         );
         data.add(
           params.debtor.type === BbitQRBillAddressType.STRUCTURED

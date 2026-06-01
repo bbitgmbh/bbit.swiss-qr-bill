@@ -1,0 +1,17 @@
+[tools]
+node = "24"
+"npm:pnpm" = "11"
+lefthook = "latest"
+"npm:@antfu/ni" = "latest"
+
+[hooks]
+postinstall = "lefthook install"
+
+[tasks.lint]
+run = "nr lint"
+
+[tasks.build]
+run = "nr build"
+
+[settings]
+experimental = true

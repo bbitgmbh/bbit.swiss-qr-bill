@@ -36,10 +36,10 @@ export class QRData {
 }
 
 export class CustomWritableStream extends stream.Writable {
-  private _chunks = [];
+  private _chunks: Uint8Array<ArrayBuffer>[] = [];
   private _length = 0;
   // biome-ignore lint/complexity/noUselessConstructor: required
-  public constructor(options?: unknown) {
+  public constructor(options?: stream.WritableOptions) {
     super(options);
   }
 
@@ -57,7 +57,7 @@ export class CustomWritableStream extends stream.Writable {
 
   // biome-ignore lint/suspicious/noExplicitAny: required
   public _destroy(_err: unknown, callback: (...params: any[]) => void): void {
-    this._chunks = null;
+    this._chunks = [];
     // biome-ignore lint/correctness/noVoidTypeReturn: required
     return callback(null);
   }

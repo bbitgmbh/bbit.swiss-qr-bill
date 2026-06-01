@@ -1,3 +1,3 @@
 import { readFileSync } from 'fs';
 
-module.exports = readFileSync('./node_modules/pdfkit/js/data/Helvetica.afm');
+export default readFileSync('./node_modules/pdfkit/js/data/Helvetica.afm');
