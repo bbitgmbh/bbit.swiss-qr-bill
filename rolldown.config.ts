@@ -5,12 +5,20 @@ const builtins = new Set([...builtinModules, ...builtinModules.map((m) => `node:
 
 export default defineConfig({
   input: 'src/index.ts',
-  output: {
-    dir: 'dist',
-    format: 'esm',
-    entryFileNames: 'index.js',
-    sourcemap: true,
-  },
+  output: [
+    {
+      dir: 'dist',
+      format: 'esm',
+      entryFileNames: 'index.js',
+      sourcemap: true,
+    },
+    {
+      dir: 'dist',
+      format: 'cjs',
+      entryFileNames: 'index.cjs',
+      sourcemap: true,
+    },
+  ],
   platform: 'node',
   // Inline pdfkit's bundled font metrics as plain strings (matches the old
   // rollup-plugin-string behaviour).
