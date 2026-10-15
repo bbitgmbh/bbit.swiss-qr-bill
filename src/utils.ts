@@ -26,7 +26,7 @@ export class QRData {
     if (!data) {
       this._data += '\n';
     } else {
-      this._data += `${data.replace(/\n/gm, '')}\n`;
+      this._data += `${data.replace(/[\r\n]/g, '')}\n`;
     }
   }
 
